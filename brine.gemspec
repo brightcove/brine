@@ -1,20 +1,26 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path('../lib', __FILE__)
-require 'mustache_binder'
-
 Gem::Specification.new do |s|
   s.name         = 'brine'
   s.version      = '0.1.0'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Matt Whipple"]
   s.email        = ["mwhipple@brightcove.com"]
+  s.license      = 'Apache 2.0'
   s.homepage     = "http://github.com/brightcove/brine"
   s.summary      = "Cucumber@REST in Brine"
   s.description  = "Cucumber@REST in Brine"
 
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.2.2'
 
-  s.add_dependency   'mustache'
+  s.add_runtime_dependency   'cucumber'
+  s.add_runtime_dependency   'mustache'
+  s.add_runtime_dependency   'oauth2'
+  s.add_runtime_dependency   'rspec'
+  s.add_runtime_dependency   'jsonpath'
+  s.add_runtime_dependency   'faraday'
+  s.add_runtime_dependency   'faraday_middleware'
+
+  s.add_development_dependency 'aruba'
 
   s.files        = `git ls-files`.split("\n")
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")

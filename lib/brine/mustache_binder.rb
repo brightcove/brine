@@ -1,3 +1,5 @@
+require 'mustache'
+
 # Provides a binding environment and template expansion functions that use that
 # environment
 module MustacheBinder

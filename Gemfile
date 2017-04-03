@@ -1,5 +1,3 @@
 source 'http://rubygems.org' do
-  gem 'mustache'
+  gemspec
 end
-
-gemspec
