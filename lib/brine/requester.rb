@@ -14,11 +14,8 @@ module Requester
       @token_type = 'bearer'
     end
 
-    def fetch_from(id, secret, site, token_url)
-      @token = OAuth2::Client.new(id, secret,
-                                  site: site,
-                                  token_url: token_url,
-                                  ssl: {verify: false})
+    def fetch_from(id, secret, opts)
+      @token = OAuth2::Client.new(id, secret, opts)
                  .client_credentials.get_token.token
     end
   end
@@ -59,7 +56,7 @@ module Requester
   end
 
   # store the provided body in the request options being built
-  # overriding any previosly provided object
+  # overriding any previously provided object
   def set_request_body(obj)
     @body = obj
   end

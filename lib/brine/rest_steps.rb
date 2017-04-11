@@ -176,7 +176,7 @@ end
 Then(/^the response body is a list with((out)?) an entry containing:$/) do
   |is_not, data|
   expect(response_body_child.first)
-    .send(to_or_not(is_not),
+    .send(not_if(is_not),
           include(include(transform_table!(table).rows_hash)))
 end
 
