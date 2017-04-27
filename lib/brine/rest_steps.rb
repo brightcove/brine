@@ -1,3 +1,5 @@
+require 'rspec'
+
 def debug(msg)
   puts msg if ENV['DEBUG']
 end
@@ -7,6 +9,7 @@ def not_if(val) val ? :not_to : :to end
 # Binding
 #
 When(/^`([^`]*)` is bound to a random string$/) do |name|
+  debug "#{name} => #{value}"
   binding[name] = SecureRandom.uuid
 end
 
@@ -30,7 +33,6 @@ end
 When(/^the request body is the object:$/) do |table|
   set_request_body(transform_table!(table).rows_hash.to_json)
 end
-
 
 When(/^the request parameter `([^`]*)` is set to `([^`]*)`$/) do |param, value|
   add_request_param(param, value)
@@ -206,9 +208,10 @@ Then(/^the resource is eventually available at `([^`]*)`$/) do |path|
   end
 end
 
+# TODO: Parameterize polling length
 Then(/^the property `([^`]*)` is eventually `([^`]*)` at `([^`]*)`$/) do
   |field, value, path|
-  retry_for(60) {
+  retry_for(180) {
     send_request(parse_method('GET'), path)
     expect(response_body_child.first).to include(field => value)
   }
