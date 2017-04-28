@@ -14,7 +14,7 @@ end
 # Match array braces optionally surrounded by braces
 Transform /^\s*\[.*\]\s*$/ do |array|
   # Also ignore any spaces around the ,s
-  array[1..-2].split(/\s*,\s*/).map{|it| Transform(it)}
+  array[1..-2].strip.split(/\s*,\s*/).map{|it| Transform(it)}
 end
 
 # Preserve value/stringiness within quotes optionally surrounded by whitespace

@@ -17,6 +17,10 @@ When(/^`([^`]*)` is bound to `([^`]*)`$/) do |name, value|
   binding[name] = value
 end
 
+When(/^`([^`]*)` is bound to a timestamp$/) do |name, value|
+  binding[name] = Date.new
+end
+
 #TODO: The binding environment should be able to be accessed directly
 # without requiring a custom step
 When(/^`([^`]*)` is bound to `([^`]*)` from the response body$/) do |name, path|
@@ -157,7 +161,10 @@ Then(/^the response body is a list which all are (\w+)$/) do |matcher|
   pass_it = method(matcher.to_sym).call
   expect(response_body_child.first).to all(pass_it)
 end
-
+Then(/^the response body is a list including an element with the entries:$/) do
+  |fields|
+  expect(response_body_child.first).to include(include(fields))
+end
 
 Then(/^the response body is a list of length (\d+)$/) do |length|
   expect(response_body_child.first)
