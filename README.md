@@ -85,7 +85,7 @@ meantime the project can be used off of GitHub by adding this to your
 `Gemfile` and performing the usual `bundle install` dance:
 
 ```ruby
-git 'git@github.com:brightcove/brine.git' do
+git 'git@github.com:brightcove/brine.git', :branch => 'master' do
   gem 'brine'
 end
 ```
