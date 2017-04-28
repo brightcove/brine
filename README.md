@@ -110,6 +110,12 @@ Select pieces can also be loaded (to be documented). With the above,
 feature files should be able to be written and executed without
 requiring any additional ruby code.
 
+Questions? Comments?
+---
+Check out the [wiki](https://github.com/brightcove/brine/wiki) for more information
+and search for related [issues](https://github.com/brightcove/brine/issues)
+or open one for anything not documented or implemented elsewhere.
+
 <!--
 Most of the non-trivial behavior is provided by modules which are attached to
 the World object.
