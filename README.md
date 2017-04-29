@@ -49,7 +49,7 @@ request, then values can be bound to identifiers which can then be
 expanded using [Mustache](mustache.github.io) templates in your
 feature files.
 
-### Type Transformations
+### Type Transforms
 
 Different types of data can be expressed directly in the feature files
 or expanded into variables by using the appropriate syntax for that
