@@ -49,11 +49,13 @@ request, then values can be bound to identifiers which can then be
 expanded using [Mustache](mustache.github.io) templates in your
 feature files.
 
-### Type Transformations
+### Type Transforms
 
 Different types of data can be expressed directly in the feature files
 or expanded into variables by using the appropriate syntax for that
 type.
+
+[Read More](https://github.com/brightcove/brine/wiki/Argument-Transforms)
 
 ### Resource Cleanup
 
@@ -83,7 +85,7 @@ meantime the project can be used off of GitHub by adding this to your
 `Gemfile` and performing the usual `bundle install` dance:
 
 ```ruby
-git 'git@github.com:brightcove/brine.git' do
+git 'git@github.com:brightcove/brine.git', :branch => 'master' do
   gem 'brine'
 end
 ```
@@ -108,13 +110,8 @@ Select pieces can also be loaded (to be documented). With the above,
 feature files should be able to be written and executed without
 requiring any additional ruby code.
 
-<!--
-Most of the non-trivial behavior is provided by modules which are attached to
-the World object.
-
-As an initial design principle, there is no defined coupling between the
-modules: in cases where there are dependencies the steps code will
-handle the appropriate injection of inter-module objects.
-There may be a better, more ruby-ish way to approach this but
-I'm scared of the god_object_through_including_every_module possibility
--->
+Questions? Comments?
+---
+Check out the [wiki](https://github.com/brightcove/brine/wiki) for more information
+and search for related [issues](https://github.com/brightcove/brine/issues)
+or open one for anything not documented or implemented elsewhere.
