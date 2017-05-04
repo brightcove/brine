@@ -5,6 +5,11 @@ def debug(msg)
 end
 def not_if(val) val ? :not_to : :to end
 
+# Return a table that that is a key value pair in a format ready for consumption
+def kv_table(table)
+  transform_table!(table).rows_hash
+end
+
 #
 # Binding
 #
@@ -17,8 +22,8 @@ When(/^`([^`]*)` is bound to `([^`]*)`$/) do |name, value|
   binding[name] = value
 end
 
-When(/^`([^`]*)` is bound to a timestamp$/) do |name, value|
-  binding[name] = Date.new
+When(/^`([^`]*)` is bound to a timestamp$/) do |name|
+  binding[name] = DateTime.now
 end
 
 #TODO: The binding environment should be able to be accessed directly
@@ -30,19 +35,21 @@ end
 #
 # Request management
 #
+When(/^the request body is:$/) do |input|
+  set_request_body(input)
+end
 When(/^the request body is the string:$/) do |text|
   set_request_body(text)
 end
 
 When(/^the request body is the object:$/) do |table|
-  set_request_body(transform_table!(table).rows_hash.to_json)
+  set_request_body(kv_table(table).to_json)
 end
 
 When(/^the request parameter `([^`]*)` is set to `([^`]*)`$/) do |param, value|
   add_request_param(param, value)
 end
 
-#TODO: does response.body not work with existing binding?
 #FIXME: debug is an presently an implied dependency...middleware?
 When(/^a (GET|POST|PATCH|PUT|DELETE) is sent to `([^`]*)`$/) do |method, url|
   debug "#{method} #{url}"
@@ -64,45 +71,32 @@ end
 RESPONSE_ATTRIBUTES='(status|headers)'
 Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value that is not empty$/) do
   |attribute, member|
-  expect(response)
-    .to have_attributes(attribute.to_sym =>
-                        include(member.to_sym => be_not_empty))
+  expect(response).to have_attributes(attribute.to_sym => include(member.to_sym => be_not_empty))
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value including `([^`]*)`$/) do
   |attribute, member, value|
-  expect(response)
-    .to have_attributes(attribute.to_sym =>
-                        include(member => include(value)))
+  expect(response).to have_attributes(attribute.to_sym => include(member => include(value)))
 end
 
-Then(/^the response #{RESPONSE_ATTRIBUTES} equals `([^`]*)`$/) do
-  |attribute, value|
-  expect(response)
-    .to have_attributes(attribute.to_sym => value)
+Then(/^the response #{RESPONSE_ATTRIBUTES} equals `([^`]*)`$/) do |attribute, value|
+  expect(response).to have_attributes(attribute.to_sym => value)
 end
 
-Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do
-  |attribute, table|
-  expect(response)
-    .to have_attributes(attribute.to_sym =>
-                        include(transform_table!(table).rows_hash))
+Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do |attribute, table|
+  expect(response).to have_attributes(attribute.to_sym => include(kv_table(table)))
 end
 
-Then(/^the response #{RESPONSE_ATTRIBUTES} contains? null fields:$/) do
-  |attribute, table|
+Then(/^the response #{RESPONSE_ATTRIBUTES} contains? null fields:$/) do |attribute, table|
   expect(response)
     .to have_attributes(attribute.to_sym =>
-                        include(table.raw.flatten
-                                  .collect{|v| [v, be_nil]}.to_h))
+                        include(table.raw.flatten.collect{|v| [v, be_nil]}.to_h))
 end
 
-Then(/^the response #{RESPONSE_ATTRIBUTES} contains? non null fields:$/) do
-  |attribute, table|
+Then(/^the response #{RESPONSE_ATTRIBUTES} contains? non null fields:$/) do |attribute, table|
   expect(response)
     .to have_attributes(attribute.to_sym =>
-                        include(table.raw.flatten
-                                  .collect{|v| [v, be_not_nil]}.to_h))
+                        include(table.raw.flatten.collect{|v| [v, be_not_nil]}.to_h))
 end
 
 #
@@ -113,8 +107,7 @@ Then(/^the response body is the list:$/) do |table|
 end
 
 Then(/^the response body includes? the entries:$/) do |table|
-  expect(response_body_child.first)
-    .to include(transform_table!(table).rows_hash)
+  expect(response_body_child.first).to include(kv_table(table))
 end
 
 Then(/^the response body does not contain fields:$/) do |table|
@@ -137,23 +130,20 @@ Then(/^the response body has `([^`]*)` which (in|ex)cludes? the entries:$/) do
   |child, in_or_ex, table|
   expect(response_body_child(child).first)
     .send(not_if(in_or_ex=='ex'),
-          include(transform_table!(table).rows_hash))
+          include(kv_table(table)))
 end
 
 
 
-Then(/^the response body has `([^`]*)` with a value including `([^`]*)`$/) do
-  |child, value|
+Then(/^the response body has `([^`]*)` with a value including `([^`]*)`$/) do |child, value|
   expect(response_body_child(child).first).to include(value)
 end
 
-Then(/^the response body has `([^`]*)` with a value equal to `([^`]*)`$/) do
-  |child, value|
+Then(/^the response body has `([^`]*)` with a value equal to `([^`]*)`$/) do |child, value|
   expect(response_body_child(child).first).to eq(value)
 end
 
-Then(/^the response body has `([^`]*)` with a value that is not empty$/) do
-  |child|
+Then(/^the response body has `([^`]*)` with a value that is not empty$/) do |child|
   expect(response_body_child(child).first).to be_not_empty
 end
 
@@ -161,14 +151,9 @@ Then(/^the response body is a list which all are (\w+)$/) do |matcher|
   pass_it = method(matcher.to_sym).call
   expect(response_body_child.first).to all(pass_it)
 end
-Then(/^the response body is a list including an element with the entries:$/) do
-  |fields|
-  expect(response_body_child.first).to include(include(fields))
-end
 
 Then(/^the response body is a list of length (\d+)$/) do |length|
-  expect(response_body_child.first)
-    .to have_attributes(length: length)
+  expect(response_body_child.first).to have_attributes(length: length)
 end
 
 #TODO: Maybe worth optimizing these 2 to O(n) after tests are in place
@@ -182,11 +167,10 @@ Then(/^the response body is a list sorted by `([^`]*)` descending$/) do |path|
   expect(values).to eq values.sort{|a,b| b.to_s.downcase <=> a.to_s.downcase}
 end
 
-Then(/^the response body is a list with((out)?) an entry containing:$/) do
-  |is_not, data|
+Then(/^the response body is a list (with|without) an entry containing:$/) do |with, data|
   expect(response_body_child.first)
-    .send(not_if(is_not),
-          include(include(transform_table!(table).rows_hash)))
+    .send(not_if(with == 'without'),
+          include(include(kv_table(data))))
 end
 
 Then(/^the response body is (\w+)$/) do |matcher|
@@ -216,10 +200,9 @@ Then(/^the resource is eventually available at `([^`]*)`$/) do |path|
 end
 
 # TODO: Parameterize polling length
-Then(/^the property `([^`]*)` is eventually `([^`]*)` at `([^`]*)`$/) do
-  |field, value, path|
-  retry_for(180) {
+Then(/^the property `([^`]*)` is eventually `([^`]*)` at `([^`]*)`$/) do |field, value, path|
+  retry_for(180) do
     send_request(parse_method('GET'), path)
     expect(response_body_child.first).to include(field => value)
-  }
+  end
 end

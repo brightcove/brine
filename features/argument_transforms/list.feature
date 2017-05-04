@@ -1,4 +1,4 @@
-Feature: List Argument Step Transform
+Feature: JSON List Argument Step Transform
   Backround
     Given brine is mixed
 
@@ -7,11 +7,13 @@ Feature: List Argument Step Transform
       """
 Feature: Using an list argument
   Scenario: passing array
-    When the response body contains the object:
-      | val | <input>      |
-    Then the raw response body is:
+    When the response body is:
     \"\"\"
-    {"val":<expected>}
+    {"val": <input>}
+    \"\"\"
+    Then the response body as JSON is:
+    \"\"\"
+    '{"val":<expected>}'
     \"\"\"
       """
     When I run `cucumber features/list_step.feature`
@@ -22,11 +24,15 @@ Feature: Using an list argument
     And it should pass
 
     Examples:
-      | input           | expected       |
-      | [a, b]          | ["a","b"]      |
-      | ["a", "b"]      | ["a","b"]      |
-      | [  a  , b ]     | ["a","b"]      |
-      | ["  a", " b "]  | ["  a"," b "]  |
-      | [a,b]           | ["a","b"]      |
-      | [true, "false"] | [true,"false"] |
-      | [1,-3,"-5"]     | [1,-3,"-5"]    |
+      | input                   | expected                |
+      | []                      | []                      |
+      | ["a", "b"]              | ["a","b"]               |
+      | ["a"  ,  "b" ]          | ["a","b"]               |
+      | ["  a", " b "]          | ["  a"," b "]           |
+      | [true, "false"]         | [true,"false"]          |
+      | [1,-3,"-5"]             | [1,-3,"-5"]             |
+      | ["foo,bar","baz"]       | ["foo,bar","baz"]       |
+      | ["foo,bar,baz"]         | ["foo,bar,baz"]         |
+      | ["foo\\"","bar"]        | ["foo\\"","bar"]        |
+      | ["fo\\"o\\",bar","baz"] | ["fo\\"o\\",bar","baz"] |
+      | [{"i":1},{"i":2}, "h"]  | [{"i":1},{"i":2},"h"]   |

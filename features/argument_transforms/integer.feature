@@ -7,11 +7,13 @@ Feature: Integer Argument Step Transform
       """
 Feature: Using an integer argument
   Scenario: passing Integer
-    When the response body contains the object:
-      | val | <input>      |
-    Then the raw response body is:
+    When the response body is:
     \"\"\"
-    {"val":<expected>}
+    {"val": <input>}
+    \"\"\"
+    Then the response body as JSON is:
+    \"\"\"
+    '{"val":<expected>}'
     \"\"\"
       """
     When I run `cucumber features/integer_step.feature`
@@ -22,10 +24,10 @@ Feature: Using an integer argument
     And it should pass
 
     Examples:
-      |         input                    |       expected      |
-      |            10                    |                  10 |
-      |           -10                    |                 -10 |
-      |  	      10                 |                  10 |
-      |    -10 		                 |                 -10 |
-      | 123456789123456789               |  123456789123456789 |
-      | 	-123456789123456789	 | -123456789123456789 |
+      |               input |            expected |
+      |                   0 |                   0 |
+      |                  -0 |                   0 |
+      |                  10 |                  10 |
+      |                 -10 |                 -10 |
+      |  123456789123456789 |  123456789123456789 |
+      | -123456789123456789 | -123456789123456789 |

@@ -10,6 +10,10 @@ class StubResponse
   end
 end
 
-When(/^the response body contains the object:$/) do |table|
-  @response = StubResponse.new(transform_table!(table).rows_hash.to_json)
+When(/^the response body is:$/) do |input|
+  @response = StubResponse.new(input)
+end
+
+Then(/^the response body as JSON is:$/) do |text|
+  expect(response.body.to_json).to eq text
 end

@@ -1,28 +1,56 @@
 # Cucumber Step Argument Transformations
 # Handle type conversions and template expansions
 
-# Match template braces optionally surrounded by whitespace
-Transform /^.*{{.*}}.*$/ do |template|
-  shave_value(template)
+# Whitespace Removal
+Transform /^\s+.*$/ do |input|
+  Transform(input.strip)
+end
+Transform /^.*\s+$/ do |input|
+  Transform(input.strip)
 end
 
-# Match numbers with possible - optionally surrounded by whitespace
-Transform /^\s*(-?\d+)\s*$/ do |number|
+# Integers
+Transform /^(-?\d+)$/ do |number|
   number.to_i
 end
 
-# Match array braces optionally surrounded by braces
-Transform /^\s*\[.*\]\s*$/ do |array|
-  # Also ignore any spaces around the ,s
-  array[1..-2].strip.split(/\s*,\s*/).map{|it| Transform(it)}
+# Lists
+Transform /^\[.*\]$/ do |input|
+  JSON.parse(input)
 end
 
-# Preserve value/stringiness within quotes optionally surrounded by whitespace
-Transform /^\s*".*"\s*$/ do |quoted|
+# Objects
+# Rely on templates being registered later and
+# therefore given higher priority.
+# Lookarounds could avoid the ambiguity but are
+# a nastier pattern.
+Transform /^{.*}$/ do |input|
+  JSON.parse(input)
+end
+
+# Quotes
+Transform /^".*"$/ do |quoted|
+  quoted[1..-2]
+end
+Transform /^'.*'$/ do |quoted|
   quoted[1..-2]
 end
 
-# Match true or false optionally surrounded by whitespace
-Transform /^\s*(?:true|false)\s*$/ do |boolean|
+
+# Boolean
+Transform /^(?:true|false)$/ do |boolean|
   boolean.to_s == "true"
 end
+
+# DATE='\d{4}-\d{2}-\d{2}'
+# TIME='\d{2}:\d{2}:\d{2}'
+# MILLIS='(?:\.\d{3})?'
+# TZ='(?:Z|(?:[+-]\d{2}:\d{2}))'
+# Transform /^#{DATE}T#{TIME}#{MILLIS}#{TZ}$/ do |date|
+#           DateTime.parse(date)
+# end
+
+# # Template Expansion
+# Transform /^.*{{.*}}.*$/ do |template|
+#   Transform(shave_value(template))
+# end

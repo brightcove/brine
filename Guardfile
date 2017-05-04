@@ -1,6 +1,7 @@
 guard 'cucumber',
       all_after_pass: true,
       all_on_start: true,
+      cmd_additional_args: '--profile guard',
       keep_failed: true do
 
   clearing = true
