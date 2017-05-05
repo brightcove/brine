@@ -43,6 +43,9 @@ module Requester
       if @oauth2
         conn.request :oauth2, @oauth2.token, :token_type => @oauth2.token_type
       end
+      if ENV['LOG_HTTP']
+        conn.response :logger
+      end
 
       conn.response :json, :content_type => /\bjson$/
 
@@ -64,10 +67,7 @@ module Requester
   # send a request using method to url using whatever options
   # have been built for the present request
   def send_request(method, url)
-    debug("#{method} #{url}")
-    @response = http_client.run_request(method, url,
-                                        @body,
-                                        @headers)
+    @response = http_client.run_request(method, url, @body, @headers)
     debug("#{response}")
   end
 
