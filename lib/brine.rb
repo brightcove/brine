@@ -12,6 +12,7 @@ end
 
 def brine_mix
   require 'brine/transformers'
+  require 'brine/request_construction'
   require 'brine/rest_steps'
   require 'brine/hooks'
   Brine

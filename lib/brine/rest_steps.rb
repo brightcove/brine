@@ -32,12 +32,6 @@ When(/^`([^`]*)` is bound to `([^`]*)` from the response body$/) do |name, path|
   binding[name] = response_body_child(path).first
 end
 
-#
-# Request management
-#
-When(/^the request body is:$/) do |input|
-  set_request_body(input)
-end
 When(/^the request body is the string:$/) do |text|
   set_request_body(text)
 end
@@ -48,14 +42,6 @@ end
 
 When(/^the request parameter `([^`]*)` is set to `([^`]*)`$/) do |param, value|
   add_request_param(param, value)
-end
-
-#FIXME: debug is an presently an implied dependency...middleware?
-When(/^a (GET|POST|PATCH|PUT|DELETE) is sent to `([^`]*)`$/) do |method, url|
-  debug "#{method} #{url}"
-  send_request(parse_method(method), URI.escape(url))
-  debug "#{response.status} #{response.body}"
-  binding['response_parsed'] = response.body
 end
 
 #

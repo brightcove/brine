@@ -1,4 +1,3 @@
-@wip
 Feature: Template expansion
   Backround
     Given brine is mixed
