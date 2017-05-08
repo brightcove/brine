@@ -9,6 +9,13 @@ module MustacheBinder
     @binding ||= {}
   end
 
+  # assign `value' to `key' within binding
+  # defined in a method to allow observability/interception
+  def bind(key, value)
+    puts "Assigning #{value} to #{key}" if ENV['BRINE_LOG_BINDING']
+    binding[key] = value
+  end
+
   # return value as expanded Mustache template using binding environment
   # Mustache in...no Mustache out
   def shave_value(val)

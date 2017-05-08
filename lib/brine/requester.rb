@@ -43,7 +43,7 @@ module Requester
       if @oauth2
         conn.request :oauth2, @oauth2.token, :token_type => @oauth2.token_type
       end
-      if ENV['LOG_HTTP']
+      if ENV['BRINE_LOG_HTTP']
         conn.response :logger
       end
 

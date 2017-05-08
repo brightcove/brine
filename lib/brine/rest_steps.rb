@@ -14,16 +14,15 @@ end
 # Binding
 #
 When(/^`([^`]*)` is bound to a random string$/) do |name|
-  debug "#{name} => #{value}"
-  binding[name] = SecureRandom.uuid
+  bind(name, SecureRandom.uuid)
 end
 
 When(/^`([^`]*)` is bound to `([^`]*)`$/) do |name, value|
-  binding[name] = value
+  bind(name, value)
 end
 
 When(/^`([^`]*)` is bound to a timestamp$/) do |name|
-  binding[name] = DateTime.now
+  bind(name, DateTime.now)
 end
 
 #TODO: The binding environment should be able to be accessed directly
@@ -118,8 +117,6 @@ Then(/^the response body has `([^`]*)` which (in|ex)cludes? the entries:$/) do
     .send(not_if(in_or_ex=='ex'),
           include(kv_table(table)))
 end
-
-
 
 Then(/^the response body has `([^`]*)` with a value including `([^`]*)`$/) do |child, value|
   expect(response_body_child(child).first).to include(value)

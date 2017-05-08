@@ -2,10 +2,10 @@
 # Handle type conversions and template expansions
 
 # Whitespace Removal
-Transform /^\s+.*$/ do |input|
+Transform /\A\s+(.*)\z/m do |input|
   Transform(input.strip)
 end
-Transform /^.*\s+$/ do |input|
+Transform /\A(.*)\s+\z/m do |input|
   Transform(input.strip)
 end
 
@@ -50,7 +50,7 @@ end
 #           DateTime.parse(date)
 # end
 
-# # Template Expansion
-# Transform /^.*{{.*}}.*$/ do |template|
-#   Transform(shave_value(template))
-# end
+# Template Expansion
+Transform /^.*{{.*}}.*$/ do |template|
+  Transform(shave_value(template))
+end
