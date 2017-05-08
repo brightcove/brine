@@ -7,6 +7,6 @@ end
 
 When(/^a (GET|POST|PATCH|PUT|DELETE) is sent to `([^`]*)`$/) do |method, url|
   send_request(parse_method(method), URI.escape(url))
-  binding['response_parsed'] = response.body
+  bind('response', response)
   reset_request
 end
