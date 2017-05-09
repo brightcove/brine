@@ -23,9 +23,11 @@ The general usage pattern revolves around construction of a request
 and performing assertions against the received response.
 
 ```
-When the request body is the object:
-  | first_name | John  |
-  | last_name  | Smith |
+When the request body is:
+  """
+  {"first_name": "John",
+   "last_name": "Smith"}
+  """
 And a POST is sent to `/users`
 Then the response status equals `200`
 And the response body includes the entries:
