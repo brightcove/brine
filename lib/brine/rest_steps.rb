@@ -1,8 +1,10 @@
 require 'rspec'
+require 'brine/util'
+require 'brine/selector'
 
-def debug(msg)
-  puts msg if ENV['DEBUG']
-end
+# This file is legacy or unsorted steps which will be deprecated or moved into
+# more appropriate homes
+
 def not_if(val) val ? :not_to : :to end
 
 # Return a table that that is a key value pair in a format ready for consumption
@@ -10,33 +12,20 @@ def kv_table(table)
   transform_table!(table).rows_hash
 end
 
-#
-# Binding
-#
 When(/^`([^`]*)` is bound to a random string$/) do |name|
-  bind(name, SecureRandom.uuid)
+  replaced_with('When', "#{name} is assigned a random string", '0.4')
 end
-
 When(/^`([^`]*)` is bound to `([^`]*)`$/) do |name, value|
-  bind(name, value)
+  replaced_with('When', "#{name} is assigned #{value}", '0.4')
 end
-
 When(/^`([^`]*)` is bound to a timestamp$/) do |name|
-  bind(name, DateTime.now)
+  replaced_with('When', "#{name} is assigned #{value}", '0.4')
 end
 
 #TODO: The binding environment should be able to be accessed directly
 # without requiring a custom step
 When(/^`([^`]*)` is bound to `([^`]*)` from the response body$/) do |name, path|
   binding[name] = response_body_child(path).first
-end
-
-When(/^the request body is the string:$/) do |text|
-  set_request_body(text)
-end
-
-When(/^the request body is the object:$/) do |table|
-  set_request_body(kv_table(table).to_json)
 end
 
 When(/^the request parameter `([^`]*)` is set to `([^`]*)`$/) do |param, value|
@@ -51,9 +40,29 @@ When(/^a resource is created at `([^`]*)`$/) do |path|
 end
 
 #
+# Assertions
+#
+Then(/^it is equal to `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| eq v}
+end
+Then(/^it is greater than `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| be > v}
+end
+Then(/^it is greater than or equal to `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| be >= v}
+end
+Then(/^it is less than `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| be < v}
+end
+Then(/^it is less than or equal to `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| be <= v}
+end
+
+
+#
 # Response attribute (non-body) assertions
 #
-RESPONSE_ATTRIBUTES='(status|headers)'
+
 Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value that is not empty$/) do
   |attribute, member|
   expect(response).to have_attributes(attribute.to_sym => include(member.to_sym => be_not_empty))
@@ -65,7 +74,7 @@ Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value including 
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} equals `([^`]*)`$/) do |attribute, value|
-  expect(response).to have_attributes(attribute.to_sym => value)
+  replaced_with('Then', "the response #{attribute} is equal to `#{value}`", "0.4")
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do |attribute, table|
@@ -89,10 +98,6 @@ end
 #
 Then(/^the response body is the list:$/) do |table|
   expect(response_body_child.first).to eq table.hashes
-end
-
-Then(/^the response body includes? the entries:$/) do |table|
-  expect(response_body_child.first).to include(kv_table(table))
 end
 
 Then(/^the response body does not contain fields:$/) do |table|

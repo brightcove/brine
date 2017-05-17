@@ -7,13 +7,13 @@ Feature: JSON List Argument Step Transform
       """
 Feature: Using an list argument
   Scenario: passing array
-    When the response body is:
+    When the response body is assigned:
     \"\"\"
-    {"val": <input>}
+    <input>
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
       """
     When I run `cucumber features/list_step.feature`

@@ -2,6 +2,9 @@
 # Request construction steps
 #
 When(/^the request body is:$/) do |input|
+  replaced_with('When', "the request body is assigned:", '0.4.0', input)
+end
+When(/^the request body is assigned:$/) do |input|
   set_request_body(input)
 end
 

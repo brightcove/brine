@@ -2,18 +2,18 @@ Feature:Quoted String Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
+  Scenario Outline: Assorted Inputs
     Given a file named "features/quoted.feature" with:
       """
-Feature: Whitespace removal
-  Scenario: passing array
+Feature: Quoted Strings
+  Scenario: passing input
     When the response body is:
     \"\"\"
-    {"val": <input>}
+    <input>
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
       """
     When I run `cucumber features/quoted.feature`
@@ -28,5 +28,5 @@ Feature: Whitespace removal
       | "true"              | "true"              |
       | "123"               | "123"               |
       | " -123 "            | " -123 "            |
-      | "[\"foo\",\"bar\"]" | "[\"foo\",\"bar\"]" |
-      | "{\"foo\":\"bar\"}" | "{\"foo\":\"bar\"}" |
+      | "["foo","bar"]"     | "[\"foo\",\"bar\"]" |
+      | "{"foo":"bar"}"     | "{\"foo\":\"bar\"}" |

@@ -8,13 +8,13 @@ Feature: Template expansion
 Feature: Simple Template Expasion
   Scenario: passing array
     When `bound` is bound to `<binding>`
-    When the response body is:
+    When the response body is assigned:
     \"\"\"
-    {"val": {{{bound}}}}
+    {{{bound}}}
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
       """
     When I run `cucumber features/single.feature`
@@ -31,4 +31,4 @@ Feature: Simple Template Expasion
       | -452           | -452      |
       | ""-452""       | "-452"    |
       | ["a", 1]       | ["a",1]   |
-      | ""[\"a\", 1]"" | "[\\"a\\", 1]" |
+      | ""["a", 1]""     | "[\\"a\\", 1]" |

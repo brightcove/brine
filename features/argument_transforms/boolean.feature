@@ -7,13 +7,13 @@ Feature: Boolean Argument Step Transform
     """
 Feature: Using a boolean argument
   Scenario: passing Boolean
-    When the response body is:
+    When the response body is assigned:
     \"\"\"
-    {"val":<input>}
+    <input>
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
       """
     When I run `cucumber features/boolean_step.feature`
