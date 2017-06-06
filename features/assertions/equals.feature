@@ -15,7 +15,7 @@ Feature: Equals
     Then the value of the response body is equal to `foo`
     And the value of the response body is not equal to `foot`
   Scenario: Response Status
-    When the response code is assigned `404`
+    When the response status is assigned `404`
     Then the value of the response status is equal to `404`
     And the value of the response status is not equal to `200`
       """

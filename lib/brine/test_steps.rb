@@ -4,7 +4,7 @@ require 'rspec'
 # Not loaded by default (except in the tests)
 #
 class StubResponse
-  attr_accessor :body, :code
+  attr_accessor :body, :status
 end
 
 class Store < Faraday::Adapter
@@ -54,9 +54,13 @@ When(/^the response body is assigned:$/) do |input|
   @response.body = input
 end
 
-When /^the response code is assigned `([^`]*)`$/ do |code|
+When(/^the response body is:$/) do |input|
+  replaced_with('When', 'the response body is assigned:', '1.0.0', input.to_json)
+end
+
+When /^the response status is assigned `([^`]*)`$/ do |status|
   @response ||= StubResponse.new
-  @response.code = code.to_i    # this coercion isn't needed but is a guarantee
+  @response.status = status.to_i    # this coercion isn't needed but is a guarantee
 end
 
 Then(/^the response body as JSON is:$/) do |text|

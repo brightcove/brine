@@ -1,6 +1,11 @@
-# cleaner_upper.rb --
+# cleaner_upper.rb -- clean up resources created during test run
+#
+# Will issue DELETE call for all tracked URLs which will normally be triggered in a hook.
+#
+# The present approach for this is to explicitly track created resources to which
+# DELETE calls will be sent. Cleaning up of resources will be given some further attention
+# in the future, but this functionality should be preserved.
 
-# Cleans up resources created during test run
 module CleanerUpper
 
   # HTTP client object used to issue DELETE calls

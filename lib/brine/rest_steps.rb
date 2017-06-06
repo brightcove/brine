@@ -104,27 +104,11 @@ Then(/^the response body does not contain fields:$/) do |table|
   expect(response_body_child.first.keys).to_not include(*table.raw.flatten)
 end
 
-Then(/^the response body contains? non null fields:$/) do |table|
-  expect(response_body_child.first)
-    .to include(table.raw.flatten
-                  .collect{|v| [v, be_not_nil]}.to_h)
-end
-
-Then(/^the response body contains? null fields:$/) do |table|
-  expect(response_body_child.first)
-    .to include(table.raw.flatten
-                  .collect{|v| [v, be_nil]}.to_h)
-end
-
 Then(/^the response body has `([^`]*)` which (in|ex)cludes? the entries:$/) do
   |child, in_or_ex, table|
   expect(response_body_child(child).first)
     .send(not_if(in_or_ex=='ex'),
           include(kv_table(table)))
-end
-
-Then(/^the response body has `([^`]*)` with a value including `([^`]*)`$/) do |child, value|
-  expect(response_body_child(child).first).to include(value)
 end
 
 Then(/^the response body has `([^`]*)` with a value equal to `([^`]*)`$/) do |child, value|
