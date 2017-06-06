@@ -1,9 +1,9 @@
-Feature: JSON List Argument Step Transform
+Feature: JSON List Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
-    Given a file named "features/list_step.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/list_transform.feature" with:
       """
 Feature: Using an list argument
   Scenario: passing array
@@ -16,7 +16,7 @@ Feature: Using an list argument
     '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/list_step.feature`
+    When I run `cucumber features/list_transform.feature`
     Then the output should contain:
       """
       2 passed

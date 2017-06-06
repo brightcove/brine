@@ -1,13 +1,13 @@
-Feature: Template expansion
+Feature: Template Expansion Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: Simple
-    Given a file named "features/single.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/template_transform.feature" with:
       """
 Feature: Simple Template Expasion
   Scenario: passing array
-    When `bound` is bound to `<binding>`
+    When `bound` is assigned `<binding>`
     When the response body is assigned:
     \"\"\"
     {{{bound}}}
@@ -17,7 +17,7 @@ Feature: Simple Template Expasion
     '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/single.feature`
+    When I run `cucumber features/template_transform.feature`
     Then the output should contain:
       """
       1 passed

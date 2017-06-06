@@ -1,5 +1,4 @@
-# TODO: Shift to using hash of client => paths
-# to allow use of multiple clients
+# cleaner_upper.rb --
 
 # Cleans up resources created during test run
 module CleanerUpper

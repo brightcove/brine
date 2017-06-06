@@ -54,7 +54,7 @@ When(/^the response body is assigned:$/) do |input|
   @response.body = input
 end
 
-When /^the response code is assigned`([^`]*)`$/ do |code|
+When /^the response code is assigned `([^`]*)`$/ do |code|
   @response ||= StubResponse.new
   @response.code = code.to_i    # this coercion isn't needed but is a guarantee
 end

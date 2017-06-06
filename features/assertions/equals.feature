@@ -22,6 +22,6 @@ Feature: Equals
     When I run `cucumber features/equals.feature`
     Then the output should contain:
       """
-      5 passed
+      2 passed
       """
     And it should pass

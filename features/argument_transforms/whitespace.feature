@@ -1,12 +1,12 @@
-Feature: Leading and Trailing Whitespace Removal Transform
+Feature: Whitespace Removal Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted inputs
-    Given a file named "features/whitespace_step.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/whitespace_transform.feature" with:
       """
 Feature: Whitespace removal
-  Scenario: passing input
+  Scenario: Assorted Inputs
     When the response body is assigned:
     \"\"\"
     <input>
@@ -29,7 +29,7 @@ Feature: Whitespace removal
     \"\"\"
 
       """
-    When I run `cucumber features/whitespace_step.feature`
+    When I run `cucumber features/whitespace_transform.feature`
     Then the output should contain:
       """
       2 passed

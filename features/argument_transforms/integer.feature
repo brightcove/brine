@@ -1,9 +1,9 @@
-Feature: Integer Argument Step Transform
+Feature: Integer Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
-    Given a file named "features/integer_step.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/integer_transform.feature" with:
       """
 Feature: Using an integer argument
   Scenario: passing Integer
@@ -16,7 +16,7 @@ Feature: Using an integer argument
     '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/integer_step.feature`
+    When I run `cucumber features/integer_transform.feature`
     Then the output should contain:
       """
       2 passed

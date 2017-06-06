@@ -1,13 +1,13 @@
-Feature: Adding a body to a request
+Feature: Assigning a Request Body
   Backround
     Given brine is mixed
 
-  Scenario: Adding body to request
+  Scenario: Request With Body
     Given a file named "features/request_body.feature" with:
       """
 Feature: Passing a body
   Scenario: Basic URL
-    When the request body is:
+    When the request body is assigned:
     \"\"\"
     {"request":1}
     \"\"\"

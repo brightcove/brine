@@ -1,11 +1,11 @@
-Feature: Date Argument Step Transform
+Feature: Date Step Argument Transform
   Backround
     Given brine is mixed
 
   Scenario: Assorted
-    Given a file named "features/date_step.feature" with:
+    Given a file named "features/date_transform.feature" with:
       """
-Feature: Using an date argument
+Feature: Using Date Inputs
   Scenario: Date Serialization
     When the response body is assigned:
     \"\"\"
@@ -29,7 +29,7 @@ Feature: Using an date argument
     \"\"\"
     Then the value of the response body child `my_timestamp` is greater than `2017-01-01T12:00:00Z`
       """
-    When I run `cucumber features/date_step.feature`
+    When I run `cucumber features/date_transform.feature`
     Then the output should contain:
       """
       3 passed

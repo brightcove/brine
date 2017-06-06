@@ -41,10 +41,9 @@ Then(/^the value of `([^`]*)` is( not)? (.*)$/) do |value, negated, assertion|
 end
 
 
-RESPONSE_ATTRIBUTES='(status|headers|body|code)'
+RESPONSE_ATTRIBUTES='(status|headers|body)'
 Then(/^the value of the response #{RESPONSE_ATTRIBUTES} is( not)? (.*)$/) do
   |attribute, negated, assertion|
-  attribute = 'code' if attribute == 'status'
   use_selector(Selector.new(dig_from_response(attribute), (!negated.nil?)))
   step "it is #{assertion}"
 end
@@ -56,7 +55,6 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES} child `([^`]*)` is( not)
 end
 
 def dig_from_response(attribute, path=nil)
-  attribute = 'code' if attribute == 'status'
   root = response.send(attribute.to_sym)
   return root if !path
   root.dig(*path.split('.'))

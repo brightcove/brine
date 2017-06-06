@@ -1,13 +1,13 @@
-Feature: Request clearing after sending
+Feature: Request is Cleared After Sending
   Backround
     Given brine is mixed
 
-  Scenario: Clearing between requests
+  Scenario: Request is Cleared Before Second Send
     Given a file named "features/request_clearing.feature" with:
       """
 Feature: Clearing the request
   Scenario: Basic URL
-    When the request body is:
+    When the request body is assigned:
     \"\"\"
     {"request":1}
     \"\"\"

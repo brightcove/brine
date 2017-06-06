@@ -1,9 +1,9 @@
-Feature: Boolean Argument Step Transform
+Feature: Boolean Step Argument Transform
   Background
     Given brine is mixed
 
-  Scenario Outline: assorted formats
-    Given a file named "features/boolean_step.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/boolean_transform.feature" with:
     """
 Feature: Using a boolean argument
   Scenario: passing Boolean
@@ -16,7 +16,7 @@ Feature: Using a boolean argument
     '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/boolean_step.feature`
+    When I run `cucumber features/boolean_transform.feature`
     Then the output should contain:
       """
       2 passed

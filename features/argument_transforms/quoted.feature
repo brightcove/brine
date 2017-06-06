@@ -1,13 +1,13 @@
-Feature:Quoted String Transform
+Feature: Quoted String Step Argument Transform
   Backround
     Given brine is mixed
 
   Scenario Outline: Assorted Inputs
-    Given a file named "features/quoted.feature" with:
+    Given a file named "features/quoted_transform.feature" with:
       """
 Feature: Quoted Strings
   Scenario: passing input
-    When the response body is:
+    When the response body is assigned:
     \"\"\"
     <input>
     \"\"\"
@@ -16,7 +16,7 @@ Feature: Quoted Strings
     '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/quoted.feature`
+    When I run `cucumber features/quoted_transform.feature`
     Then the output should contain:
       """
       2 passed

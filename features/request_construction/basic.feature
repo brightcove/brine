@@ -2,7 +2,7 @@ Feature: Basic request construction
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
+  Scenario Outline: Varying Methods
     Given a file named "features/basic_requests.feature" with:
       """
 Feature: Sending a method
