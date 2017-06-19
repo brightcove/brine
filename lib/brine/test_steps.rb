@@ -4,11 +4,7 @@ require 'rspec'
 # Not loaded by default (except in the tests)
 #
 class StubResponse
-  attr_reader :body
-
-  def initialize(body)
-    @body = body
-  end
+  attr_accessor :body, :status
 end
 
 class Store < Faraday::Adapter
@@ -53,8 +49,18 @@ end
 
 RSpec::Matchers.define_negated_matcher :not_match, :match
 
+When(/^the response body is assigned:$/) do |input|
+  @response ||= StubResponse.new
+  @response.body = input
+end
+
 When(/^the response body is:$/) do |input|
-  @response = StubResponse.new(input)
+  replaced_with('When', 'the response body is assigned:', '1.0.0', input.to_json)
+end
+
+When /^the response status is assigned `([^`]*)`$/ do |status|
+  @response ||= StubResponse.new
+  @response.status = status.to_i    # this coercion isn't needed but is a guarantee
 end
 
 Then(/^the response body as JSON is:$/) do |text|

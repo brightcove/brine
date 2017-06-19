@@ -1,22 +1,22 @@
-Feature: JSON Object Argument Step Transform
+Feature: JSON Object Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
-    Given a file named "features/object_step.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/object_transform.feature" with:
       """
 Feature: Using an list argument
   Scenario: passing array
-    When the response body is:
+    When the response body is assigned:
     \"\"\"
-    {"val": <input>}
+    <input>
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/object_step.feature`
+    When I run `cucumber features/object_transform.feature`
     Then the output should contain:
       """
       2 passed

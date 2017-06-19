@@ -1,22 +1,35 @@
-Feature: Leading and Trailing Whitespace Removal Transform
+Feature: Whitespace Removal Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
-    Given a file named "features/whitespace_step.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/whitespace_transform.feature" with:
       """
 Feature: Whitespace removal
-  Scenario: passing array
-    When the response body is:
+  Scenario: Assorted Inputs
+    When the response body is assigned:
     \"\"\"
-    {"val": <input>}
+    <input>
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
+
+  Scenario: passing input with extra lines
+    When the response body is:
+    \"\"\"
+
+    <input>
+
+    \"\"\"
+    Then the response body as JSON is:
+    \"\"\"
+    '<expected>'
+    \"\"\"
+
       """
-    When I run `cucumber features/whitespace_step.feature`
+    When I run `cucumber features/whitespace_transform.feature`
     Then the output should contain:
       """
       2 passed

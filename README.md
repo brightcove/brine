@@ -23,16 +23,18 @@ The general usage pattern revolves around construction of a request
 and performing assertions against the received response.
 
 ```
-When the request body is:
+When the request body is assigned:
   """
   {"first_name": "John",
    "last_name": "Smith"}
   """
 And a POST is sent to `/users`
-Then the response status equals `200`
-And the response body includes the entries:
-  | first_name | John  |
-  | last_name  | Smith |
+Then the value of the response status is equal to `200`
+And the value of the response body includes:
+  """
+  {"first_name": "John",
+   "last_name": "Smith"}
+  """
 ```
 
 Disclaimer

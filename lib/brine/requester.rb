@@ -68,7 +68,6 @@ module Requester
   # have been built for the present request
   def send_request(method, url)
     @response = http_client.run_request(method, url, @body, @headers)
-    debug("#{response}")
   end
 
   # getter for the latest response returned

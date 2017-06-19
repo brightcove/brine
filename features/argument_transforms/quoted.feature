@@ -1,22 +1,22 @@
-Feature:Quoted String Transform
+Feature: Quoted String Step Argument Transform
   Backround
     Given brine is mixed
 
-  Scenario Outline: assorted formats
-    Given a file named "features/quoted.feature" with:
+  Scenario Outline: Assorted Inputs
+    Given a file named "features/quoted_transform.feature" with:
       """
-Feature: Whitespace removal
-  Scenario: passing array
-    When the response body is:
+Feature: Quoted Strings
+  Scenario: passing input
+    When the response body is assigned:
     \"\"\"
-    {"val": <input>}
+    <input>
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '{"val":<expected>}'
+    '<expected>'
     \"\"\"
       """
-    When I run `cucumber features/quoted.feature`
+    When I run `cucumber features/quoted_transform.feature`
     Then the output should contain:
       """
       2 passed
@@ -28,5 +28,5 @@ Feature: Whitespace removal
       | "true"              | "true"              |
       | "123"               | "123"               |
       | " -123 "            | " -123 "            |
-      | "[\"foo\",\"bar\"]" | "[\"foo\",\"bar\"]" |
-      | "{\"foo\":\"bar\"}" | "{\"foo\":\"bar\"}" |
+      | "["foo","bar"]"     | "[\"foo\",\"bar\"]" |
+      | "{"foo":"bar"}"     | "{\"foo\":\"bar\"}" |
