@@ -40,26 +40,6 @@ When(/^a resource is created at `([^`]*)`$/) do |path|
 end
 
 #
-# Assertions
-#
-Then(/^it is equal to `([^`]*)`$/) do |value|
-  selector.assert_that(value) {|v| eq v}
-end
-Then(/^it is greater than `([^`]*)`$/) do |value|
-  selector.assert_that(value) {|v| be > v}
-end
-Then(/^it is greater than or equal to `([^`]*)`$/) do |value|
-  selector.assert_that(value) {|v| be >= v}
-end
-Then(/^it is less than `([^`]*)`$/) do |value|
-  selector.assert_that(value) {|v| be < v}
-end
-Then(/^it is less than or equal to `([^`]*)`$/) do |value|
-  selector.assert_that(value) {|v| be <= v}
-end
-
-
-#
 # Response attribute (non-body) assertions
 #
 
@@ -177,16 +157,4 @@ Then(/^the property `([^`]*)` is eventually `([^`]*)` at `([^`]*)`$/) do |field,
     send_request(parse_method('GET'), path)
     expect(response_body_child.first).to include(field => value)
   end
-end
-
-When(/^`([^`]*)` is assigned a random string$/) do |name|
-  bind(name, SecureRandom.uuid)
-end
-
-When(/^`([^`]*)` is assigned `([^`]*)`$/) do |name, value|
-  bind(name, value)
-end
-
-When(/^`([^`]*)` is assigned a timestamp$/) do |name|
-  bind(name, DateTime.now)
 end

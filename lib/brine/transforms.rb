@@ -37,7 +37,7 @@ end
 
 
 # Lists
-Transform /\A\[.*\]\z/ do |input|
+Transform /\A\[.*\]\z/m do |input|
   JSON.parse(input)
 end
 
@@ -46,8 +46,8 @@ end
 # therefore given higher priority.
 # Lookarounds could avoid the ambiguity but are
 # a nastier pattern.
-Transform /\A{.*}\z$/ do |input|
-  JSON.parse(input)
+Transform /\A{.*}\z$/m do |input|
+    JSON.parse(input)
 end
 
 # Quotes
