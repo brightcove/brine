@@ -25,8 +25,10 @@ end
 # expected to be called as `World(brine_mix)`
 def brine_mix
   require 'brine/step_definitions/assignment'
+  require 'brine/step_definitions/request_construction'
+  require 'brine/step_definitions/assertions'
+
   require 'brine/transforms'
-  require 'brine/request_construction'
   require 'brine/rest_steps'
   require 'brine/hooks'
   Brine

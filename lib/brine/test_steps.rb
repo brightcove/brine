@@ -50,8 +50,8 @@ end
 RSpec::Matchers.define_negated_matcher :not_match, :match
 
 When(/^the response body is assigned:$/) do |input|
-  @response ||= StubResponse.new
-  @response.body = input
+    @response ||= StubResponse.new
+    @response.body = input
 end
 
 When(/^the response body is:$/) do |input|

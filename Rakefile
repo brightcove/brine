@@ -9,3 +9,15 @@ task :check do
     Rake::Task['cucumber'].invoke
   end
 end
+
+task :help do
+    puts """
+Tasks
+---
+check - run tests
+
+Environment Variables
+---
+WATCH - (guard) automatically rerun tests on file changes
+"""
+end
