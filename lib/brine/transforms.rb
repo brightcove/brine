@@ -34,8 +34,6 @@ Transform /\A(?:true|false)\z/ do |boolean|
   boolean.to_s == "true"
 end
 
-
-
 # Lists
 Transform /\A\[.*\]\z/m do |input|
   JSON.parse(input)
@@ -65,7 +63,7 @@ TIME='\d{2}:\d{2}:\d{2}'
 MILLIS='(?:\.\d{3})?'
 TZ='(?:Z|(?:[+-]\d{2}:\d{2}))'
 Transform /^#{DATE}T#{TIME}#{MILLIS}#{TZ}$/ do |date|
-          DateTime.parse(date)
+          Time.parse(date)
 end
 
 # Template Expansion
