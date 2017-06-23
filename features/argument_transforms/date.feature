@@ -13,7 +13,7 @@ Feature: Using Date Inputs
     \"\"\"
     Then the response body as JSON is:
     \"\"\"
-    '"2017-01-01T09:00:00+00:00"'
+    '"2017-01-01 09:00:00 UTC"'
     \"\"\"
 
   Scenario: Value Comparison

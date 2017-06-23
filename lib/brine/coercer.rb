@@ -3,7 +3,7 @@
 class Coercer
   def initialize
     @map = Hash.new(->(l, r){[l, r]})
-    @map[[String, DateTime]] = ->(l, r){[DateTime.parse(l), r]}
+    @map[[String, Time]] = ->(l, r){[Time.parse(l), r]}
   end
 
   def coerce(l, r)

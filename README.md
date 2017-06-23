@@ -61,6 +61,14 @@ type.
 
 [Read More](https://github.com/brightcove/brine/wiki/Argument-Transforms)
 
+#### Type Coercion
+
+Related to transforms, a facility to coerce types is also provided. This allows
+more intelligent comparison of inputs which have been transformed to a 
+richer data type with those that have not been transformed (normally strings).
+As an example comparing a date/time value with a string will attempt to parse
+the string to a date/time so that the values can be compared using the proper semantics. 
+
 ### Resource Cleanup
 
 Tests are likely to create resources which should then be cleaned up,
@@ -71,6 +79,14 @@ are provided.
 
 Presently OAuth2 is supported to issue authenticated requests during a
 test (likely using a feature `Background`).
+
+### Division of Selection and Assertion
+
+To allow for a wider range of tests without an exploding code base
+(and keeping the assertions easier to write), Brine internall splits the
+selection of the value(s) to test from the assertion(s) that will be performed against it.
+
+[Read Mode](https://github.com/brightcove/brine/wiki/Selection-and-Assertion)
 
 ### Request Construction and Response Assertion Step Definitions
 
