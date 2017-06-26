@@ -19,6 +19,9 @@ Then(/^it is less than or equal to `([^`]*)`$/) do |value|
   selector.assert_that(value) {|v| be <= v}
 end
 
+Then(/^is is including `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| include v }
+end
 Then(/^it is including:$/) do |value|
   selector.assert_that(value) {|v| include v }
 end
