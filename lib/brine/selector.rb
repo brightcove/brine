@@ -54,11 +54,18 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES} is( not)? (.*)(?<=:)$/) 
   step "it is #{assertion}", multi.to_json
 end
 
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES} child `([^`]*)` is( not)? (.*)$/) do
+Then(/^the value of the response #{RESPONSE_ATTRIBUTES} child `([^`]*)` is( not)? (.*)(?<!:)$/) do
   |attribute, path, negated, assertion|
   use_selector(Selector.new(dig_from_response(attribute, path), (!negated.nil?)))
   step "it is #{assertion}"
 end
+
+Then(/^the value of the response #{RESPONSE_ATTRIBUTES} child `([^`]*)` is( not)? (.*)(?<=:)$/) do
+  |attribute, path, negated, assertion, multi|
+  use_selector(Selector.new(dig_from_response(attribute, path), (!negated.nil?)))
+  step "it is #{assertion}", multi.to_json
+end
+
 
 def dig_from_response(attribute, path=nil)
   root = response.send(attribute.to_sym)
