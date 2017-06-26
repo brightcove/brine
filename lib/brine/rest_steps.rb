@@ -51,7 +51,7 @@ Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value including 
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} equals `([^`]*)`$/) do |attribute, value|
-  replaced_with('Then', "the response #{attribute} is equal to `#{value}`", "0.4")
+  replaced_with('Then', "the value of the response #{attribute} is equal to `#{value}`", "0.4")
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do |attribute, table|
@@ -90,10 +90,6 @@ end
 
 Then(/^the response body has `([^`]*)` with a value equal to `([^`]*)`$/) do |child, value|
   expect(response_body_child(child).first).to eq(value)
-end
-
-Then(/^the response body has `([^`]*)` with a value that is not empty$/) do |child|
-  expect(response_body_child(child).first).to be_not_empty
 end
 
 Then(/^the response body is a list which all are (\w+)$/) do |matcher|
