@@ -70,5 +70,5 @@ end
 def dig_from_response(attribute, path=nil)
   root = response.send(attribute.to_sym)
   return root if !path
-  root.dig(*(path.split('.').map{|it| Integer(it) rescue it}))
+  root.dig(*(path.to_s.split('.').map{|it| Integer(it) rescue it}))
 end
