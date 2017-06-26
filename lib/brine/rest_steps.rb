@@ -16,10 +16,7 @@ When(/^`([^`]*)` is bound to a random string$/) do |name|
   replaced_with('When', "#{name} is assigned a random string", '0.4')
 end
 When(/^`([^`]*)` is bound to `([^`]*)`$/) do |name, value|
-  replaced_with('When', "#{name} is assigned #{value}", '0.4')
-end
-When(/^`([^`]*)` is bound to a timestamp$/) do |name|
-  replaced_with('When', "#{name} is assigned #{value}", '0.4')
+  replaced_with('When', "#{name} is assigned `#{value}`", '0.4')
 end
 
 #TODO: The binding environment should be able to be accessed directly
