@@ -16,7 +16,7 @@ require 'brine/selector'
 module Brine
   include CleanerUpper
   include MustacheBinder
-  include Requester
+  include Requesting
   include BrineUtil
   include Selection
 end
