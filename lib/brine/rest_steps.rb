@@ -16,10 +16,7 @@ When(/^`([^`]*)` is bound to a random string$/) do |name|
   replaced_with('When', "#{name} is assigned a random string", '0.4')
 end
 When(/^`([^`]*)` is bound to `([^`]*)`$/) do |name, value|
-  replaced_with('When', "#{name} is assigned #{value}", '0.4')
-end
-When(/^`([^`]*)` is bound to a timestamp$/) do |name|
-  replaced_with('When', "#{name} is assigned #{value}", '0.4')
+  replaced_with('When', "`#{name}` is assigned `#{value}`", '0.4')
 end
 
 #TODO: The binding environment should be able to be accessed directly
@@ -54,7 +51,7 @@ Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value including 
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} equals `([^`]*)`$/) do |attribute, value|
-  replaced_with('Then', "the response #{attribute} is equal to `#{value}`", "0.4")
+  replaced_with('Then', "the value of the response #{attribute} is equal to `#{value}`", "0.4")
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do |attribute, table|
@@ -93,10 +90,6 @@ end
 
 Then(/^the response body has `([^`]*)` with a value equal to `([^`]*)`$/) do |child, value|
   expect(response_body_child(child).first).to eq(value)
-end
-
-Then(/^the response body has `([^`]*)` with a value that is not empty$/) do |child|
-  expect(response_body_child(child).first).to be_not_empty
 end
 
 Then(/^the response body is a list which all are (\w+)$/) do |matcher|
