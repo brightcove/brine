@@ -28,6 +28,11 @@ module ClientBuilding
     @oauth2 = OAuth2Params.new
     @oauth2.instance_eval(&block)
   end
+  
+  def with_oauth2_token(&block)
+    use_oauth2_token(&block)
+    self
+  end
 
   def client_for_host(host, logging: ENV['BRINE_LOG_HTTP'])
     Faraday.new(host) do |conn|
