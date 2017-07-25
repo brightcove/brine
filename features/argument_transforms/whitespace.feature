@@ -1,22 +1,32 @@
-Feature: Whitespace Removal Step Argument Transform
+Feature: An argument that includes leading or trailing whitespace
+    will be transformed so that such whitespace is removed
+    and that value will also be transformed.
+
   Backround
     Given brine is mixed
 
-  Scenario Outline: Assorted Inputs
-    Given a file named "features/whitespace_transform.feature" with:
+  Scenario Outline: Assorted basic inputs are provided.
+    Given a file named "features/transform_whitespace.feature" with:
       """
-Feature: Whitespace removal
-  Scenario: Assorted Inputs
+Feature: Transform arguments with leading and/or trailing whitespace.
+  Scenario: Docstring simple value.
     When the response body is assigned:
-    \"\"\"
-    <input>
-    \"\"\"
+      \"\"\"
+      <input>
+      \"\"\"
     Then the response body as JSON is:
-    \"\"\"
-    '<expected>'
-    \"\"\"
+      \"\"\"
+      '<expected>'
+      \"\"\"
 
-  Scenario: passing input with extra lines
+  Scenario: Inline simple value.
+    When the response body is assigned `<input>`
+    Then the response body as JSON is:
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
+  Scenario: Docstring value with a leading and trailing line.
     When the response body is:
     \"\"\"
 
@@ -29,7 +39,7 @@ Feature: Whitespace removal
     \"\"\"
 
       """
-    When I run `cucumber features/whitespace_transform.feature`
+    When I run `cucumber --strict features/transform_whitespace.feature`
     Then the output should contain:
       """
       2 passed

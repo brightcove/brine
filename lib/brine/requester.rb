@@ -1,8 +1,21 @@
+# requester.rb Build and send requests and save responses
+
 require 'oauth2'
 require 'jsonpath'
 require 'faraday_middleware'
 
-# Module in charge of constructing requests and saving responses
+class OAuth2Params
+    attr_accessor :token, :token_type
+
+
+end
+
+class ClientBuilder
+
+
+end
+
+
 module Requester
 
   # Parameter object used to configure OAuth2 middleware

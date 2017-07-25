@@ -1,2 +1,2 @@
 debug: --format pretty --strict --backtrace
-guard: --format pretty --strict
+guard: --format pretty --strict --backtrace

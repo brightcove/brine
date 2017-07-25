@@ -54,6 +54,11 @@ When(/^the response body is assigned:$/) do |input|
     @response.body = input
 end
 
+When(/^the response body is assigned `([^`]*)`/) do |input|
+    @response ||= StubResponse.new
+    @response.body = input
+end
+
 When(/^the response body is:$/) do |input|
   replaced_with('When', 'the response body is assigned:', '1.0.0', input.to_json)
 end
