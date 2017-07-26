@@ -22,7 +22,7 @@ Sample Usage
 The general usage pattern revolves around construction of a request
 and performing assertions against the received response.
 
-```
+```gherkin
 When the request body is assigned:
   """
   {"first_name": "John",
@@ -30,7 +30,7 @@ When the request body is assigned:
   """
 And a POST is sent to `/users`
 Then the value of the response status is equal to `200`
-And the value of the response body includes:
+And the value of the response body is including:
   """
   {"first_name": "John",
    "last_name": "Smith"}

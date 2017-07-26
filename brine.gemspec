@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name         = 'brine'
-  s.version      = '0.2.0'
+  s.version      = '0.3.0-SNAPSHOT'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Matt Whipple"]
   s.email        = ["mwhipple@brightcove.com"]
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary      = "Cucumber@REST in Brine"
   s.description  = "Cucumber@REST in Brine"
 
-  s.required_ruby_version = '>= 2.2.2'
+  s.required_ruby_version = '>= 2.3.0'
 
   s.add_runtime_dependency   'cucumber'
   s.add_runtime_dependency   'mustache'

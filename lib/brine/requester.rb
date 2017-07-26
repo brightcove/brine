@@ -4,7 +4,6 @@ require 'oauth2'
 require 'jsonpath'
 require 'faraday_middleware'
 
-
 # Parameter object used to configure OAuth2 middleware
 # Also used to provide basic DSL for configuration
 class OAuth2Params
