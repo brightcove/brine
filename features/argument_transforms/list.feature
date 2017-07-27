@@ -1,22 +1,33 @@
-Feature: JSON List Step Argument Transform
+Feature: An argument that could represent a JSON list will be
+    transformed into a list whose elements will be also be transformed.
+
   Backround
     Given brine is mixed
 
-  Scenario Outline: Assorted Inputs
-    Given a file named "features/list_transform.feature" with:
+  Scenario Outline: Assorted basic inputs are provided.
+    Given a file named "features/transform_list.feature" with:
       """
-Feature: Using an list argument
-  Scenario: passing array
+
+Feature: Transform list arguments.
+  Scenario: Docstring simple list.
     When the response body is assigned:
-    \"\"\"
-    <input>
-    \"\"\"
+      \"\"\"
+      <input>
+      \"\"\"
     Then the response body as JSON is:
-    \"\"\"
-    '<expected>'
-    \"\"\"
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
+  Scenario: Inline simple list.
+    When the response body is assigned `<input>`
+    Then the response body as JSON is:
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
       """
-    When I run `cucumber features/list_transform.feature`
+    When I run `cucumber --strict features/transform_list.feature`
     Then the output should contain:
       """
       2 passed

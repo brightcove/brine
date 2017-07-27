@@ -1,24 +1,35 @@
-Feature: Integer Step Argument Transform
+Feature: An argument that could represent an integer will be
+    transformed into an integer type.
+
   Backround
     Given brine is mixed
 
-  Scenario Outline: Assorted Inputs
-    Given a file named "features/integer_transform.feature" with:
+  Scenario Outline: Assorted basic inputs are provided.
+    Given a file named "features/transform_integer.feature" with:
       """
-Feature: Using an integer argument
-  Scenario: passing Integer
+
+Feature: Transform integer arguments.
+  Scenario: Docstring simple value.
     When the response body is assigned:
-    \"\"\"
-    <input>
-    \"\"\"
+      \"\"\"
+      <input>
+      \"\"\"
     Then the response body as JSON is:
-    \"\"\"
-    '<expected>'
-    \"\"\"
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
+  Scenario: Inline simple value.
+    When the response body is assigned `<input>`
+    Then the response body as JSON is:
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
       """
-    When I run `cucumber features/integer_transform.feature`
+    When I run `cucumber --strict features/transform_integer.feature`
     Then the output should contain:
-      """
+      """ar
       2 passed
       """
     And it should pass

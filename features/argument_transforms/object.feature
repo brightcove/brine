@@ -1,22 +1,33 @@
-Feature: JSON Object Step Argument Transform
+Feature: An argument that could represent a JSON object will be
+    transformed into an object whose elements will also be transformed.
+
   Backround
     Given brine is mixed
 
-  Scenario Outline: Assorted Inputs
-    Given a file named "features/object_transform.feature" with:
+  Scenario Outline: Assorted basic inputs are provided.
+    Given a file named "features/transform_object.feature" with:
       """
-Feature: Using an object argument
-  Scenario: Single line objects
+
+Feature: Transform object arguments.
+  Scenario: Docstring simple object.
     When the response body is assigned:
-    \"\"\"
-    <input>
-    \"\"\"
+      \"\"\"
+      <input>
+      \"\"\"
     Then the response body as JSON is:
-    \"\"\"
-    '<expected>'
-    \"\"\"
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
+  Scenario: Inline simple object.
+    When the response body is assigned `<input>`
+    Then the response body as JSON is:
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
       """
-    When I run `cucumber features/object_transform.feature`
+    When I run `cucumber features/transform_object.feature`
     Then the output should contain:
       """
       2 passed
@@ -31,9 +42,10 @@ Feature: Using an object argument
       | {"foo": {"bar":{ "num":1, "list": ["1", 2, true]}}} | {"foo":{"bar":{"num":1,"list":["1",2,true]}}} |
       | {"foo": "\"list\": [\"1\", 2, true]"}               | {"foo":"\\"list\\": [\\"1\\", 2, true]"}      |
             
-  Scenario: Object split over multiple lines
-    Given a file named "features/object_splitline_transform.feature" with:
+  Scenario: Passed an Object split over multiple lines
+    Given a file named "features/transform_object_splitline.feature" with:
       """
+
 Feature: Using an object argument split over multiple lines
   Scenario: Object split over lines
     When the response body is assigned:
@@ -46,8 +58,9 @@ Feature: Using an object argument split over multiple lines
       \"\"\"
       {"foo":"bar"}
       \"\"\"
+
       """
-    When I run `cucumber features/object_splitline_transform.feature`
+    When I run `cucumber --strict features/transform_object_splitline.feature`
     Then the output should contain:
       """
       1 passed

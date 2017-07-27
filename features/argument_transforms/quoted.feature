@@ -1,22 +1,34 @@
-Feature: Quoted String Step Argument Transform
+Feature: An argument that is quoted will be (not) transformed into
+    into a string, regardless of any more specific data type the
+    quoted value may resemble.
+
   Backround
     Given brine is mixed
 
-  Scenario Outline: Assorted Inputs
-    Given a file named "features/quoted_transform.feature" with:
+  Scenario Outline: Assorted basic inputs are provided.
+    Given a file named "features/transform_quoted.feature" with:
       """
-Feature: Quoted Strings
-  Scenario: passing input
+
+Feature: Transform quoted arguments.
+  Scenario: Docstring simple value.
     When the response body is assigned:
-    \"\"\"
-    <input>
-    \"\"\"
+      \"\"\"
+      <input>
+      \"\"\"
     Then the response body as JSON is:
-    \"\"\"
-    '<expected>'
-    \"\"\"
+      \"\"\"
+      '<expected>'
+      \"\"\"
+
+    Scenario: Inline simple value.
+      When the response body is assigned `<input>`
+      Then the response body as JSON is:
+        \"\"\"
+        '<expected>'
+        \"\"\"
+
       """
-    When I run `cucumber features/quoted_transform.feature`
+    When I run `cucumber --strict features/transform_quoted.feature`
     Then the output should contain:
       """
       2 passed

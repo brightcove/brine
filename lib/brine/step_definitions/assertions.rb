@@ -6,6 +6,12 @@ end
 Then(/^it is equal to:$/) do |value|
   selector.assert_that(value) {|v| eq v}
 end
+Then(/^it is matching `([^`]*)`$/) do |value|
+  selector.assert_that(value) {|v| match v}
+end
+Then (/^it is matching:$/) do |value|
+  selector.assert_that(value) {|v| match v}
+end
 Then(/^it is greater than `([^`]*)`$/) do |value|
   selector.assert_that(value) {|v| be > v}
 end
