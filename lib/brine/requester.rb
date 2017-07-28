@@ -40,8 +40,9 @@ module ClientBuilding
       if @oauth2
         conn.request :oauth2, @oauth2.token, :token_type => @oauth2.token_type
       end
+
       if logging
-        conn.response :logger
+        conn.response :logger, nil, :bodies => (logging.casecmp('DEBUG') == 0)
       end
 
       conn.response :json, :content_type => /\bjson$/
