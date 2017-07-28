@@ -14,7 +14,7 @@ Feature: Allow selection of any structure element
       ["a", "b", "c"]
       \"\"\"
     Then the value of the response body does have any element that is equal to `a`
-    Then the value of the response body does not have any element that is equal to `d`
+    And the value of the response body does not have any element that is equal to `d`
 
   Scenario: Nested list in response body
     When the response body is assigned:
@@ -22,7 +22,7 @@ Feature: Allow selection of any structure element
       {"letters": ["a", "b", "c"]}
       \"\"\"
     Then the value of the response body child `letters` does have any element that is equal to `a`
-    Then the value of the response body child `letters` does not have any element that is equal to `d`
+    And the value of the response body child `letters` does not have any element that is equal to `d`
 
   Scenario: Map matches entries
     When the response body is assigned:
@@ -31,15 +31,15 @@ Feature: Allow selection of any structure element
       \"\"\"
     #Equality will match keys
     Then the value of the response body does have any element that is equal to `a`
-    Then the value of the response body does not have any element that is equal to `d`
+    And the value of the response body does not have any element that is equal to `d`
 
-  Scenario: Supports flattened list nesting
+  Scenario: Spread nested lists
     When the response body is assigned:
       \"\"\"
       [{"val":"foo"},{"val":"bar"}]
       \"\"\"
     Then the value of the response body child `*.val` does have any element that is equal to `foo`
-    Then the value of the response body child `*.val` does not have any element that is equal to `other`
+    And the value of the response body child `*.val` does not have any element that is equal to `other`
 
       """
     When I run `cucumber --strict features/any.feature`

@@ -31,6 +31,12 @@ class AnySelector < Selector
   end
 end
 
+class AllSelector < Selector
+  def filter_matcher(matcher)
+    all(matcher)
+  end
+end
+
 #
 # Module
 #
@@ -74,6 +80,19 @@ end
 Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child `([^`]*)`)? does( not)? have any element that is (.*)(?<=:)$/) do
   |attribute, path, negated, assertion, multi|
   use_selector(AnySelector.new(dig_from_response(attribute), (!negated.nil?)))
+  step "it is #{assertion}", multi.to_json
+end
+
+#Would be negated with `not all' which would be equivalent to any(not ) but that's not readily supported
+Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child `([^`]*)`)? has elements which are all (.*)(?<!:)$/) do
+  |attribute, path, assertion|
+  use_selector(AllSelector.new(dig_from_response(attribute, path), false))
+  step "it is #{assertion}"
+end
+
+Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child `([^`]*)`)? has elements which are all (.*)(?<=:)$/) do
+  |attribute, path, assertion, multi|
+  use_selector(AllSelector.new(dig_from_response(attribute), false))
   step "it is #{assertion}", multi.to_json
 end
 
