@@ -67,7 +67,7 @@ end
 
 Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child `([^`]*)`)? is( not)? (.*)(?<=:)$/) do
   |attribute, path, negated, assertion, multi|
-  use_selector(Selector.new(dig_from_response(attribute), (!negated.nil?)))
+  use_selector(Selector.new(dig_from_response(attribute, path), (!negated.nil?)))
   step "it is #{assertion}", multi.to_json
 end
 
@@ -79,7 +79,7 @@ end
 
 Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child `([^`]*)`)? does( not)? have any element that is (.*)(?<=:)$/) do
   |attribute, path, negated, assertion, multi|
-  use_selector(AnySelector.new(dig_from_response(attribute), (!negated.nil?)))
+  use_selector(AnySelector.new(dig_from_response(attribute, path), (!negated.nil?)))
   step "it is #{assertion}", multi.to_json
 end
 
@@ -92,7 +92,7 @@ end
 
 Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child `([^`]*)`)? has elements which are all (.*)(?<=:)$/) do
   |attribute, path, assertion, multi|
-  use_selector(AllSelector.new(dig_from_response(attribute), false))
+  use_selector(AllSelector.new(dig_from_response(attribute, path), false))
   step "it is #{assertion}", multi.to_json
 end
 
