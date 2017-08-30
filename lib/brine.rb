@@ -11,6 +11,7 @@ require 'brine/mustache_binder'
 require 'brine/requester'
 require 'brine/util'
 require 'brine/selector'
+require 'brine/type_checks'
 
 # Modules to add to World
 module Brine
@@ -19,6 +20,7 @@ module Brine
   include Requesting
   include BrineUtil
   include Selection
+  include TypeChecking
 end
 
 # Load the more side effecty files and return the Module,

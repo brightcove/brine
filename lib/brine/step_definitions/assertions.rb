@@ -31,3 +31,7 @@ end
 Then(/^it is including:$/) do |value|
   selector.assert_that(value) {|v| include v }
 end
+
+Then(/^it is a valid `([^`]*)`$/) do |type|
+  selector.assert_that(type) {|t| type_check_for(t) }
+end
