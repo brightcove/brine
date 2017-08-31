@@ -20,7 +20,7 @@ Feature: Allow selection of all structure elements
       \"\"\"
       [{"val": "foo"},{"val": "foo"}]
       \"\"\"
-    Then the value of the response body child `*.val` has elements which are all equal to `foo`
+    Then the value of the response body children `..val` has elements which are all equal to `foo`
 
       """
     When I run `cucumber --strict features/all.feature`
@@ -47,7 +47,7 @@ Feature: Allow selection of all structure elements
       \"\"\"
       [{"val": "foo"},{"val": "fob"}]
       \"\"\"
-    Then the value of the response body child `*.val` has elements which are all equal to `foo`
+    Then the value of the response body children `..val` has elements which are all equal to `foo`
 
       """
     When I run `cucumber --strict features/all.feature`

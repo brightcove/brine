@@ -124,16 +124,51 @@ Feature: Assert type validity
       \"\"\"
       [null]
       \"\"\"
-    Then the value of the response body child `0` is not a valid `String`
-    And the value of the response body child `0` is not a valid `Number`
-    And the value of the response body child `0` is not a valid `Object`
-    And the value of the response body child `0` is not a valid `Array`
-    And the value of the response body child `0` is not a valid `Boolean`
+    Then the value of the response body child `[0]` is not a valid `String`
+    And the value of the response body child `[0]` is not a valid `Number`
+    And the value of the response body child `[0]` is not a valid `Object`
+    And the value of the response body child `[0]` is not a valid `Array`
+    And the value of the response body child `[0]` is not a valid `Boolean`
+
+  Scenario: Selected Array child is a valid Array.
+    When the response body is assigned:
+      \"\"\"
+      {"val": [1, 2, 3]}
+      \"\"\"
+    Then the value of the response body child `val` is a valid `Array`
+
+  Scenario: Selected Array child member is a valid String.
+    When the response body is assigned:
+      \"\"\"
+      {"val": [1, 2, 3]}
+      \"\"\"
+    Then the value of the response body child `val[0]` is a valid `Number`
+
+  Scenario: Selected nested children are a valid Array.
+    When the response body is assigned:
+      \"\"\"
+      [{"val": 1},{"val": 2}]
+      \"\"\"
+    Then the value of the response body children `.val` is a valid `Array`
+
+  Scenario: Selected nested children can be tested for type.
+    When the response body is assigned:
+      \"\"\"
+      [{"val": 1},{"val": 2}]
+      \"\"\"
+    Then the value of the response body children `.val` has elements which are all a valid `Number`
+
+  Scenario: Selected nested children can be tested for type when Arrays.
+    When the response body is assigned:
+      \"\"\"
+      [{"val": [1]},{"val": [2]}]
+      \"\"\"
+    Then the value of the response body children `.val` has elements which are all a valid `Array`
 
       """
     When I run `cucumber --strict features/is_a_valid.feature`
     Then the output should contain:
       """
-      11 passed
+      16 passed
       """
     And it should pass
