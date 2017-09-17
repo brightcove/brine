@@ -38,8 +38,8 @@ Feature: Allow selection of any structure element
       \"\"\"
       [{"val":"foo"},{"val":"bar"}]
       \"\"\"
-    Then the value of the response body child `*.val` does have any element that is equal to `foo`
-    And the value of the response body child `*.val` does not have any element that is equal to `other`
+    Then the value of the response body children `..val` does have any element that is equal to `foo`
+    And the value of the response body children `..val` does not have any element that is equal to `other`
 
       """
     When I run `cucumber --strict features/any.feature`

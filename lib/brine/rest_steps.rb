@@ -50,10 +50,6 @@ Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value including 
   expect(response).to have_attributes(attribute.to_sym => include(member => include(value)))
 end
 
-Then(/^the response #{RESPONSE_ATTRIBUTES} equals `([^`]*)`$/) do |attribute, value|
-  replaced_with('Then', "the value of the response #{attribute} is equal to `#{value}`", "0.4")
-end
-
 Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do |attribute, table|
   expect(response).to have_attributes(attribute.to_sym => include(kv_table(table)))
 end
