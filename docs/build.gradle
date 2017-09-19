@@ -1,0 +1,13 @@
+plugins {
+    id "org.asciidoctor.gradle.asciidoctor" version "1.5.1"
+}
+
+dependencies {
+    asciidoctor 'com.github.domgold.doctools.asciidoctor:asciidoctor-gherkin-extension:1.0.1'
+}
+
+asciidoctor {
+    separateOutputDirs = false
+    sourceDir 'src'
+    outputDir projectDir
+}
