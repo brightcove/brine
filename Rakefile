@@ -10,8 +10,14 @@ task :check do
   end
 end
 
+Cucumber::Rake::Task.new(:tutorial) do |t|
+  ENV['ROOT_URL'] = 'https://api.myjson.com/'
+  t.cucumber_opts = ['tutorial',
+    '-r tutorial/support/env.rb']
+end
+
 task :help do
-    puts """
+  puts """
 Tasks
 ---
 check - run tests
