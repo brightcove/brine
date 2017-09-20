@@ -1,3 +1,4 @@
+require 'jsonpath'
 require 'brine/coercer'
 require 'rspec/expectations'
 

@@ -72,19 +72,26 @@ Then(/^the response body as JSON is:$/) do |text|
   expect(response.body.to_json).to eq text
 end
 
-Then (/^there was a (GET|POST|PATCH|PUT|DELETE) request with a url matching `([^`]*)`$/) do
+Then (/^there was a (GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS) request with a url matching `([^`]*)`$/) do
   |method, url|
   @req_check = RequestMatcher.new
   @req_check.method = parse_method(method)
   @req_check.url = url
 end
+Then (/^there was a (GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS) request sent with a url matching `([^`]*)`$/) do
+  |method, url|
+  req_check = RequestMatcher.new
+  req_check.method = parse_method(method)
+  req_check.url = url
+  expect(@calls).to include_a_request_like(req_check)
+end
+
 Then (/^it had a body matching:$/) do |body|
   @req_check.body = match(body)
 end
 Then (/^it had a body not matching:$/) do |body|
   @req_check.body = not_match(body)
 end
-
 
 Then (/^it was sent$/) do
   expect(@calls).to include_a_request_like(@req_check)

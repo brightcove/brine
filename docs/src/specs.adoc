@@ -1,0 +1,16 @@
+= Brine Specifications
+Matt Whipple <http://github.com/mwhipple[@mwhipple]>
+:description: Specifications for Brine
+:keywords: Brine, Cucumber, RESt, DSL
+:page-layout: docs
+:page-description: {description}
+:page-keywords: {keywords}
+:toc: right
+:icons: font
+:source-highlighter: highlightjs
+
+= Request Construction
+gherkin::../../features/request_construction/basic.feature[spec.erb]
+gherkin::../../features/request_construction/body.feature[spec.erb]
+gherkin::../../features/request_construction/params.feature[spec.erb]
+gherkin::../../features/request_construction/clearing.feature[spec.erb]

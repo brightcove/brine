@@ -1,4 +1,5 @@
 require 'rspec'
+require 'jsonpath'
 require 'brine/util'
 require 'brine/selector'
 
@@ -139,4 +140,8 @@ Then(/^the property `([^`]*)` is eventually `([^`]*)` at `([^`]*)`$/) do |field,
     send_request(parse_method('GET'), path)
     expect(response_body_child.first).to include(field => value)
   end
+end
+
+def response_body_child(path="")
+  JsonPath.new("$.#{path}").on(response.body.to_json)
 end

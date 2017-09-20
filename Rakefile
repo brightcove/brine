@@ -3,6 +3,7 @@ require 'cucumber/rake/task'
 Cucumber::Rake::Task.new
 
 task :check do
+  ENV['ROOT_URL'] = 'http://www.example.com'
   if (ENV['WATCH'])
     Kernel.system("bundle exec guard -c")
   else
