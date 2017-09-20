@@ -1,7 +1,6 @@
 # requester.rb - Provide request construction and response storage
 
 require 'oauth2'
-require 'jsonpath'
 require 'faraday_middleware'
 
 # Parameter object used to configure OAuth2 middleware
@@ -81,7 +80,7 @@ module Requesting
 
   # clear out any previously built request state and set defaults
   def reset_request
-    @headers = @body = nil
+    @params = @headers = @body = nil
   end
 
   # store the provided body in the request options being built
@@ -93,7 +92,9 @@ module Requesting
   # send a request using method to url using whatever options
   # have been built for the present request
   def send_request(method, url)
-    @response = client.run_request(method, url, @body, @headers)
+    @response = client.run_request(method, url, @body, @headers) do |req|
+      req.params = params
+    end
   end
 
   # getter for the latest response returned
@@ -105,11 +106,12 @@ module Requesting
     @headers ||= {content_type: 'application/json'}
   end
 
-  # return object in response body at path
-  # returns full body if path is omitted
-  #TODO: Ugly for now...move away from JsonPath
-  def response_body_child(path="")
-    JsonPath.new("$.#{path}").on(response.body.to_json)
+  def add_request_param(k, v)
+    params[k] = v
+  end
+
+  def params
+    @params ||= {}
   end
 end
 

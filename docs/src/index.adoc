@@ -149,7 +149,7 @@ where Rake provides sugary convenience.
 
 === A Basic GET
 Most tests will involve some form of issuing requests and performing assertions
-on the responses. Let's start with a simpler versions of that pattern,
+on the responses. Let's start with a simple version of that pattern,
 testing the response status from a GET request.
 
 [source,gherkin]
@@ -171,7 +171,7 @@ include::../../tutorial/post_status.feature[]
 The API that was chosen for testing returns the link to the created resource
 which is based off of a generated id. That means that the exact response cannot
 be verified, but instead property based testing can be done to verify that the
-data is sane and likely therefore trustworthy. In this case we
+data is sane and therefore likely trustworthy. In this case we
 can check that the `uri` response child matches the expected pattern.
 
 [source,gherkin]
@@ -282,12 +282,14 @@ used when accessing a specific node within the tree, while `children` should be 
 across multiple nodes (such as testing the value of a field for every element in a collection).
 
 === Expressions
-`$KEY`::
-  Access the `KEY` named child of the current node. Multiple levels can
-be traversed by joining `KEY`s delimited by `.`s.
+`.$KEY`::
+  Access the `KEY` named child of the starting node. The leading `.` can be
+omitted if at the start of an expression.
 
 == Step Reference
 === Request Construction
+link:specs.html#_request_construction[icon:cogs[] Specification]
+
 The requests which are sent as part of a test are constructed using
 a https://en.wikipedia.org/wiki/Builder_pattern[Builder].
 
@@ -300,6 +302,12 @@ given request that is being built.
 `When the request body is assigned:`::
   The multiline content provided will be assigned to the body of the request.
 This will normally likely be the JSON representation of data.
+
+`When the request query parameter {grave}$PARAMETER{grave} is assigned {grave}$VALUE{grave}`::
+  Assign `VALUE` to the request query `PARAMETER`.
+The value will be URL encoded and the key/value pair appended to the URL using
+the appropriate `?` or `&` delimiter.
+The order of the parameters in the resulting URL should be considered undefined.
 
 === Assignment
 `When {grave}$IDENTIFIER{grave} is assigned {grave}$VALUE{grave}`::

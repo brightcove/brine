@@ -11,8 +11,8 @@ Feature: Passing a body
     \"\"\"
     {"request":1}
     \"\"\"
-    When a PUT is sent to `www.example.com`
-    Then there was a PUT request with a url matching `www.example.com`
+    When a PUT is sent to `/store`
+    Then there was a PUT request with a url matching `/store`
     And it had a body matching:
     \"\"\"
     {"request":1}

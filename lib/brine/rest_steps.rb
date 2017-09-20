@@ -140,3 +140,7 @@ Then(/^the property `([^`]*)` is eventually `([^`]*)` at `([^`]*)`$/) do |field,
     expect(response_body_child.first).to include(field => value)
   end
 end
+
+def response_body_child(path="")
+  JsonPath.new("$.#{path}").on(response.body.to_json)
+end

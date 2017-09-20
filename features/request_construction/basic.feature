@@ -1,16 +1,20 @@
 Feature: Basic request construction
-  Backround
+  A simple request with a specified method and path can be sent.
+
+  Backround:
     Given brine is mixed
 
   Scenario Outline: Varying Methods
     Given a file named "features/basic_requests.feature" with:
+
       """
 Feature: Sending a method
   Scenario: Basic URL
-    When a <method> is sent to `www.example.com`
-    Then there was a <method> request with a url matching `www.example.com`
+    When a <method> is sent to `/profile`
+    Then there was a <method> request with a url matching `/profile`
     And it was sent
       """
+
     When I run `cucumber features/basic_requests.feature`
     Then the output should contain:
       """

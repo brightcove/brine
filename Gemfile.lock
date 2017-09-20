@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    brine (0.3.0.pre.SNAPSHOT)
+    brine (0.3.3)
       cucumber
       faraday
       faraday_middleware
