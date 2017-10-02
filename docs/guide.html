@@ -5,10 +5,10 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.0">
-<meta name="description" content="Specifications for Brine">
-<meta name="keywords" content="Brine, Cucumber, RESt, DSL">
+<meta name="description" content="The User Guide for using the Brine REST Testing DSL">
+<meta name="keywords" content="Brine, Cucumber, REST, DSL">
 <meta name="author" content="Matt Whipple">
-<title>Brine Specifications</title>
+<title>Brine User Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -418,7 +418,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1><span class="icon"><i class="fa fa-cogs"></i></span> Brine Specifications</h1>
+<h1><span class="icon"><i class="fa fa-book"></i></span> Brine User Guide</h1>
 <div class="details">
 <span id="author" class="author">Matt Whipple</span><br>
 <span id="email" class="email"><a href="http://github.com/mwhipple">@mwhipple</a></span><br>
@@ -426,731 +426,633 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_request_construction">Request Construction</a>
+<li><a href="#_introduction">Introduction</a>
 <ul class="sectlevel2">
-<li><a href="#__span_class_feature_name_basic_request_construction_span"><span class="feature name">Basic Request Construction</span></a></li>
-<li><a href="#__span_class_feature_name_assigning_a_request_body_span"><span class="feature name">Assigning a Request Body</span></a></li>
-<li><a href="#__span_class_feature_name_adding_query_parameters_span"><span class="feature name">Adding Query Parameters</span></a></li>
-<li><a href="#__span_class_feature_name_cleared_after_sent_span"><span class="feature name">Cleared After Sent</span></a></li>
+<li><a href="#_motivation">Motivation</a></li>
+<li><a href="#_sample_usage">Sample Usage</a></li>
+<li><a href="#_key_features">Key Features</a></li>
 </ul>
 </li>
-<li><a href="#_selection">Selection</a>
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_tutorial">Tutorial</a>
 <ul class="sectlevel2">
-<li><a href="#__span_class_feature_name_any_element_span"><span class="feature name">Any Element</span></a></li>
-<li><a href="#__span_class_feature_name_all_elements_span"><span class="feature name">All Elements</span></a></li>
+<li><a href="#_selecting_a_root_url">Selecting a ROOT_URL</a></li>
+<li><a href="#_a_basic_get">A Basic GET</a></li>
+<li><a href="#_a_write_request">A Write Request</a></li>
+<li><a href="#_test_response_properties">Test Response Properties</a></li>
 </ul>
 </li>
-<li><a href="#_assertion">Assertion</a>
+<li><a href="#_environment_variables">Environment Variables</a></li>
+<li><a href="#_language_conventions">Language Conventions</a>
 <ul class="sectlevel2">
-<li><a href="#__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></a></li>
-<li><a href="#__span_class_feature_name_matching_span"><span class="feature name">Matching</span></a></li>
-<li><a href="#__span_class_feature_name_including_span"><span class="feature name">Including</span></a></li>
+<li><a href="#_the_use_of_code_code_s">The use of <code>`</code>s</a></li>
+</ul>
+</li>
+<li><a href="#_selection_and_assertion">Selection and Assertion</a>
+<ul class="sectlevel2">
+<li><a href="#_selection_modifiers">Selection Modifiers</a></li>
+<li><a href="#_chained_assertions">Chained Assertions</a></li>
+</ul>
+</li>
+<li><a href="#_traversal_2">Traversal</a>
+<ul class="sectlevel2">
+<li><a href="#_cardinality">Cardinality</a></li>
+<li><a href="#_expressions">Expressions</a></li>
+</ul>
+</li>
+<li><a href="#_step_reference">Step Reference</a>
+<ul class="sectlevel2">
+<li><a href="#_request_construction">Request Construction</a></li>
+<li><a href="#_assignment">Assignment</a></li>
+<li><a href="#_selection">Selection</a></li>
+<li><a href="#_assertion">Assertion</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cucumber DSL for testing REST APIs</p>
+</div>
+</div>
+</div>
 <div class="sect1">
-<h2 id="_request_construction">Request Construction</h2>
+<h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__span_class_feature_name_basic_request_construction_span"><span class="feature name">Basic Request Construction</span></h3>
+<h3 id="_motivation">Motivation</h3>
 <div class="paragraph">
-<p>A simple request with a specified method and path can be sent.</p>
+<p>REpresentational State Transfer APIs expose their functionality
+through combinations of fairly coarse primitives that generally
+revolve around the use of transferring data in a standard exchange
+format (such as JSON) using HTTP methods and other aspects of the very
+simple HTTP protocol. Tests for such an API can therefore be defined
+using a domain specific language (DSL) built around those higher level
+ideas rather than requiring a general purpose language (the equivalent
+of scripted <code>curl</code> commands with some glue code and assertions).
+This project provides such a DSL by using select libraries
+integrated into Cucumber, where Cucumber provides a test-oriented
+framework for DSL creation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sample_usage">Sample Usage</h3>
+<div class="paragraph">
+<p>The general usage pattern revolves around construction of a request
+and performing assertions against the received response.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">When the request body is assigned:
+  """
+  {"first_name": "John",
+   "last_name": "Smith"}
+  """
+And a POST is sent to `/users`
+Then the value of the response status is equal to `200`
+And the value of the response body is including:
+  """
+  {"first_name": "John",
+   "last_name": "Smith"}
+  """</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_key_features">Key Features</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Variable Binding/Expansion</dt>
+<dd>
+<p>In cases where dynamic data is in the response or is desired for the
+request, then values can be bound to identifiers which can then be
+expanded using <a href="http://mustache.github.io">Mustache</a> templates in your
+feature files.</p>
+</dd>
+<dt class="hdlist1">Type Transforms</dt>
+<dd>
+<p>Different types of data can be expressed directly in the feature files
+or expanded into variables by using the appropriate syntax for that
+type.</p>
+</dd>
+<dt class="hdlist1">Type Coercion</dt>
+<dd>
+<p>Related to transforms, a facility to coerce types is also provided. This allows
+more intelligent comparison of inputs which have been transformed to a
+richer data type with those that have not been transformed (normally strings).
+As an example comparing a date/time value with a string will attempt to parse
+the string to a date/time so that the values can be compared using the proper semantics.</p>
+</dd>
+<dt class="hdlist1">Resource Cleanup</dt>
+<dd>
+<p>Tests are likely to create resources which should then be cleaned up,
+restoring the pre-test state of the system: steps to facilitate this
+are provided.</p>
+</dd>
+<dt class="hdlist1">Authentication</dt>
+<dd>
+<p>Presently OAuth2 is supported to issue authenticated requests during a
+test (likely using a feature <code>Background</code>).</p>
+</dd>
+<dt class="hdlist1">Request Construction and Response Assertion Step Definitions</dt>
+<dd>
+<p>The previous features combined with the library of provide steps should
+cover all of the functionality needed to exercise and validate all of
+the functionality exposed by your REST API.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Presently the gem for this project isn&#8217;t being published anywhere:
+primarily because tracking down a local gem repository seems scary. If
+this project is open sourced then this will probably change but in the
+meantime the project can be used off of GitHub by adding this to your
+<code>Gemfile</code> and performing the usual <code>bundle install</code> dance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">git 'git@github.com:brightcove/brine.git', :branch =&gt; 'master' do
+  gem 'brine'
+end</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Backround:
-  Given brine is mixed</p>
+<p>Specific branches and refs can be targetted as
+documented <a href="http://bundler.io/git.html">here</a>. This should likely be
+done in any cases where you&#8217;re not actively tracking Brine and don&#8217;t want
+your tests to suddenly break because of changes to it.</p>
+</div>
+<div class="paragraph">
+<p>Brine can then be "mixed in" to your project (which adds assorted
+modules to the <code>World</code> and loads all the step definitions and other
+Cucumber magic) by adding the following to your <code>support/env.rb</code> or
+other ruby file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">require 'brine'
+
+World(brine_mix)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Select pieces can also be loaded (to be documented). With the above,
+feature files should be able to be written and executed without
+requiring any additional ruby code.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tutorial">Tutorial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We&#8217;ll write some tests against <a href="http://myjson.com/api" class="bare">http://myjson.com/api</a>
+(selected fairly arbitrary from the list at  <a href="https://github.com/toddmotto/public-apis" class="bare">https://github.com/toddmotto/public-apis</a>).
+The API is being explored for the sake of this tutorial,
+which also serves to bolster this library to support the effort.</p>
+</div>
+<div class="sect2">
+<h3 id="_selecting_a_root_url">Selecting a ROOT_URL</h3>
+<div class="paragraph">
+<p>Brine expects steps to use relative URLs. The feature files specify
+the behavior of an API (or multiple APIs), while the root of the
+URLs define where that API is, so this is a natural mapping.
+More practically, when developing an API it&#8217;s likely to
+be promoted across various environments such as
+local, qa, stage, and production so having a parameterized root for
+the URLs eases this while encouraging inter-environment consistency.</p>
+</div>
+<div class="paragraph">
+<p>For simple cases where all tests are to be run against the same root,
+the root url can be specified with the environment variable <code>ROOT_URL</code>,
+such as <code>ROOT_URL=https://api.myjson.com/ cucumber</code>, or letting <code>rake</code>
+take care of this for you such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">Cucumber::Rake::Task.new do
+  ENV['ROOT_URL'] = 'https://api.myjson.com/'
+end</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which could then be called with <code>rake cucumber</code>. The rake approach
+can be extended for different tasks for each environment, each
+of which sets the appropriate environment variables allowing the
+test code itself to follow <a href="https://12factor.net/config">Twelve-Factor App guidelines</a>
+where Rake provides sugary convenience.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_basic_get">A Basic GET</h3>
+<div class="paragraph">
+<p>Most tests will involve some form of issuing requests and performing assertions
+on the responses. Let&#8217;s start with a simple version of that pattern,
+testing the response status from a GET request.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Absent resources return 404s.
+
+  Scenario: A request for a known missing resource.
+    When a GET is sent to `/bins/brine-absent`
+    Then the value of the response status is equal to `404`</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_write_request">A Write Request</h3>
+<div class="paragraph">
+<p>For POST, PATCH and PUT requests you&#8217;ll normally want to include a request body.
+To support this, additional data can be added to the requests before they are sent
+(see <a href="#_request_construction">Request Construction</a>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: A POST returns a 201.
+
+  Scenario: A valid post.
+    When the request body is assigned:
+      """
+      {"name": "boolean-setting",
+       "value": true}
+      """
+    And a POST is sent to `/bins`
+    Then the value of the response status is equal to `201`</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_test_response_properties">Test Response Properties</h3>
+<div class="paragraph">
+<p>The API that was chosen for testing returns the link to the created resource
+which is based off of a generated id. That means that the exact response cannot
+be verified, but instead property based testing can be done to verify that the
+data is sane and therefore likely trustworthy. In this case we
+can check that the <code>uri</code> response child matches the expected pattern.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: A POST returns a link to the created resource.
+
+  Scenario: A valid post.
+    When the request body is assigned:
+      """
+      {"name": "boolean-setting",
+       "value": true}
+      """
+    And a POST is sent to `/bins`
+
+    Then the value of the response status is equal to `201`
+    And the value of the response body child `uri` is matching `/https://api.myjson.com/bins/\w+/`</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_environment_variables">Environment Variables</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Some Brine behavior can be tuned by passing it appropriate environment variables, listed here.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>BRINE_LOG_HTTP</code></dt>
+<dd>
+<p>Output HTTP traffic to stdout. Any truthy value will result in request and response
+metadata being logged, a value of <code>DEBUG</code> (case insensitive) will also log the bodies.</p>
+</dd>
+<dt class="hdlist1"><code>BRINE_LOG_BINDING</code></dt>
+<dd>
+<p>Log values as they are assigned to variables in Brine steps.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_language_conventions">Language Conventions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_use_of_code_code_s">The use of <code>`</code>s</h3>
+<div class="paragraph">
+<p>Backticks/grave accents are used as <em>parameter delimiters</em>. It is perhaps
+most helpful to think of them in those explicit terms rather than thinking of them
+as an alternate <em>quote</em> construct. In particular quoting implies that the parameter
+value is a string value, while the step transforms allow for alternate data types.</p>
+</div>
+<div class="paragraph">
+<p><code>`</code>s were chosen as they are less common than
+many other syntactical elements and also allow for the use of logically significant
+quoting within paremeter values while hopefully avoiding the need for escape artistry
+(as used for argument transforms).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_selection_and_assertion">Selection and Assertion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As tests are generally concerned with performing assertions, a testing DSL should be
+able to express the variety of assertions that may be needed. Because these are likely
+to be numerous, it could easily lead to duplicated logic or geometric growth of code due
+to the combinations of types of assertions and the means to select the inputs for the assertion.</p>
+</div>
+<div class="paragraph">
+<p>To avoid this issue the concepts of selection and assertion are considered separate operations in Brine.
+Internally this corresponds to two steps: the first assigns a selector;
+the second passes the assertion to that selector which is responsible for applying the assertion against
+the selected value(s). In standard step use this will still be expressed as a single step,
+and dynamic step definitions are used to split the work appropriately.</p>
+</div>
+<div class="paragraph">
+<p>For example the step:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Then the value of the response body is equal to `foo`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will be split where the subject of the step (<code>the value of the response body</code>)
+defines the selector and the predicate of the step <code>is equal to `foo`</code> defines
+the assertion (which is translated to a step such as <code>Then it is equal to `foo`</code>).</p>
+</div>
+<div class="paragraph">
+<p>The result of this is that the assertion steps will always follow a pattern where the subject
+resembles <code>the value of &#8230;&#8203;</code> and the predicate always resembles <code>is &#8230;&#8203;</code>. Learning the selection
+phrases and the assertion phrases and combining them should be a more efficient and flexible way
+to become familiar with the language instead of focusing on the resulting combined steps.</p>
+</div>
+<div class="paragraph">
+<p>The chosen approach sacrifices eloquence for the sake of consistency.
+The predicate will always start with <code>is</code> which can lead to awkward language such as
+<code>is including</code> rather than simply <code>includes</code>.
+The consistency provides additional benefits such as consistent modification:
+for instance <code>is not</code> can always be use for negation rather than working out the appropriate
+phrasing for a more natural sounding step (let alone the logic).</p>
+</div>
+<div class="paragraph">
+<p>One of the secondary goals of this is that assertion step definitions should very simple to
+write and modifiers (such as negation) should be provided for free to those definitions.
+As assertion definitions are likely to be numerous and potentially customized, this should help optimize code economy.</p>
+</div>
+<div class="sect2">
+<h3 id="_selection_modifiers">Selection Modifiers</h3>
+<div class="paragraph">
+<p>To pursue economical flexibility Brine steps attempt to balance step definitions which accommodate variations
+while keeping the step logic and patterns fairly simple. Selection steps in particular generally accept some
+parameters that affect their behavior. This allows the relatively small number of selection steps to provide
+the flexibility to empower the more numerous assertion steps.</p>
 </div>
 <div class="sect3">
-<h4 id="__span_class_scenario_name_varying_methods_span"><span class="scenario name">Varying Methods</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/basic_requests.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Sending a method
-Scenario: Basic URL
-When a &lt;method&gt; is sent to `/profile`
-Then there was a &lt;method&gt; request with a url matching `/profile`
-And it was sent</code></pre>
+<h4 id="_traversal">Traversal</h4>
+<div class="paragraph">
+<p>Selection steps can generally target the root of the object specified (such as the response body)
+or some nodes within the object if it is a non-scalar value (for instance a child of the response body).
+This is indicated in the <a href="#_selection">step reference selection steps</a> by the <code>[$TRAVERSAL]</code> placeholder.
+<code>child `$EXPRESSION`</code> or <code>children `$EXPRESSION`</code> can optionally be
+inserted at the placeholder to select nested nodes as described in <a href="#_traversal_2">Traversal</a>.</p>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/basic_requests.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_negation">Negation</h4>
+<div class="paragraph">
+<p>The selectors also currently handle negation of the associated assertions.
+This is potentially counter-intuitive but as previously mentioned the intent is that this
+should ease the creation of assertions. If negation is added to a selector that it is expected that
+the assertion will <em>fail</em>.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
+<div class="paragraph">
+<p>Negation will be normally indicated in the <a href="#_selection">step reference selection steps</a> by the presence
+of the <code>[not]</code> placeholder. A similar placeholder may be used that is more readable but leads to an equivalent
+inversion of the semantics of the statement. To negate the step, the text within the <code>[]</code>s should be inserted
+in the indicated position.</p>
 </div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-<div class="sect4">
-<h5 id="__example_name_examples">[example name]#Examples #</h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 100%;">
-</colgroup>
-<tbody>
+<div class="admonitionblock note">
+<table>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">method</p></td>
+<td class="icon">
+<i class="fa icon-note" title="Future Versions"></i>
+</td>
+<td class="content">
+Handling this in the selectors is (as mentioned) counter-intuitive and unnecessarily couples the selector
+to the assertion. It is currently done for practical reasons but is likely to be replaced in a future version
+after (or as part of) the initial port of the library to another platform. When it is replaced, all existing steps
+will remain supported through at least one more major revision and most should (most should remain unchanged).
+</td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PUT</p></td>
-</tr>
-</tbody>
 </table>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__span_class_feature_name_assigning_a_request_body_span"><span class="feature name">Assigning a Request Body</span></h3>
-<div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_request_with_body_span"><span class="scenario name">Request With Body</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/request_body.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Passing a body
-Scenario: Basic URL
-When the request body is assigned:
-"""
-{"request":1}
-"""
-When a PUT is sent to `/store`
-Then there was a PUT request with a url matching `/store`
-And it had a body matching:
-"""
-{"request":1}
-"""
-And it was sent</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/request_body.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_adding_query_parameters_span"><span class="feature name">Adding Query Parameters</span></h3>
-<div class="paragraph">
-<p>Backround:
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_query_parameters_are_added_to_requests_span"><span class="scenario name">Query parameters are added to requests.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/params.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Request query parameters can be specified.
-Scenario: A single parameter is appended to the URL.
-When the request query parameter `foo` is assigned `bar`
-And a GET is sent to `/query`
-
-Then there was a GET request with a url matching `/query\?foo=bar`
-And it was sent
-
-Scenario: Multiple parameters are appended to the URL with proper formatting.
-When the request query parameter `foo` is assigned `bar`
-And the request query parameter `baz` is assigned `1`
-And a GET is sent to `/query`
-
-Then there was a GET request sent with a url matching `/query\?\w+=\w+&amp;\w+=\w+`
-And there was a GET request sent with a url matching `foo=bar`
-And there was a GET request sent with a url matching `baz=1`
-
-Scenario Outline: Values are encoded appropriately.
-When the request query parameter `foo` is assigned `&lt;input&gt;`
-And a GET is sent to `/query`
-
-Then there was a GET request sent with a url matching `foo=&lt;encoded&gt;`
-Examples:
-| input         | encoded                  |
-# Crazy escaping to keep the `+` escaped for the regex
-| bar &amp; grill   | bar\\\\+%26\\\\+grill    |
-| + +           | %2B\\\\+%2B              |
-| (imbalance))  | %28imbalance%29%29       |
-
-Scenario Outline: Parametes are added regardless of HTTP method.
-When the request query parameter `foo` is assigned `bar`
-And a &lt;method&gt; is sent to `/query`
-
-Then there was a &lt;method&gt; request sent with a url matching `foo=bar`
-Examples:
-| method  |
-| POST    |
-| PUT     |
-| DELETE  |
-| HEAD    |
-| OPTIONS |</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/params.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">10 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_cleared_after_sent_span"><span class="feature name">Cleared After Sent</span></h3>
-<div class="paragraph">
-<p>After a request is sent, any values that were added to that request
-are cleared and will not be present in subsequent requests.</p>
+<h3 id="_chained_assertions">Chained Assertions</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Unsupported Feature"></i>
+</td>
+<td class="content">
+Use at your own risk, this feature is <strong>not presently supported</strong>.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_request_is_cleared_before_second_send_span"><span class="scenario name">Request is Cleared Before Second Send</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/request_clearing.feature" with:</p>
-</li>
-</ul>
+<p>For anyone that likes to live on the (relative) edge or if this gathers notable interest&#8230;&#8203;the above also
+provides an implicit feature: after a value is selected multiple assertions could be performed against it.
+For instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Clearing the request.
-Scenario: Request body is cleared.
-Given the request body is assigned:
-"""
-{"request":1}
-"""
-And a PUT is sent to `/profile`
-
-When a PUT is sent to `/store`
-Then there was a PUT request with a url matching `/store`
-And it had a body not matching:
-"""
-{"request":1}
-"""
-And it was sent
-
-Scenario: Request parameter
-Given the request query parameter `foo` is assigned `bar`
-And a GET is sent to `/query`
-
-When a GET is sent to `/resource`
-Then there was a GET request sent with a url matching `/resource$`</code></pre>
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Then the value of the response body is equal to `foo`
+And it is of the type `String`</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/request_clearing.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
+<div class="paragraph">
+<p>Though this may work in simple cases the present design is likely to produce surprising results since
+some aspects (such as negation) are handled by the selector so it would be inherited by the conjunctions
+even though it wouldn&#8217;t read that way.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_selection">Selection</h2>
+<h2 id="_traversal_2">Traversal</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The language exposed by Brine is flat but the data returned by the server is likely
+to include deeper data structures such as objects and collections. To allow selection within
+such structures a <code>traversal</code> language is embedded within some steps which will be indicated
+by the use of the <code>TRAVERSAL</code> placeholder.</p>
+</div>
+<div class="paragraph">
+<p>The traversal language consists of a selected subset of <a href="http://goessner.net/articles/JsonPath/">JsonPath</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="The Selected Subset"></i>
+</td>
+<td class="content">
+The subset of JsonPath functionality has been chosen that is believed to support all needed
+test cases without requiring deep familiarity with JsonPath. This may lead to more numerous simple steps
+in place of fewer steps that use unsupported expressions. Additionally Brine is intended to be
+ported to a range of platforms and so only those steps outlined here will be supported across those platforms.
+JsonPath expressions <em>not</em> listed below will not be explicitly disallowed but are not officially supported
+(will not be tested and will not be ported to another platform if needed).
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
-<h3 id="__span_class_feature_name_any_element_span"><span class="feature name">Any Element</span></h3>
+<h3 id="_cardinality">Cardinality</h3>
 <div class="paragraph">
-<p>Assertions can be done against any element of a structure.</p>
-</div>
-<div class="paragraph">
-<p>Background
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/any.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Allow selection of any structure element
-Scenario: List in response body
-When the response body is assigned:
-"""
-["a", "b", "c"]
-"""
-Then the value of the response body does have any element that is equal to `a`
-And the value of the response body does not have any element that is equal to `d`
-
-Scenario: Nested list in response body
-When the response body is assigned:
-"""
-{"letters": ["a", "b", "c"]}
-"""
-Then the value of the response body child `letters` does have any element that is equal to `a`
-And the value of the response body child `letters` does not have any element that is equal to `d`
-
-Scenario: Map matches entries
-When the response body is assigned:
-"""
-{"a": 1, "b": 2}
-"""
-#Equality will match keys
-Then the value of the response body does have any element that is equal to `a`
-And the value of the response body does not have any element that is equal to `d`
-
-Scenario: Spread nested lists
-When the response body is assigned:
-"""
-[{"val":"foo"},{"val":"bar"}]
-"""
-Then the value of the response body children `..val` does have any element that is equal to `foo`
-And the value of the response body children `..val` does not have any element that is equal to `other`</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/any.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">4 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
+<p>Each traversal expression will select <em>all</em> matching nodes which is therefore represented as a collection.
+Often, however, only a single node is expected or desired. Therefore the traversal expression will also
+be accompanied by a phrase which defines the expected cardinality, normally <code>child</code> vs. <code>children</code>. <code>children</code> will
+<em>always</em> return an array while <code>child</code> will return what would be the first element in that array. <code>child</code> should be
+used when accessing a specific node within the tree, while <code>children</code> should be used for what amounts to a query
+across multiple nodes (such as testing the value of a field for every element in a collection).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__span_class_feature_name_all_elements_span"><span class="feature name">All Elements</span></h3>
-<div class="paragraph">
-<p>Assertions can be done against all elements of a structure.</p>
-</div>
-<div class="paragraph">
-<p>Background
-  Give brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_2"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/all.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Allow selection of all structure elements
-Scenario: List in response body
-When the response body is assigned:
-"""
-["a", "bb", "ccc"]
-"""
-Then the value of the response body has elements which are all matching `/\w+/`
-
-Scenario: Spread nested lists
-When the response body is assigned:
-"""
-[{"val": "foo"},{"val": "foo"}]
-"""
-Then the value of the response body children `..val` has elements which are all equal to `foo`</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/all.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">4 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_failing_tests_since_negation_isn_t_available_yet_span"><span class="scenario name">Failing tests since negation isn&#8217;t available yet.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/all.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Allow selection of all structure elements
-Scenario: List in response body
-When the response body is assigned:
-"""
-["a", "bb", "ccc"]
-"""
-Then the value of the response body has elements which are all matching `/^\w$/`
-
-Scenario: Spread nested lists
-When the response body is assigned:
-"""
-[{"val": "foo"},{"val": "fob"}]
-"""
-Then the value of the response body children `..val` has elements which are all equal to `foo`</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/all.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 failed</code></pre>
-</div>
-</div>
+<h3 id="_expressions">Expressions</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>.$KEY</code></dt>
+<dd>
+<p>  Access the <code>KEY</code> named child of the starting node. The leading <code>.</code> can be
+omitted if at the start of an expression.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_assertion">Assertion</h2>
+<h2 id="_step_reference">Step Reference</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></h3>
+<h3 id="_request_construction">Request Construction</h3>
 <div class="paragraph">
-<p>It can be asserted that a value is equal to another value</p>
+<p><a href="specs.html#_request_construction"><span class="icon"><i class="fa fa-cogs"></i></span> Specification</a></p>
 </div>
 <div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
+<p>The requests which are sent as part of a test are constructed using
+a <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder</a>.</p>
 </div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_3"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/is_equal_to.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert value equality
-Scenario: String in response body
-When the response body is assigned:
-"""
-foo
-"""
-Then the value of the response body is equal to `foo`
-And the value of the response body is not equal to `foot`
-
-Scenario: Response Status
-When the response status is assigned `404`
-Then the value of the response status is equal to `404`
-And the value of the response status is not equal to `200`
-
-Scenario: Object in response body
-When the response body is assigned:
-"""
-{
-  "foo": "bar"
-}
-"""
-Then the value of the response body is equal to:
-"""
-{"foo":"bar"}
-"""
-And the value of the response body is not equal to:
-"""
-{"foo": "baz"}
-"""
-
-Scenario: List in response body
-When the response body is assigned `[1, "foo", true]`
-Then the value of the response body is equal to `[1, "foo", true]`
-And the value of the response body is not equal to `[1, "bar", true]`
-
-Scenario Outline: Objects must match completely
-When the response body is assigned `{"foo": "bar", "baz": 1}`
-Then the value of the response body is not equal to `&lt;comparison&gt;`
-
-Examples:
-| comparison                           |
-| {}                                   |
-| {"foo": "bar"}                       |
-| {"foo": "bar", "baz": 1, "extra": 2} |
-| {"foo": "bar", "baz": 2}             |</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/is_equal_to.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">8 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>When a $METHOD is sent to `$PATH`</code></dt>
+<dd>
+<p>  As every request to a REST API is likely to have a significant
+HTTP <code>METHOD</code> and <code>PATH</code>, this step is considered required and is therefore used
+to send the built request. This should therefore be the <strong>last</strong> step for any
+given request that is being built.</p>
+</dd>
+<dt class="hdlist1"><code>When the request body is assigned:</code></dt>
+<dd>
+<p>  The multiline content provided will be assigned to the body of the request.
+This will normally likely be the JSON representation of data.</p>
+</dd>
+<dt class="hdlist1"><code>When the request query parameter `$PARAMETER` is assigned `$VALUE`</code></dt>
+<dd>
+<p>  Assign <code>VALUE</code> to the request query <code>PARAMETER</code>.
+The value will be URL encoded and the key/value pair appended to the URL using
+the appropriate <code>?</code> or <code>&amp;</code> delimiter.
+The order of the parameters in the resulting URL should be considered undefined.</p>
+</dd>
+</dl>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__span_class_feature_name_matching_span"><span class="feature name">Matching</span></h3>
-<div class="paragraph">
-<p>It can be asserted that a value matches another string or regex</p>
-</div>
-<div class="paragraph">
-<p>Background
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_4"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/is_matching.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert value matchiness
-Scenario: String in response body matched against a regex
-When the response body is assigned:
-"""
-http://www.github.com?var=val
-"""
-Then the value of the response body is matching `/github/`
-And the value of the response body is matching `/git.*\?.*=/`
-And the value of the response body is not matching `/gh/`
-And the value of the response body is not matching `/^github/`
-
-Scenario: Regex in response body matched against a string
-When the response body is assigned:
-"""
-/(.+)\1/
-"""
-Then the value of the response body is matching `blahblah`
-And the value of the response body is matching `boo`
-And the value of the response body is not matching `blah blah`
-And the value of the response body is not matching `blah`</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/is_matching.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
+<h3 id="_assignment">Assignment</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>When `$IDENTIFIER` is assigned `$VALUE`</code></dt>
+<dd>
+<p>Assigns <code>VALUE</code> to <code>IDENTIFIER</code>.</p>
+</dd>
+<dt class="hdlist1"><code>When `$IDENTIFIER` is assigned a random string</code></dt>
+<dd>
+<p>  Assigns a random string (UUID) to <code>IDENTIFIER</code>.
+This is particularly useful to assist with test isolation.</p>
+</dd>
+<dt class="hdlist1"><code>When `$IDENTIFIER` is assigned a timestamp</code></dt>
+<dd>
+<p>  Assigns to <code>IDENTIFIER</code> a timestamp value representing the instant at
+which the step was evaluated.</p>
+</dd>
+</dl>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__span_class_feature_name_including_span"><span class="feature name">Including</span></h3>
+<h3 id="_selection">Selection</h3>
 <div class="paragraph">
-<p>It can be asserted that a value is a superset of another value.</p>
+<p><a href="specs.html#_selection"><span class="icon"><i class="fa fa-cogs"></i></span> Specification</a></p>
 </div>
 <div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
+<p><em>see <a href="#_selection_and_assertion">Selection and Assertion</a></em></p>
 </div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_equals_span"><span class="scenario name">Equals</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/includes.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Includes
-Scenario: Basic object membership
-When the response body is assigned:
-"""
-{"foo":"bar",
-"baz": 1,
-"other": "blah"}
-"""
-Then the value of the response body is including:
-"""
-{"baz":1}
-"""
-And the value of the response body is not including:
-"""
-{"missing":"value"}
-"""</code></pre>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>Then the value of the response status is</code></dt>
+<dd>
+<p>Select the status code of the current HTTP response.</p>
+</dd>
+<dt class="hdlist1"><code>Then the value of the response body [$TRAVERSAL] is [not]</code></dt>
+<dd>
+<p>Select the value from the body of the response.</p>
+</dd>
+<dt class="hdlist1"><code>Then the value of the response body [$TRAVERSAL] does have any element that is [not]</code></dt>
+<dd>
+<p>Select any (at least one) element from the structure within the response body.</p>
+</dd>
+<dt class="hdlist1"><code>Then the value of the response body [$TRAVERSAL] has elements which are all</code></dt>
+<dd>
+<p>Select all elements from the structure within the response body.</p>
+</dd>
+</dl>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/includes.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="_assertion">Assertion</h3>
+<div class="paragraph">
+<p><a href="specs.html#_assertion"><span class="icon"><i class="fa fa-cogs"></i></span> Specification</a></p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
+<div class="paragraph">
+<p><em>see <a href="#_selection_and_assertion">Selection and Assertion</a></em></p>
 </div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>Then it is equal to `$VALUE`</code></dt>
+<dd>
+<p>Assert that the current selected value is equivalent to <code>VALUE</code></p>
+</dd>
+<dt class="hdlist1"><code>Then it is matching `$VALUE`</code></dt>
+<dd>
+<p>Assert that the current select value matches the regular expression <code>VALUE</code></p>
+</dd>
+<dt class="hdlist1"><code>Then it is including `$VALUE`</code></dt>
+<dd>
+<p>Assert that the current select value includes/is a superset of <code>VALUE</code>.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -1158,7 +1060,7 @@ And the value of the response body is not including:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-02 18:21:40 EDT
+Last updated 2017-10-02 18:21:27 EDT
 </div>
 </div>
 </body>

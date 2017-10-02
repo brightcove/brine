@@ -5,10 +5,10 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.0">
-<meta name="description" content="Specifications for Brine">
-<meta name="keywords" content="Brine, Cucumber, RESt, DSL">
+<meta name="description" content="Cookbook for the Brine REST Testing DSL">
+<meta name="keywords" content="Brine, Cucumber, REST, DSL">
 <meta name="author" content="Matt Whipple">
-<title>Brine Specifications</title>
+<title>Brine Cookbook</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -418,7 +418,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1><span class="icon"><i class="fa fa-cogs"></i></span> Brine Specifications</h1>
+<h1><span class="icon"><i class="fa fa-cutlery"></i></span> Brine Cookbook</h1>
 <div class="details">
 <span id="author" class="author">Matt Whipple</span><br>
 <span id="email" class="email"><a href="http://github.com/mwhipple">@mwhipple</a></span><br>
@@ -426,25 +426,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_request_construction">Request Construction</a>
+<li><a href="#_overview">Overview</a></li>
+<li><a href="#__assurances">"Assurances"</a>
 <ul class="sectlevel2">
-<li><a href="#__span_class_feature_name_basic_request_construction_span"><span class="feature name">Basic Request Construction</span></a></li>
-<li><a href="#__span_class_feature_name_assigning_a_request_body_span"><span class="feature name">Assigning a Request Body</span></a></li>
-<li><a href="#__span_class_feature_name_adding_query_parameters_span"><span class="feature name">Adding Query Parameters</span></a></li>
-<li><a href="#__span_class_feature_name_cleared_after_sent_span"><span class="feature name">Cleared After Sent</span></a></li>
-</ul>
-</li>
-<li><a href="#_selection">Selection</a>
-<ul class="sectlevel2">
-<li><a href="#__span_class_feature_name_any_element_span"><span class="feature name">Any Element</span></a></li>
-<li><a href="#__span_class_feature_name_all_elements_span"><span class="feature name">All Elements</span></a></li>
-</ul>
-</li>
-<li><a href="#_assertion">Assertion</a>
-<ul class="sectlevel2">
-<li><a href="#__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></a></li>
-<li><a href="#__span_class_feature_name_matching_span"><span class="feature name">Matching</span></a></li>
-<li><a href="#__span_class_feature_name_including_span"><span class="feature name">Including</span></a></li>
+<li><a href="#_context">Context</a></li>
+<li><a href="#_solution">Solution</a></li>
+<li><a href="#_recipe">Recipe</a></li>
 </ul>
 </li>
 </ul>
@@ -452,705 +439,120 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_request_construction">Request Construction</h2>
+<h2 id="_overview">Overview</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="__span_class_feature_name_basic_request_construction_span"><span class="feature name">Basic Request Construction</span></h3>
 <div class="paragraph">
-<p>A simple request with a specified method and path can be sent.</p>
-</div>
-<div class="paragraph">
-<p>Backround:
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_varying_methods_span"><span class="scenario name">Varying Methods</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/basic_requests.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Sending a method
-Scenario: Basic URL
-When a &lt;method&gt; is sent to `/profile`
-Then there was a &lt;method&gt; request with a url matching `/profile`
-And it was sent</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/basic_requests.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-<div class="sect4">
-<h5 id="__example_name_examples">[example name]#Examples #</h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 100%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">method</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PUT</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_assigning_a_request_body_span"><span class="feature name">Assigning a Request Body</span></h3>
-<div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_request_with_body_span"><span class="scenario name">Request With Body</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/request_body.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Passing a body
-Scenario: Basic URL
-When the request body is assigned:
-"""
-{"request":1}
-"""
-When a PUT is sent to `/store`
-Then there was a PUT request with a url matching `/store`
-And it had a body matching:
-"""
-{"request":1}
-"""
-And it was sent</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/request_body.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_adding_query_parameters_span"><span class="feature name">Adding Query Parameters</span></h3>
-<div class="paragraph">
-<p>Backround:
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_query_parameters_are_added_to_requests_span"><span class="scenario name">Query parameters are added to requests.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/params.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Request query parameters can be specified.
-Scenario: A single parameter is appended to the URL.
-When the request query parameter `foo` is assigned `bar`
-And a GET is sent to `/query`
-
-Then there was a GET request with a url matching `/query\?foo=bar`
-And it was sent
-
-Scenario: Multiple parameters are appended to the URL with proper formatting.
-When the request query parameter `foo` is assigned `bar`
-And the request query parameter `baz` is assigned `1`
-And a GET is sent to `/query`
-
-Then there was a GET request sent with a url matching `/query\?\w+=\w+&amp;\w+=\w+`
-And there was a GET request sent with a url matching `foo=bar`
-And there was a GET request sent with a url matching `baz=1`
-
-Scenario Outline: Values are encoded appropriately.
-When the request query parameter `foo` is assigned `&lt;input&gt;`
-And a GET is sent to `/query`
-
-Then there was a GET request sent with a url matching `foo=&lt;encoded&gt;`
-Examples:
-| input         | encoded                  |
-# Crazy escaping to keep the `+` escaped for the regex
-| bar &amp; grill   | bar\\\\+%26\\\\+grill    |
-| + +           | %2B\\\\+%2B              |
-| (imbalance))  | %28imbalance%29%29       |
-
-Scenario Outline: Parametes are added regardless of HTTP method.
-When the request query parameter `foo` is assigned `bar`
-And a &lt;method&gt; is sent to `/query`
-
-Then there was a &lt;method&gt; request sent with a url matching `foo=bar`
-Examples:
-| method  |
-| POST    |
-| PUT     |
-| DELETE  |
-| HEAD    |
-| OPTIONS |</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/params.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">10 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_cleared_after_sent_span"><span class="feature name">Cleared After Sent</span></h3>
-<div class="paragraph">
-<p>After a request is sent, any values that were added to that request
-are cleared and will not be present in subsequent requests.</p>
-</div>
-<div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_request_is_cleared_before_second_send_span"><span class="scenario name">Request is Cleared Before Second Send</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/request_clearing.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Clearing the request.
-Scenario: Request body is cleared.
-Given the request body is assigned:
-"""
-{"request":1}
-"""
-And a PUT is sent to `/profile`
-
-When a PUT is sent to `/store`
-Then there was a PUT request with a url matching `/store`
-And it had a body not matching:
-"""
-{"request":1}
-"""
-And it was sent
-
-Scenario: Request parameter
-Given the request query parameter `foo` is assigned `bar`
-And a GET is sent to `/query`
-
-When a GET is sent to `/resource`
-Then there was a GET request sent with a url matching `/resource$`</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/request_clearing.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
+<p>The following are some recipes to address issues which may arise while using
+Brine but are not considered part of Brine&#8217;s responsibility (at least presently).
+Many of these are focused on simplicity and ease rather than robustness or elegance,
+and modification to address specific cases should be expected.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_selection">Selection</h2>
+<h2 id="__assurances">"Assurances"</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__span_class_feature_name_any_element_span"><span class="feature name">Any Element</span></h3>
+<h3 id="_context">Context</h3>
 <div class="paragraph">
-<p>Assertions can be done against any element of a structure.</p>
+<p>Ideally all tests should be as self-contained and isolated as possible;
+when writing functional tests, however, there are cases where this isn&#8217;t
+feasible or possible. In some cases a system depends on another external
+system which is not a system that is under test and which (for whatever reason)
+cannot be easily worked with. In white box testing such a system would likely be
+represented by some form of test double, but this may be unfeasible and/or
+undesirable when testing a deployed system.</p>
 </div>
 <div class="paragraph">
-<p>Background
-  Given brine is mixed</p>
+<p>An example of such a system is user/account management which often incurs
+additional overhead to provision a new account. When testing a secured
+system valid accounts are needed for representative testing, but provisioning
+a new account may be difficult or outside the scope of the system that is being
+actively tested. If tested functionality involves enacting account-wide changes
+and the number of accounts is limited, then that is likely to unfortunately prevent
+complete test isolation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_solution">Solution</h3>
+<div class="paragraph">
+<p>In such cases a standard solution is to designate certain resources to be reused for
+certain tests. These are analogous to the concept of "fixtures" in some test suites
+though there may be slight differences in implementation and reliance on them.
+Here the term "assurances" is used..primarily because it starts with <code>a</code> which lends
+itself to relevant files being listed towards the beginning alphabetically in a given directory.</p>
+</div>
+<div class="paragraph">
+<p>The goal of assurances is to specify conditions which are expected before other
+tests are to be run. Preferably the dependent tests should also explicitly declare the
+dependency but a significant solution for that is not established. Assurances therefore
+validate that preconditions are met; ideally if such preconditions can be established
+idempotently then the assurances can do so before the validation.</p>
 </div>
 <div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/any.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Allow selection of any structure element
-Scenario: List in response body
-When the response body is assigned:
-"""
-["a", "b", "c"]
-"""
-Then the value of the response body does have any element that is equal to `a`
-And the value of the response body does not have any element that is equal to `d`
-
-Scenario: Nested list in response body
-When the response body is assigned:
-"""
-{"letters": ["a", "b", "c"]}
-"""
-Then the value of the response body child `letters` does have any element that is equal to `a`
-And the value of the response body child `letters` does not have any element that is equal to `d`
-
-Scenario: Map matches entries
-When the response body is assigned:
-"""
-{"a": 1, "b": 2}
-"""
-#Equality will match keys
-Then the value of the response body does have any element that is equal to `a`
-And the value of the response body does not have any element that is equal to `d`
-
-Scenario: Spread nested lists
-When the response body is assigned:
-"""
-[{"val":"foo"},{"val":"bar"}]
-"""
-Then the value of the response body children `..val` does have any element that is equal to `foo`
-And the value of the response body children `..val` does not have any element that is equal to `other`</code></pre>
+<h4 id="_assurances_are_not_tests">Assurances are NOT Tests</h4>
+<div class="paragraph">
+<p><strong>Assurances validate a state which is desired to be consistently retained within the
+system rather than being changed</strong>. This means that they should <em>not</em> be used for tests
+as that would require state changes, nor should they clean up after themselves (as that
+would also imply a state change). If assurances are configured for a system which should
+also be tested, then appropriate tests should exist (including those that may validate any
+behavior relied upon by the assurance).</p>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/any.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_consequences">Consequences</h4>
+<div class="paragraph">
+<p>As mentioned previously assertions help in cases where tests cannot be fully isolated,
+and therefore some known state must be established and reused across tests (and such state
+should <strong>not</strong> change). A practical reason for this is to allow for overlapping test executions.
+If tests are not fully isolated, state is being changed, and test runs overlap, then tests
+may fail non-deterministically due to one test run pulling the state out from another. This
+in the simplest form can be a nuisance but it also effectively precludes the ability to speed
+up test runs through the use of parallelism/asynchronicity.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">4 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
+<div class="paragraph">
+<p><em>TODO: Enumerate drawbacks</em></p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__span_class_feature_name_all_elements_span"><span class="feature name">All Elements</span></h3>
+<h3 id="_recipe">Recipe</h3>
 <div class="paragraph">
-<p>Assertions can be done against all elements of a structure.</p>
-</div>
-<div class="paragraph">
-<p>Background
-  Give brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_2"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/all.feature" with:</p>
-</li>
-</ul>
+<p>This can be done using standard cucumber tags. Assurances can be defined in designated
+<code>assure_*.feature</code> files where each Feature is appropriately tagged:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Allow selection of all structure elements
-Scenario: List in response body
-When the response body is assigned:
-"""
-["a", "bb", "ccc"]
-"""
-Then the value of the response body has elements which are all matching `/\w+/`
-
-Scenario: Spread nested lists
-When the response body is assigned:
-"""
-[{"val": "foo"},{"val": "foo"}]
-"""
-Then the value of the response body children `..val` has elements which are all equal to `foo`</code></pre>
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">@assure
+Feature: Some preconditions are verified...</code></pre>
 </div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/all.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">4 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_failing_tests_since_negation_isn_t_available_yet_span"><span class="scenario name">Failing tests since negation isn&#8217;t available yet.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/all.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Allow selection of all structure elements
-Scenario: List in response body
-When the response body is assigned:
-"""
-["a", "bb", "ccc"]
-"""
-Then the value of the response body has elements which are all matching `/^\w$/`
-
-Scenario: Spread nested lists
-When the response body is assigned:
-"""
-[{"val": "foo"},{"val": "fob"}]
-"""
-Then the value of the response body children `..val` has elements which are all equal to `foo`</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/all.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 failed</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_assertion">Assertion</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></h3>
-<div class="paragraph">
-<p>It can be asserted that a value is equal to another value</p>
 </div>
 <div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_3"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/is_equal_to.feature" with:</p>
-</li>
-</ul>
+<p>And then a Rake task is added to run those tagged features:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert value equality
-Scenario: String in response body
-When the response body is assigned:
-"""
-foo
-"""
-Then the value of the response body is equal to `foo`
-And the value of the response body is not equal to `foot`
-
-Scenario: Response Status
-When the response status is assigned `404`
-Then the value of the response status is equal to `404`
-And the value of the response status is not equal to `200`
-
-Scenario: Object in response body
-When the response body is assigned:
-"""
-{
-  "foo": "bar"
-}
-"""
-Then the value of the response body is equal to:
-"""
-{"foo":"bar"}
-"""
-And the value of the response body is not equal to:
-"""
-{"foo": "baz"}
-"""
-
-Scenario: List in response body
-When the response body is assigned `[1, "foo", true]`
-Then the value of the response body is equal to `[1, "foo", true]`
-And the value of the response body is not equal to `[1, "bar", true]`
-
-Scenario Outline: Objects must match completely
-When the response body is assigned `{"foo": "bar", "baz": 1}`
-Then the value of the response body is not equal to `&lt;comparison&gt;`
-
-Examples:
-| comparison                           |
-| {}                                   |
-| {"foo": "bar"}                       |
-| {"foo": "bar", "baz": 1, "extra": 2} |
-| {"foo": "bar", "baz": 2}             |</code></pre>
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">Cucumber::Rake::Task.new(:assure) do |t|
+   t.cucumber_opts = "#{ENV['CUCUMBER_OPTS']} --tags @assure"
+end</code></pre>
 </div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/is_equal_to.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">8 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_matching_span"><span class="feature name">Matching</span></h3>
-<div class="paragraph">
-<p>It can be asserted that a value matches another string or regex</p>
 </div>
 <div class="paragraph">
-<p>Background
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_4"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/is_matching.feature" with:</p>
-</li>
-</ul>
+<p>The Rake task that runs the other tests then depends on that task:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert value matchiness
-Scenario: String in response body matched against a regex
-When the response body is assigned:
-"""
-http://www.github.com?var=val
-"""
-Then the value of the response body is matching `/github/`
-And the value of the response body is matching `/git.*\?.*=/`
-And the value of the response body is not matching `/gh/`
-And the value of the response body is not matching `/^github/`
-
-Scenario: Regex in response body matched against a string
-When the response body is assigned:
-"""
-/(.+)\1/
-"""
-Then the value of the response body is matching `blahblah`
-And the value of the response body is matching `boo`
-And the value of the response body is not matching `blah blah`
-And the value of the response body is not matching `blah`</code></pre>
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">task :invoke_cuke =&gt; [:assure] do
+  #Run cucumber, potentially in parallel and likely with --tags `@assure`
+end</code></pre>
 </div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber --strict features/is_matching.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__span_class_feature_name_including_span"><span class="feature name">Including</span></h3>
-<div class="paragraph">
-<p>It can be asserted that a value is a superset of another value.</p>
 </div>
 <div class="paragraph">
-<p>Backround
-  Given brine is mixed</p>
-</div>
-<div class="sect3">
-<h4 id="__span_class_scenario_name_equals_span"><span class="scenario name">Equals</span></h4>
-<div class="ulist step-list">
-<ul>
-<li>
-<p><strong>Given</strong> a file named "features/includes.feature" with:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Includes
-Scenario: Basic object membership
-When the response body is assigned:
-"""
-{"foo":"bar",
-"baz": 1,
-"other": "blah"}
-"""
-Then the value of the response body is including:
-"""
-{"baz":1}
-"""
-And the value of the response body is not including:
-"""
-{"missing":"value"}
-"""</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>When</strong> I run <code>cucumber features/includes.feature</code></p>
-</li>
-<li>
-<p><strong>Then</strong> the output should contain:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>And</strong> it should pass</p>
-</li>
-</ul>
-</div>
+<p>This approach tests preconditions and will avoid running the rest of the tests if they
+are not (relying on standard Rake behavior). The assurances can also be run with different
+Cucumber behavior so that the full test suite can be more stochastic
+(randomized/non-serialized) while the assurances can be more controlled.</p>
 </div>
 </div>
 </div>
@@ -1158,7 +560,7 @@ And the value of the response body is not including:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-02 18:21:40 EDT
+Last updated 2017-10-02 18:21:02 EDT
 </div>
 </div>
 </body>

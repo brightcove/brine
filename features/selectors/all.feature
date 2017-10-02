@@ -1,4 +1,5 @@
-Feature: Assertions can be done against all elements of a structure
+Feature: All Elements
+  Assertions can be done against all elements of a structure.
 
   Background
     Give brine is mixed

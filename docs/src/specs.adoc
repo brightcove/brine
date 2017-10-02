@@ -1,16 +1,19 @@
-= Brine Specifications
+= icon:cogs[] Brine Specifications
 Matt Whipple <http://github.com/mwhipple[@mwhipple]>
 :description: Specifications for Brine
 :keywords: Brine, Cucumber, RESt, DSL
-:page-layout: docs
-:page-description: {description}
-:page-keywords: {keywords}
-:toc: right
-:icons: font
-:source-highlighter: highlightjs
 
-= Request Construction
+== Request Construction
 gherkin::../../features/request_construction/basic.feature[spec.erb]
 gherkin::../../features/request_construction/body.feature[spec.erb]
 gherkin::../../features/request_construction/params.feature[spec.erb]
 gherkin::../../features/request_construction/clearing.feature[spec.erb]
+
+== Selection
+gherkin::../../features/selectors/any.feature[spec.erb]
+gherkin::../../features/selectors/all.feature[spec.erb]
+
+== Assertion
+gherkin::../../features/assertions/is_equal_to.feature[spec.erb]
+gherkin::../../features/assertions/is_matching.feature[spec.erb]
+gherkin::../../features/assertions/is_including.feature[spec.erb]

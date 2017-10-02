@@ -1,4 +1,5 @@
-Feature: It can be asserted that a value is equal to another value
+Feature: Equal to
+  It can be asserted that a value is equal to another value
 
   Backround
     Given brine is mixed
