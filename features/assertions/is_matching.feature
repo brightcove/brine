@@ -1,4 +1,5 @@
-Feature: It can be asserted that a value matches another string or regex
+Feature: Matching
+  It can be asserted that a value matches another string or regex
 
   Background
     Given brine is mixed

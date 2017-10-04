@@ -1,4 +1,4 @@
-Feature: Request is Cleared After Sending
+Feature: Cleared After Sent
   After a request is sent, any values that were added to that request
 are cleared and will not be present in subsequent requests.
 

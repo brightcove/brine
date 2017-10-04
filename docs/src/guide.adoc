@@ -1,0 +1,386 @@
+= icon:book[] Brine User Guide
+Matt Whipple <http://github.com/mwhipple[@mwhipple]>
+:description: The User Guide for using the Brine REST Testing DSL
+:keywords: Brine, Cucumber, REST, DSL
+:grave: `
+
+Cucumber DSL for testing REST APIs
+
+== Introduction
+
+=== Motivation
+REpresentational State Transfer APIs expose their functionality
+through combinations of fairly coarse primitives that generally
+revolve around the use of transferring data in a standard exchange
+format (such as JSON) using HTTP methods and other aspects of the very
+simple HTTP protocol. Tests for such an API can therefore be defined
+using a domain specific language (DSL) built around those higher level
+ideas rather than requiring a general purpose language (the equivalent
+of scripted `curl` commands with some glue code and assertions).
+This project provides such a DSL by using select libraries
+integrated into Cucumber, where Cucumber provides a test-oriented
+framework for DSL creation.
+
+=== Sample Usage
+The general usage pattern revolves around construction of a request
+and performing assertions against the received response.
+
+[source,gherkin]
+----
+When the request body is assigned:
+  """
+  {"first_name": "John",
+   "last_name": "Smith"}
+  """
+And a POST is sent to `/users`
+Then the value of the response status is equal to `200`
+And the value of the response body is including:
+  """
+  {"first_name": "John",
+   "last_name": "Smith"}
+  """
+----
+
+=== Key Features
+Variable Binding/Expansion::
+In cases where dynamic data is in the response or is desired for the
+request, then values can be bound to identifiers which can then be
+expanded using http://mustache.github.io[Mustache] templates in your
+feature files.
+
+Type Transforms::
+Different types of data can be expressed directly in the feature files
+or expanded into variables by using the appropriate syntax for that
+type.
+
+Type Coercion::
+Related to transforms, a facility to coerce types is also provided. This allows
+more intelligent comparison of inputs which have been transformed to a 
+richer data type with those that have not been transformed (normally strings).
+As an example comparing a date/time value with a string will attempt to parse
+the string to a date/time so that the values can be compared using the proper semantics. 
+
+Resource Cleanup::
+Tests are likely to create resources which should then be cleaned up,
+restoring the pre-test state of the system: steps to facilitate this
+are provided.
+
+Authentication::
+Presently OAuth2 is supported to issue authenticated requests during a
+test (likely using a feature `Background`).
+
+Request Construction and Response Assertion Step Definitions::
+The previous features combined with the library of provide steps should
+cover all of the functionality needed to exercise and validate all of
+the functionality exposed by your REST API.
+
+== Installation
+Presently the gem for this project isn't being published anywhere:
+primarily because tracking down a local gem repository seems scary. If
+this project is open sourced then this will probably change but in the
+meantime the project can be used off of GitHub by adding this to your
+`Gemfile` and performing the usual `bundle install` dance:
+
+[source,ruby]
+----
+git 'git@github.com:brightcove/brine.git', :branch => 'master' do
+  gem 'brine'
+end
+----
+
+Specific branches and refs can be targetted as
+documented http://bundler.io/git.html[here]. This should likely be
+done in any cases where you're not actively tracking Brine and don't want
+your tests to suddenly break because of changes to it.
+
+Brine can then be "mixed in" to your project (which adds assorted
+modules to the `World` and loads all the step definitions and other
+Cucumber magic) by adding the following to your `support/env.rb` or
+other ruby file:
+
+[source,ruby]
+----
+require 'brine'
+
+World(brine_mix)
+----
+
+Select pieces can also be loaded (to be documented). With the above,
+feature files should be able to be written and executed without
+requiring any additional ruby code.
+
+== Tutorial
+We'll write some tests against http://myjson.com/api
+(selected fairly arbitrary from the list at  https://github.com/toddmotto/public-apis).
+The API is being explored for the sake of this tutorial,
+which also serves to bolster this library to support the effort.
+
+=== Selecting a ROOT_URL
+Brine expects steps to use relative URLs. The feature files specify
+the behavior of an API (or multiple APIs), while the root of the
+URLs define where that API is, so this is a natural mapping.
+More practically, when developing an API it's likely to
+be promoted across various environments such as
+local, qa, stage, and production so having a parameterized root for
+the URLs eases this while encouraging inter-environment consistency.
+
+For simple cases where all tests are to be run against the same root,
+the root url can be specified with the environment variable `ROOT_URL`,
+such as `ROOT_URL=https://api.myjson.com/ cucumber`, or letting `rake`
+take care of this for you such as:
+[source,ruby]
+----
+Cucumber::Rake::Task.new do
+  ENV['ROOT_URL'] = 'https://api.myjson.com/'
+end
+----
+which could then be called with `rake cucumber`. The rake approach
+can be extended for different tasks for each environment, each
+of which sets the appropriate environment variables allowing the
+test code itself to follow https://12factor.net/config[Twelve-Factor App guidelines]
+where Rake provides sugary convenience.
+
+=== A Basic GET
+Most tests will involve some form of issuing requests and performing assertions
+on the responses. Let's start with a simple version of that pattern,
+testing the response status from a GET request.
+
+[source,gherkin]
+----
+include::../../tutorial/missing.feature[]
+----
+
+=== A Write Request
+For POST, PATCH and PUT requests you'll normally want to include a request body.
+To support this, additional data can be added to the requests before they are sent
+(see <<_request_construction>>).
+
+[source,gherkin]
+----
+include::../../tutorial/post_status.feature[]
+----
+
+=== Test Response Properties
+The API that was chosen for testing returns the link to the created resource
+which is based off of a generated id. That means that the exact response cannot
+be verified, but instead property based testing can be done to verify that the
+data is sane and therefore likely trustworthy. In this case we
+can check that the `uri` response child matches the expected pattern.
+
+[source,gherkin]
+----
+include::../../tutorial/post_matching.feature[]
+----
+
+////
+=== Known Response Data
+One of the simplest and most obvious things to test for is that the response
+contains data for which exact values are expected. Continuing from above we
+can check that the response body returns the fields that we provided.
+
+[source,gherkin]
+----
+include::../../tutorial/post_including.feature[]
+----
+////
+
+== Environment Variables
+Some Brine behavior can be tuned by passing it appropriate environment variables, listed here.
+
+`BRINE_LOG_HTTP`::
+Output HTTP traffic to stdout. Any truthy value will result in request and response
+metadata being logged, a value of `DEBUG` (case insensitive) will also log the bodies.
+
+`BRINE_LOG_BINDING`::
+Log values as they are assigned to variables in Brine steps.
+
+== Language Conventions
+=== The use of ``{grave}``s
+Backticks/grave accents are used as _parameter delimiters_. It is perhaps
+most helpful to think of them in those explicit terms rather than thinking of them
+as an alternate _quote_ construct. In particular quoting implies that the parameter
+value is a string value, while the step transforms allow for alternate data types.
+
+``{grave}``s were chosen as they are less common than
+many other syntactical elements and also allow for the use of logically significant
+quoting within paremeter values while hopefully avoiding the need for escape artistry
+(as used for argument transforms).
+
+== Selection and Assertion
+As tests are generally concerned with performing assertions, a testing DSL should be
+able to express the variety of assertions that may be needed. Because these are likely
+to be numerous, it could easily lead to duplicated logic or geometric growth of code due
+to the combinations of types of assertions and the means to select the inputs for the assertion.
+
+To avoid this issue the concepts of selection and assertion are considered separate operations in Brine.
+Internally this corresponds to two steps: the first assigns a selector;
+the second passes the assertion to that selector which is responsible for applying the assertion against
+the selected value(s). In standard step use this will still be expressed as a single step,
+and dynamic step definitions are used to split the work appropriately.
+
+For example the step:
+[source,gherkin]
+----
+Then the value of the response body is equal to `foo`
+----
+Will be split where the subject of the step (`the value of the response body`)
+defines the selector and the predicate of the step `is equal to {grave}foo{grave}` defines
+the assertion (which is translated to a step such as `Then it is equal to {grave}foo{grave}`).
+
+The result of this is that the assertion steps will always follow a pattern where the subject
+resembles `the value of ...` and the predicate always resembles `is ...`. Learning the selection
+phrases and the assertion phrases and combining them should be a more efficient and flexible way
+to become familiar with the language instead of focusing on the resulting combined steps.
+
+The chosen approach sacrifices eloquence for the sake of consistency.
+The predicate will always start with `is` which can lead to awkward language such as
+`is including` rather than simply `includes`.
+The consistency provides additional benefits such as consistent modification:
+for instance `is not` can always be use for negation rather than working out the appropriate
+phrasing for a more natural sounding step (let alone the logic).
+
+One of the secondary goals of this is that assertion step definitions should very simple to
+write and modifiers (such as negation) should be provided for free to those definitions.
+As assertion definitions are likely to be numerous and potentially customized, this should help optimize code economy.
+
+=== Selection Modifiers
+To pursue economical flexibility Brine steps attempt to balance step definitions which accommodate variations
+while keeping the step logic and patterns fairly simple. Selection steps in particular generally accept some
+parameters that affect their behavior. This allows the relatively small number of selection steps to provide
+the flexibility to empower the more numerous assertion steps.
+
+==== Traversal
+Selection steps can generally target the root of the object specified (such as the response body)
+or some nodes within the object if it is a non-scalar value (for instance a child of the response body).
+This is indicated in the <<_selection,step reference selection steps>> by the `[$TRAVERSAL]` placeholder.
+`child {grave}$EXPRESSION{grave}` or `children {grave}$EXPRESSION{grave}` can optionally be
+inserted at the placeholder to select nested nodes as described in <<_traversal_2>>.
+
+==== Negation
+The selectors also currently handle negation of the associated assertions.
+This is potentially counter-intuitive but as previously mentioned the intent is that this
+should ease the creation of assertions. If negation is added to a selector that it is expected that
+the assertion will _fail_.
+
+Negation will be normally indicated in the <<_selection,step reference selection steps>> by the presence
+of the `[not]` placeholder. A similar placeholder may be used that is more readable but leads to an equivalent
+inversion of the semantics of the statement. To negate the step, the text within the ``[]``s should be inserted
+in the indicated position.
+
+[NOTE, caption='Future Versions']
+Handling this in the selectors is (as mentioned) counter-intuitive and unnecessarily couples the selector
+to the assertion. It is currently done for practical reasons but is likely to be replaced in a future version
+after (or as part of) the initial port of the library to another platform. When it is replaced, all existing steps
+will remain supported through at least one more major revision and most should (most should remain unchanged).
+
+=== Chained Assertions
+[WARNING, caption='Unsupported Feature']
+Use at your own risk, this feature is *not presently supported*.
+
+For anyone that likes to live on the (relative) edge or if this gathers notable interest...the above also
+provides an implicit feature: after a value is selected multiple assertions could be performed against it.
+For instance:
+
+[source,gherkin]
+----
+Then the value of the response body is equal to `foo`
+And it is of the type `String`
+----
+Though this may work in simple cases the present design is likely to produce surprising results since
+some aspects (such as negation) are handled by the selector so it would be inherited by the conjunctions
+even though it wouldn't read that way.
+
+== Traversal
+The language exposed by Brine is flat but the data returned by the server is likely
+to include deeper data structures such as objects and collections. To allow selection within
+such structures a `traversal` language is embedded within some steps which will be indicated
+by the use of the `TRAVERSAL` placeholder.
+
+The traversal language consists of a selected subset of http://goessner.net/articles/JsonPath/[JsonPath].
+
+[NOTE, caption='The Selected Subset']
+The subset of JsonPath functionality has been chosen that is believed to support all needed
+test cases without requiring deep familiarity with JsonPath. This may lead to more numerous simple steps
+in place of fewer steps that use unsupported expressions. Additionally Brine is intended to be
+ported to a range of platforms and so only those steps outlined here will be supported across those platforms.
+JsonPath expressions _not_ listed below will not be explicitly disallowed but are not officially supported
+(will not be tested and will not be ported to another platform if needed).
+
+=== Cardinality
+Each traversal expression will select _all_ matching nodes which is therefore represented as a collection.
+Often, however, only a single node is expected or desired. Therefore the traversal expression will also
+be accompanied by a phrase which defines the expected cardinality, normally `child` vs. `children`. `children` will
+_always_ return an array while `child` will return what would be the first element in that array. `child` should be
+used when accessing a specific node within the tree, while `children` should be used for what amounts to a query
+across multiple nodes (such as testing the value of a field for every element in a collection).
+
+=== Expressions
+`.$KEY`::
+  Access the `KEY` named child of the starting node. The leading `.` can be
+omitted if at the start of an expression.
+
+== Step Reference
+=== Request Construction
+link:specs.html#_request_construction[icon:cogs[] Specification]
+
+The requests which are sent as part of a test are constructed using
+a https://en.wikipedia.org/wiki/Builder_pattern[Builder].
+
+`When a $METHOD is sent to {grave}$PATH{grave}`::
+  As every request to a REST API is likely to have a significant
+HTTP `METHOD` and `PATH`, this step is considered required and is therefore used
+to send the built request. This should therefore be the *last* step for any
+given request that is being built.
+
+`When the request body is assigned:`::
+  The multiline content provided will be assigned to the body of the request.
+This will normally likely be the JSON representation of data.
+
+`When the request query parameter {grave}$PARAMETER{grave} is assigned {grave}$VALUE{grave}`::
+  Assign `VALUE` to the request query `PARAMETER`.
+The value will be URL encoded and the key/value pair appended to the URL using
+the appropriate `?` or `&` delimiter.
+The order of the parameters in the resulting URL should be considered undefined.
+
+=== Assignment
+`When {grave}$IDENTIFIER{grave} is assigned {grave}$VALUE{grave}`::
+  Assigns `VALUE` to `IDENTIFIER`.
+
+`When {grave}$IDENTIFIER{grave} is assigned a random string`::
+  Assigns a random string (UUID) to `IDENTIFIER`.
+This is particularly useful to assist with test isolation.
+
+`When {grave}$IDENTIFIER{grave} is assigned a timestamp`::
+  Assigns to `IDENTIFIER` a timestamp value representing the instant at
+which the step was evaluated.
+
+=== Selection
+link:specs.html#_selection[icon:cogs[] Specification]
+
+_see <<_selection_and_assertion>>_
+
+`Then the value of the response status is`::
+  Select the status code of the current HTTP response.
+
+`Then the value of the response body [$TRAVERSAL] is [not]`::
+  Select the value from the body of the response.
+
+`Then the value of the response body [$TRAVERSAL] does have any element that is [not]`::
+  Select any (at least one) element from the structure within the response body.
+
+`Then the value of the response body [$TRAVERSAL] has elements which are all`::
+  Select all elements from the structure within the response body.
+
+=== Assertion
+link:specs.html#_assertion[icon:cogs[] Specification]
+
+_see <<_selection_and_assertion>>_
+
+`Then it is equal to {grave}$VALUE{grave}`::
+  Assert that the current selected value is equivalent to `VALUE`
+
+`Then it is matching {grave}$VALUE{grave}`::
+  Assert that the current select value matches the regular expression `VALUE`
+
+`Then it is including {grave}$VALUE{grave}`::
+  Assert that the current select value includes/is a superset of `VALUE`.

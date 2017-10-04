@@ -1,7 +1,7 @@
 <%# TODO: Indentation can't be used because of significance to adoc...comment liberally or abuse tags %>
 <%# TODO: Add a lot of CSS classes so the output can be matched back to this template %>
 
-== [feature name]#<%= feature['name'] %>#
+=== [feature name]#<%= feature['name'] %>#
 
 <%if feature.key?('description') %>
 <%# FIXME: Styling doesn't work here and description seems to contain background %>
@@ -9,7 +9,7 @@
 <% end %>
 
 <%if feature.key?('background') %>
-=== [background name]#<%= feature['background']['name'] %>#
+==== [background name]#<%= feature['background']['name'] %>#
 
 <%if feature['background'].key?('description') %>
 [background description]#<%= feature['background']['description'] %>#
@@ -71,7 +71,7 @@
 
 <%if feature.key?('scenarios') %>
 <% feature['scenarios'].each do |scenario| %>
-=== [scenario name]#<%= scenario['name'] %>#
+==== [scenario name]#<%= scenario['name'] %>#
 <%if scenario.key?('description') %>
 <%= scenario['description'] %>
 <% end %>
@@ -102,7 +102,7 @@
 
 <%if scenario.key?('examples')
   example = scenario['examples'] %>
-==== [example name]#<%= example['keyword'].strip %> <%= example['name'] %>#
+===== [example name]#<%= example['keyword'].strip %> <%= example['name'] %>#
 
 <% if example['rows'].first && example['rows'].first.key?('cols') %>
 [<%= example['rows'].first['cols'] %>]

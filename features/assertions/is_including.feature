@@ -1,4 +1,6 @@
-Feature: Includes Assertion
+Feature: Including
+  It can be asserted that a value is a superset of another value.
+
   Backround
     Given brine is mixed
 

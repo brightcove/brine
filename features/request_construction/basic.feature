@@ -1,4 +1,4 @@
-Feature: Basic request construction
+Feature: Basic Request Construction
   A simple request with a specified method and path can be sent.
 
   Backround:

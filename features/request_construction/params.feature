@@ -30,10 +30,11 @@ Feature: Request query parameters can be specified.
 
     Then there was a GET request sent with a url matching `foo=<encoded>`
   Examples:
-    | input         | encoded                |
+    | input         | encoded                  |
     # Crazy escaping to keep the `+` escaped for the regex
-    | bar & grill   | bar\\\\+%26\\\\+grill  |
-    | + +           | %2B\\\\+%2B            |
+    | bar & grill   | bar\\\\+%26\\\\+grill    |
+    | + +           | %2B\\\\+%2B              |
+    | (imbalance))  | %28imbalance%29%29       |
 
   Scenario Outline: Parametes are added regardless of HTTP method.
     When the request query parameter `foo` is assigned `bar`
@@ -52,6 +53,6 @@ Feature: Request query parameters can be specified.
     When I run `cucumber features/params.feature`
     Then the output should contain:
       """
-      9 passed
+      10 passed
       """
     And it should pass
