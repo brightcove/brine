@@ -34,16 +34,16 @@ Before do
 end
 
 class RequestMatcher
-  attr_accessor :method, :url, :body
+  attr_accessor :method, :url, :body, :headers
 end
 
 RSpec::Matchers.define :include_a_request_like do |req|
   match(:notify_expectation_failures => true) do |calls|
-    expect(calls)
-      .to include(
-            have_attributes(:url => have_attributes(:request_uri => match(req.url)),
-                            :method => req.method,
-                            :body => req.body))
+    atts = {:url    => have_attributes(:request_uri => match(req.url)),
+            :method => req.method,
+            :body   => req.body}
+    atts[:request_headers] = req.headers if req.headers
+    expect(calls).to include(have_attributes(atts))
   end
 end
 
@@ -91,6 +91,10 @@ Then (/^it had a body matching:$/) do |body|
 end
 Then (/^it had a body not matching:$/) do |body|
   @req_check.body = not_match(body)
+end
+
+Then (/^it had headers including `([^`]*)`$/) do |header|
+  @req_check.headers = include(header)
 end
 
 Then (/^it was sent$/) do

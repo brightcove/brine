@@ -342,6 +342,10 @@ The value will be URL encoded and the key/value pair appended to the URL using
 the appropriate `?` or `&` delimiter.
 The order of the parameters in the resulting URL should be considered undefined.
 
+`When the request header {grave}$HEADER{grave} is assigned {grave}$VALUE{grave}`::
+  Assign `VALUE` to the request header `HEADER`.
+Will overwrite any earlier value for the specified header, including earlier steps or defaults.
+
 === Assignment
 `When {grave}$IDENTIFIER{grave} is assigned {grave}$VALUE{grave}`::
   Assigns `VALUE` to `IDENTIFIER`.
