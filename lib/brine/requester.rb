@@ -92,7 +92,7 @@ module Requesting
   # send a request using method to url using whatever options
   # have been built for the present request
   def send_request(method, url)
-    @response = client.run_request(method, url, @body, @headers) do |req|
+    @response = client.run_request(method, url, @body, headers) do |req|
       req.params = params
     end
   end
@@ -106,13 +106,18 @@ module Requesting
     @headers ||= {content_type: 'application/json'}
   end
 
-  def add_request_param(k, v)
-    params[k] = v
+  def add_header(k, v)
+    headers[k] = v
   end
 
   def params
     @params ||= {}
   end
+
+  def add_request_param(k, v)
+    params[k] = v
+  end
+
 end
 
 class Requester

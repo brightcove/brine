@@ -431,6 +431,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__span_class_feature_name_basic_request_construction_span"><span class="feature name">Basic Request Construction</span></a></li>
 <li><a href="#__span_class_feature_name_assigning_a_request_body_span"><span class="feature name">Assigning a Request Body</span></a></li>
 <li><a href="#__span_class_feature_name_adding_query_parameters_span"><span class="feature name">Adding Query Parameters</span></a></li>
+<li><a href="#__span_class_feature_name_adding_headers_span"><span class="feature name">Adding Headers</span></a></li>
 <li><a href="#__span_class_feature_name_cleared_after_sent_span"><span class="feature name">Cleared After Sent</span></a></li>
 </ul>
 </li>
@@ -653,6 +654,105 @@ Examples:
 <ul>
 <li>
 <p><strong>When</strong> I run <code>cucumber features/params.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">10 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__span_class_feature_name_adding_headers_span"><span class="feature name">Adding Headers</span></h3>
+<div class="paragraph">
+<p>Backround:
+  Given brine is mixed</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_headers_are_added_to_requests_span"><span class="scenario name">Headers are added to requests.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/headers.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Request headers can be specified.
+Scenario: A new header with a single value is added to request.
+When the request header `foo` is assigned `bar`
+And a GET is sent to `/query`
+
+Then there was a GET request with a url matching `/query`
+And it had headers including `{"foo":"bar"}`
+And it was sent
+
+Scenario: Default headers are present in requests.
+When a GET is sent to `/query`
+
+Then there was a GET request with a url matching `/query`
+And it had headers including `{"Content-Type": "application/json"}`
+And it was sent
+
+Scenario: Default headers can be overridden.
+When the request header `Content-Type` is assigned `text/plain`
+And a GET is sent to `/query`
+
+Then there was a GET request with a url matching `/query`
+And it had headers including `{"Content-Type": "text/plain"}`
+And it was sent
+
+Scenario: Array header values are added to requests.
+When the request header `X-Array` is assigned `[1, 2, 3]`
+And a GET is sent to `/query`
+
+Then there was a GET request with a url matching `/query`
+And it had headers including `{"X-Array": "1, 2, 3"}`
+And it was sent
+
+Scenario: The last set value for a given header wins.
+When the request header `foo` is assigned `bar`
+And the request header `foo` is assigned `baz`
+And a GET is sent to `/query`
+
+Then there was a GET request with a url matching `/query`
+And it had headers including `{"foo": "baz"}`
+And it was sent
+
+Scenario Outline: Header is added regardless of HTTP method.
+When the request header `foo` is assigned `bar`
+And a &lt;method&gt; is sent to `/query`
+
+Then there was a &lt;method&gt; request with a url matching `/query`
+And it had headers including `{"foo": "bar"}`
+And it was sent
+
+Examples:
+| method  |
+| POST    |
+| PUT     |
+| DELETE  |
+| HEAD    |
+| OPTIONS |</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber features/headers.feature</code></p>
 </li>
 <li>
 <p><strong>Then</strong> the output should contain:</p>
@@ -1158,7 +1258,7 @@ And the value of the response body is not including:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-02 18:21:40 EDT
+Last updated 2017-10-17 21:47:42 EDT
 </div>
 </div>
 </body>
