@@ -446,6 +446,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></a></li>
 <li><a href="#__span_class_feature_name_matching_span"><span class="feature name">Matching</span></a></li>
 <li><a href="#__span_class_feature_name_including_span"><span class="feature name">Including</span></a></li>
+<li><a href="#__span_class_feature_name_a_valid_span"><span class="feature name">A valid &#8230;&#8203;</span></a></li>
 </ul>
 </li>
 </ul>
@@ -1253,12 +1254,225 @@ And the value of the response body is not including:
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="__span_class_feature_name_a_valid_span"><span class="feature name">A valid &#8230;&#8203;</span></h3>
+<div class="paragraph">
+<p>Background
+  Given brine is mixed</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_positive_and_negative_assertions_for_json_types_span"><span class="scenario name">Positive and negative assertions for JSON types.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/is_a_valid.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert type validity
+Scenario: String in response body is only a valid String.
+When the response body is assigned:
+"""
+foo
+"""
+Then the value of the response body is a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: Integer in response body is a valid Integer and Number.
+When the response body is assigned:
+"""
+1
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is a valid `Number`
+And the value of the response body is a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: Quoted Number in response body is only a valid String.
+When the response body is assigned:
+"""
+"1"
+"""
+Then the value of the response body is a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: Empty Object in response body is only a valid Object.
+When the response body is assigned:
+"""
+{}
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: Object in response body is only a valid Object.
+When the response body is assigned:
+"""
+{"foo": 1}
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: Quoted Object in response body is only a valid String.
+When the response body is assigned:
+"""
+"{"foo": 1}"
+"""
+Then the value of the response body is a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+
+Scenario: Empty Array in response body is only a valid Array.
+When the response body is assigned:
+"""
+[]
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: Array in response body is only a valid Array.
+When the response body is assigned:
+"""
+[1, "foo"]
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is a valid `Array`
+And the value of the response body is not a valid `Boolean`
+
+Scenario: true in response body is only a valid Boolean.
+When the response body is assigned:
+"""
+true
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is a valid `Boolean`
+
+Scenario: false in response body is only a valid Boolean.
+When the response body is assigned:
+"""
+false
+"""
+Then the value of the response body is not a valid `String`
+And the value of the response body is not a valid `Number`
+And the value of the response body is not a valid `Integer`
+And the value of the response body is not a valid `Object`
+And the value of the response body is not a valid `Array`
+And the value of the response body is a valid `Boolean`
+
+Scenario: null in response body is not any valid type.
+When the response body is assigned:
+"""
+[null]
+"""
+Then the value of the response body child `[0]` is not a valid `String`
+And the value of the response body child `[0]` is not a valid `Number`
+And the value of the response body child `[0]` is not a valid `Integer`
+And the value of the response body child `[0]` is not a valid `Object`
+And the value of the response body child `[0]` is not a valid `Array`
+And the value of the response body child `[0]` is not a valid `Boolean`
+
+Scenario: Selected Array child is a valid Array.
+When the response body is assigned:
+"""
+{"val": [1, 2, 3]}
+"""
+Then the value of the response body child `val` is a valid `Array`
+
+Scenario: Selected Array child member is a valid String.
+When the response body is assigned:
+"""
+{"val": [1, 2, 3]}
+"""
+Then the value of the response body child `val[0]` is a valid `Number`
+Then the value of the response body child `val[0]` is a valid `Integer`
+
+Scenario: Selected nested children are a valid Array.
+When the response body is assigned:
+"""
+[{"val": 1},{"val": 2}]
+"""
+Then the value of the response body children `.val` is a valid `Array`
+
+Scenario: Selected nested children can be tested for type.
+When the response body is assigned:
+"""
+[{"val": 1},{"val": 2}]
+"""
+Then the value of the response body children `.val` has elements which are all a valid `Number`
+Then the value of the response body children `.val` has elements which are all a valid `Integer`
+
+Scenario: Selected nested children can be tested for type when Arrays.
+When the response body is assigned:
+"""
+[{"val": [1]},{"val": [2]}]
+"""
+Then the value of the response body children `.val` has elements which are all a valid `Array`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/is_a_valid.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">16 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-17 21:47:42 EDT
+Last updated 2017-11-09 21:53:16 -05:00
 </div>
 </div>
 </body>
