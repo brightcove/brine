@@ -1,4 +1,4 @@
-Feature: It can be asserted that a value is a valid instance of a type.
+Feature: A valid ...
 
   Background
     Given brine is mixed
@@ -8,24 +8,26 @@ Feature: It can be asserted that a value is a valid instance of a type.
       """
 
 Feature: Assert type validity
-  Scenario: String in response bodyis only a valid String.
+  Scenario: String in response body is only a valid String.
     When the response body is assigned:
       \"\"\"
       foo
       \"\"\"
     Then the value of the response body is a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is not a valid `Boolean`
 
-  Scenario: Number in response body is only a valid Number.
+  Scenario: Integer in response body is a valid Integer and Number.
     When the response body is assigned:
       \"\"\"
       1
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is a valid `Number`
+    And the value of the response body is a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -37,6 +39,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -48,6 +51,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -59,6 +63,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -70,6 +75,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -82,6 +88,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -93,6 +100,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is a valid `Array`
     And the value of the response body is not a valid `Boolean`
@@ -104,6 +112,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is a valid `Boolean`
@@ -115,6 +124,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body is not a valid `String`
     And the value of the response body is not a valid `Number`
+    And the value of the response body is not a valid `Integer`
     And the value of the response body is not a valid `Object`
     And the value of the response body is not a valid `Array`
     And the value of the response body is a valid `Boolean`
@@ -126,6 +136,7 @@ Feature: Assert type validity
       \"\"\"
     Then the value of the response body child `[0]` is not a valid `String`
     And the value of the response body child `[0]` is not a valid `Number`
+    And the value of the response body child `[0]` is not a valid `Integer`
     And the value of the response body child `[0]` is not a valid `Object`
     And the value of the response body child `[0]` is not a valid `Array`
     And the value of the response body child `[0]` is not a valid `Boolean`
@@ -143,6 +154,7 @@ Feature: Assert type validity
       {"val": [1, 2, 3]}
       \"\"\"
     Then the value of the response body child `val[0]` is a valid `Number`
+    Then the value of the response body child `val[0]` is a valid `Integer`
 
   Scenario: Selected nested children are a valid Array.
     When the response body is assigned:
@@ -157,6 +169,7 @@ Feature: Assert type validity
       [{"val": 1},{"val": 2}]
       \"\"\"
     Then the value of the response body children `.val` has elements which are all a valid `Number`
+    Then the value of the response body children `.val` has elements which are all a valid `Integer`
 
   Scenario: Selected nested children can be tested for type when Arrays.
     When the response body is assigned:
