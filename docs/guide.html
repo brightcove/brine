@@ -1105,6 +1105,35 @@ which the step was evaluated.</p>
 <dd>
 <p>Assert that the current select value includes/is a superset of <code>VALUE</code>.</p>
 </dd>
+<dt class="hdlist1"><code>Then it is a valid `$TYPE`</code></dt>
+<dd>
+<p>  Assert that the selected value is a valid instance of a <code>TYPE</code>. Presently this
+is focused on standard data types (intially based on those specified by JSON),
+but it is designed to handle user specified domain types pending some minor
+wiring and documentation. The current supported types are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Object</code>: A JSON style object/associative array</p>
+</li>
+<li>
+<p><code>String</code></p>
+</li>
+<li>
+<p><code>Number</code></p>
+</li>
+<li>
+<p><code>Integer</code></p>
+</li>
+<li>
+<p><code>Array</code></p>
+</li>
+<li>
+<p><code>Boolean</code></p>
+</li>
+</ul>
+</div>
+</dd>
 </dl>
 </div>
 </div>
@@ -1113,7 +1142,7 @@ which the step was evaluated.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-11 21:56:31 -05:00
+Last updated 2017-11-15 22:28:26 -05:00
 </div>
 </div>
 </body>

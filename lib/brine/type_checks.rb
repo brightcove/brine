@@ -13,6 +13,7 @@ class TypeChecks
       Object: be_a_kind_of(Hash),
       String: be_a_kind_of(String),
       Number: be_a_kind_of(Numeric),
+      Integer: be_a_kind_of(Integer),
       Array: be_a_kind_of(Array),
       Boolean: satisfy{|it| it == true || it == false }
     }

@@ -413,3 +413,15 @@ _see <<_selection_and_assertion>>_
 
 `Then it is including {grave}$VALUE{grave}`::
   Assert that the current select value includes/is a superset of `VALUE`.
+
+`Then it is a valid {grave}$TYPE{grave}`::
+  Assert that the selected value is a valid instance of a `TYPE`. Presently this
+is focused on standard data types (intially based on those specified by JSON),
+but it is designed to handle user specified domain types pending some minor
+wiring and documentation. The current supported types are:
+ * `Object`: A JSON style object/associative array
+ * `String`
+ * `Number`
+ * `Integer`
+ * `Array`
+ * `Boolean`
