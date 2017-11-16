@@ -1,8 +1,5 @@
 Feature: Adding Headers
 
-  Backround:
-    Given brine is mixed
-
   Scenario: Headers are added to requests.
     Given a file named "features/headers.feature" with:
 

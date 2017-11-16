@@ -1,6 +1,5 @@
-#
-# Request construction steps
-#
+# request_construction.rb - Build and send requests
+
 When(/^the request body is assigned:$/) do |input|
   set_request_body(input)
 end

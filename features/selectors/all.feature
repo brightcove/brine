@@ -1,9 +1,6 @@
 Feature: All Elements
   Assertions can be done against all elements of a structure.
 
-  Background
-    Give brine is mixed
-
   Scenario: Assorted positive and negative assertions.
     Given a file named "features/all.feature" with:
       """

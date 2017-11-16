@@ -2,9 +2,6 @@ Feature: Cleared After Sent
   After a request is sent, any values that were added to that request
 are cleared and will not be present in subsequent requests.
 
-  Backround
-    Given brine is mixed
-
   Scenario: Request is Cleared Before Second Send
     Given a file named "features/request_clearing.feature" with:
 

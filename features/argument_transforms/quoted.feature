@@ -2,9 +2,6 @@ Feature: An argument that is quoted will be (not) transformed into
     into a string, regardless of any more specific data type the
     quoted value may resemble.
 
-  Backround
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_quoted.feature" with:
       """

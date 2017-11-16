@@ -1,6 +1,4 @@
 Feature: Assigning a Request Body
-  Backround
-    Given brine is mixed
 
   Scenario: Request With Body
     Given a file named "features/request_body.feature" with:

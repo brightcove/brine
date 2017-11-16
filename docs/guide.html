@@ -460,9 +460,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_expressions">Expressions</a></li>
 </ul>
 </li>
+<li><a href="#_resource_cleanup">Resource Cleanup</a>
+<ul class="sectlevel2">
+<li><a href="#_step_indicating_resource_to_delete">Step indicating resource to DELETE</a></li>
+</ul>
+</li>
 <li><a href="#_step_reference">Step Reference</a>
 <ul class="sectlevel2">
 <li><a href="#_request_construction">Request Construction</a></li>
+<li><a href="#_cleanup">Cleanup</a></li>
 <li><a href="#_assignment">Assignment</a></li>
 <li><a href="#_selection">Selection</a></li>
 <li><a href="#_assertion">Assertion</a></li>
@@ -546,7 +552,7 @@ richer data type with those that have not been transformed (normally strings).
 As an example comparing a date/time value with a string will attempt to parse
 the string to a date/time so that the values can be compared using the proper semantics.</p>
 </dd>
-<dt class="hdlist1">Resource Cleanup</dt>
+<dt class="hdlist1"><a href="#_resource_cleanup">Resource Cleanup</a></dt>
 <dd>
 <p>Tests are likely to create resources which should then be cleaned up,
 restoring the pre-test state of the system: steps to facilitate this
@@ -945,6 +951,37 @@ omitted if at the start of an expression.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_resource_cleanup">Resource Cleanup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All test suites should clean up after themselves as a matter of hygiene and to help enforce test independence
+and reproducibility. This is particularly important for this library given that it is likely the systems under test
+are likely to remain running; accumulated uncleaned resources are at best a nuisance to have to weed through and
+at worst raise some costs or other due to heightened consumption of assorted resources (as opposed to more
+ephemeral test environments).</p>
+</div>
+<div class="paragraph">
+<p>Brine therefore provides mechanisms to assist in cleaning up those resources which are created as part of a test run.
+A conceptual hurdle for this type of functionality is that it is very unlikely to be part of the feature that is being
+specified, and therefore should ideally not be part of the specification. Depending on the functionality
+(and arguably the <a href="https://www.martinfowler.com/articles/richardsonMaturityModel.html">maturity</a>) of the
+API, most or all of the cleanup can be automagically done based on convention. There are tentative plans to support
+multiple techniques for cleaning up resources based on how much can be implicitly ascertained&#8230;&#8203;though presently there
+exists only one.</p>
+</div>
+<div class="sect2">
+<h3 id="_step_indicating_resource_to_delete">Step indicating resource to DELETE</h3>
+<div class="paragraph">
+<p>If the API supports DELETE requests to remove created resources but it is either desirable or necessary to specify
+what those resource PATHS are, a step can be used to indicate which resources should be DELETEd upon test completion.</p>
+</div>
+<div class="paragraph">
+<p><em>see <a href="#_cleanup">Cleanup Step Definitions</a></em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_step_reference">Step Reference</h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -981,6 +1018,17 @@ The order of the parameters in the resulting URL should be considered undefined.
 <dd>
 <p>  Assign <code>VALUE</code> to the request header <code>HEADER</code>.
 Will overwrite any earlier value for the specified header, including earlier steps or defaults.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cleanup">Cleanup</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>When a resouce is created at `$PATH`</code></dt>
+<dd>
+<p>Mark <code>PATH</code> as a resource to DELETE after the test is run. See <a href="#_resource_cleanup">Resource Cleanup</a></p>
 </dd>
 </dl>
 </div>
@@ -1065,7 +1113,7 @@ which the step was evaluated.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-17 21:49:55 EDT
+Last updated 2017-11-11 21:56:31 -05:00
 </div>
 </div>
 </body>

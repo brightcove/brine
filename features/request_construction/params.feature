@@ -1,8 +1,5 @@
 Feature: Adding Query Parameters
 
-  Backround:
-    Given brine is mixed
-
   Scenario: Query parameters are added to requests.
     Given a file named "features/params.feature" with:
 

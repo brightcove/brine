@@ -1,9 +1,6 @@
 Feature: An argument that could represent a boolean value will be
     transformed into a boolean type.
 
-  Background
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_boolean.feature" with:
       """

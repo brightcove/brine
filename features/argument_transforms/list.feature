@@ -1,9 +1,6 @@
 Feature: An argument that could represent a JSON list will be
     transformed into a list whose elements will be also be transformed.
 
-  Backround
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_list.feature" with:
       """

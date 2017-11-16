@@ -1,9 +1,6 @@
 Feature: An argument that could represent a date/time value will be
     transformed into a time type.
 
-  Backround
-    Given brine is mixed
-
   Scenario: Assorted basic inputs are provided.
     Given a file named "features/transform_datetime.feature" with:
       """
