@@ -7,9 +7,10 @@ Feature: Basic Request Construction
       """
 Feature: Sending a method
   Scenario: Basic URL
+    Given expected <method> sent to `/profile`
+
     When a <method> is sent to `/profile`
-    Then there was a <method> request with a url matching `/profile`
-    And it was sent
+    Then expected calls are verified
       """
 
     When I run `cucumber features/basic_requests.feature`

@@ -3,51 +3,90 @@ require 'rspec'
 # Steps used to test this library
 # Not loaded by default (except in the tests)
 #
+HTTP_METHOD='GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS'
+
 class StubResponse
   attr_accessor :body, :status
-end
 
-class Store < Faraday::Adapter
-  attr_reader :calls
-
-  def initialize(app, calls)
-    super(app)
-    @calls = calls
-  end
-
-  def call(env)
-    @calls << env
-    save_response(env, '200', env.body, {})
-    @app.call(env)
+  def intialize
+    @body = ''
+    @status = 200
   end
 end
 
-Faraday::Adapter.register_middleware \
-  :store => lambda { Store }
+class StubRequest
+  attr_accessor :method, :path, :headers, :body
+
+  def initialize
+    @headers = {}
+  end
+
+  def method=(value)
+    @method=value.downcase.to_sym
+  end
+end
+
+class StubBuilder
+  attr_reader :request, :response
+
+  def initialize
+    @request = StubRequest.new
+    @response = StubResponse.new
+  end
+
+  def make_response()
+    [@response.status, {}, @response.body]
+  end
+
+  def build(stubs)
+    # Currently the Faraday stub code provides one method per HTTP method (which then
+    # calls a generalized protected method), so this block grabs the method to use
+    # and passes the right args based on the signature. The last arg is normally a block
+    # but we're using the make_response method to avoid duplication and allow overriding.
+    m = stubs.method(@request.method)
+    case m.parameters.length
+      when 3
+        m.call(@request.path, @request.headers, &method(:make_response))
+      when 4
+        m.call(@request.path, @request.body, @request.headers, &method(:make_response))
+      else
+        raise "I don't know how to call #{m}"
+    end
+  end
+end
+
+
+
+def stub
+  @stub ||= StubBuilder.new
+end
+
+def build_stub
+  stub.build($stubs)
+  @stub = nil
+end
 
 Before do
-  @calls = []
+  $stubs = Faraday::Adapter::Test::Stubs.new
   @client = Faraday.new(url: ENV['ROOT_URL'] ||
                         'http://localhost:8080') do |conn|
-    conn.adapter :store, @calls
+    conn.adapter :test, $stubs
   end
 end
 
-class RequestMatcher
-  attr_accessor :method, :url, :body, :headers
+Given(/^expected request body:$/) do |body|
+  stub.request.body = body
 end
 
-RSpec::Matchers.define :include_a_request_like do |req|
-  match(:notify_expectation_failures => true) do |calls|
-    atts = {:url    => have_attributes(:request_uri => match(req.url)),
-            :method => req.method,
-            :body   => req.body}
-    atts[:request_headers] = req.headers if req.headers
-    expect(calls).to include(have_attributes(atts))
-  end
+Given(/^expected request headers:$/) do |headers|
+  stub.request.headers = headers
 end
 
-RSpec::Matchers.define_negated_matcher :not_match, :match
+Given(/^expected (#{HTTP_METHOD}) sent to `([^`]*)`/) do |method, path|
+  stub.request.method = method
+  stub.request.path = path
+  build_stub
+end
 
 When(/^the response body is assigned:$/) do |input|
     @response ||= StubResponse.new
@@ -72,31 +111,6 @@ Then(/^the response body as JSON is:$/) do |text|
   expect(response.body.to_json).to eq text
 end
 
-Then (/^there was a (GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS) request with a url matching `([^`]*)`$/) do
-  |method, url|
-  @req_check = RequestMatcher.new
-  @req_check.method = parse_method(method)
-  @req_check.url = url
-end
-Then (/^there was a (GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS) request sent with a url matching `([^`]*)`$/) do
-  |method, url|
-  req_check = RequestMatcher.new
-  req_check.method = parse_method(method)
-  req_check.url = url
-  expect(@calls).to include_a_request_like(req_check)
-end
-
-Then (/^it had a body matching:$/) do |body|
-  @req_check.body = match(body)
-end
-Then (/^it had a body not matching:$/) do |body|
-  @req_check.body = not_match(body)
-end
-
-Then (/^it had headers including `([^`]*)`$/) do |header|
-  @req_check.headers = include(header)
-end
-
-Then (/^it was sent$/) do
-  expect(@calls).to include_a_request_like(@req_check)
+Then(/^expected calls are verified$/) do
+  $stubs.verify_stubbed_calls
 end

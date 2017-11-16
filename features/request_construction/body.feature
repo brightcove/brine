@@ -5,21 +5,22 @@ Feature: Assigning a Request Body
       """
 Feature: Passing a body
   Scenario: Basic URL
+    Given expected request body:
+    \"\"\"
+    {"request":1}
+    \"\"\"
+    And expected PUT sent to `/store`
+
     When the request body is assigned:
     \"\"\"
     {"request":1}
     \"\"\"
     When a PUT is sent to `/store`
-    Then there was a PUT request with a url matching `/store`
-    And it had a body matching:
-    \"\"\"
-    {"request":1}
-    \"\"\"
-    And it was sent
+    Then expected calls are verified
       """
     When I run `cucumber features/request_body.feature`
     Then the output should contain:
       """
-      1 passed
+      5 passed
       """
     And it should pass
