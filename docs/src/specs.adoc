@@ -10,6 +10,9 @@ gherkin::../../features/request_construction/params.feature[spec.erb]
 gherkin::../../features/request_construction/headers.feature[spec.erb]
 gherkin::../../features/request_construction/clearing.feature[spec.erb]
 
+== Resource Cleanup
+gherkin::../../features/resource_cleanup/cleanup.feature[spec.erb]
+
 == Selection
 gherkin::../../features/selectors/any.feature[spec.erb]
 gherkin::../../features/selectors/all.feature[spec.erb]

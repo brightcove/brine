@@ -9,18 +9,27 @@
 class DeleteCommand
   attr_accessor :client, :path
 
-  def initialize(client, path)
+  def initialize(client, path,
+                 oks:[200,204],
+                 attempts: 3)
     @client = client
     @path = path
+    @oks = oks
+    @attempts = attempts
   end
 
   def cleanup
-    begin
-      @client.delete(@path)
-    rescue
-      # try again; TODO: Handle this more intentionally
-      @client.delete(@path)
+    while @attempts > 0
+      begin
+        resp=@client.delete(@path)
+        return true if @oks.include?(resp.status)
+      rescue ex
+        puts "WARNING: #{ex}"
+      end
+      @attempts -= 1
     end
+    puts "ERROR: Could not DELETE #{@path}"
+    false
   end
 end
 
@@ -41,7 +50,7 @@ module CleanerUpper
   # Clean recorded resources
   # Expected to be called after test run
   def cleanup_created_resources
-    created_resources.reverse.each {|it| it.cleanup }
+    created_resources.reverse.each{|it| it.cleanup}
   end
 
   private

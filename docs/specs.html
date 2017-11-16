@@ -435,6 +435,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__span_class_feature_name_cleared_after_sent_span"><span class="feature name">Cleared After Sent</span></a></li>
 </ul>
 </li>
+<li><a href="#_resource_cleanup">Resource Cleanup</a>
+<ul class="sectlevel2">
+<li><a href="#__span_class_feature_name_resource_cleanup_span"><span class="feature name">Resource Cleanup</span></a></li>
+</ul>
+</li>
 <li><a href="#_selection">Selection</a>
 <ul class="sectlevel2">
 <li><a href="#__span_class_feature_name_any_element_span"><span class="feature name">Any Element</span></a></li>
@@ -474,9 +479,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Sending a method
 Scenario: Basic URL
+Given expected &lt;method&gt; sent to `/profile`
+
 When a &lt;method&gt; is sent to `/profile`
-Then there was a &lt;method&gt; request with a url matching `/profile`
-And it was sent</code></pre>
+Then expected calls are verified</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -546,17 +552,18 @@ And it was sent</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Passing a body
 Scenario: Basic URL
+Given expected request body:
+"""
+{"request":1}
+"""
+And expected PUT sent to `/store`
+
 When the request body is assigned:
 """
 {"request":1}
 """
 When a PUT is sent to `/store`
-Then there was a PUT request with a url matching `/store`
-And it had a body matching:
-"""
-{"request":1}
-"""
-And it was sent</code></pre>
+Then expected calls are verified</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -571,7 +578,7 @@ And it was sent</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">5 passed</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -598,38 +605,42 @@ And it was sent</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Request query parameters can be specified.
 Scenario: A single parameter is appended to the URL.
+Given expected GET sent to `/query?foo=bar`
+
 When the request query parameter `foo` is assigned `bar`
 And a GET is sent to `/query`
 
-Then there was a GET request with a url matching `/query\?foo=bar`
-And it was sent
+Then expected calls are verified
 
 Scenario: Multiple parameters are appended to the URL with proper formatting.
+Given expected GET sent to `/query?foo=bar&amp;baz=1`
+
 When the request query parameter `foo` is assigned `bar`
 And the request query parameter `baz` is assigned `1`
 And a GET is sent to `/query`
 
-Then there was a GET request sent with a url matching `/query\?\w+=\w+&amp;\w+=\w+`
-And there was a GET request sent with a url matching `foo=bar`
-And there was a GET request sent with a url matching `baz=1`
+Then expected calls are verified
 
 Scenario Outline: Values are encoded appropriately.
+Given expected GET sent to `/query?foo=&lt;encoded&gt;`
+
 When the request query parameter `foo` is assigned `&lt;input&gt;`
 And a GET is sent to `/query`
 
-Then there was a GET request sent with a url matching `foo=&lt;encoded&gt;`
+Then expected calls are verified
 Examples:
 | input         | encoded                  |
-# Crazy escaping to keep the `+` escaped for the regex
-| bar &amp; grill   | bar\\\\+%26\\\\+grill    |
-| + +           | %2B\\\\+%2B              |
+| bar &amp; grill   | bar+%26+grill            |
+| + +           | %2B+%2B                  |
 | (imbalance))  | %28imbalance%29%29       |
 
 Scenario Outline: Parametes are added regardless of HTTP method.
+Given expected &lt;method&gt; sent to `/query?foo=bar`
+
 When the request query parameter `foo` is assigned `bar`
 And a &lt;method&gt; is sent to `/query`
 
-Then there was a &lt;method&gt; request sent with a url matching `foo=bar`
+Then expected calls are verified
 Examples:
 | method  |
 | POST    |
@@ -678,52 +689,76 @@ Examples:
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Request headers can be specified.
 Scenario: A new header with a single value is added to request.
+Given expected request headers:
+"""
+{"foo":"bar"}
+"""
+And expected GET sent to `/query`
+
 When the request header `foo` is assigned `bar`
 And a GET is sent to `/query`
 
-Then there was a GET request with a url matching `/query`
-And it had headers including `{"foo":"bar"}`
-And it was sent
+Then expected calls are verified
 
 Scenario: Default headers are present in requests.
+Given expected request headers:
+"""
+{"Content-Type": "application/json"}
+"""
+And expected GET sent to `/query`
+
 When a GET is sent to `/query`
 
-Then there was a GET request with a url matching `/query`
-And it had headers including `{"Content-Type": "application/json"}`
-And it was sent
+Then expected calls are verified
 
 Scenario: Default headers can be overridden.
+Given expected request headers:
+"""
+{"Content-Type": "text/plain"}
+"""
+And expected GET sent to `/query`
+
 When the request header `Content-Type` is assigned `text/plain`
 And a GET is sent to `/query`
 
-Then there was a GET request with a url matching `/query`
-And it had headers including `{"Content-Type": "text/plain"}`
-And it was sent
+Then expected calls are verified
 
 Scenario: Array header values are added to requests.
+Given expected request headers:
+"""
+{"X-Array": "1, 2, 3"}
+"""
+And expected GET sent to `/query`
+
 When the request header `X-Array` is assigned `[1, 2, 3]`
 And a GET is sent to `/query`
 
-Then there was a GET request with a url matching `/query`
-And it had headers including `{"X-Array": "1, 2, 3"}`
-And it was sent
+Then expected calls are verified
 
 Scenario: The last set value for a given header wins.
+Given expected request headers:
+"""
+{"foo":"baz"}
+"""
+And expected GET sent to `/query`
+
 When the request header `foo` is assigned `bar`
 And the request header `foo` is assigned `baz`
 And a GET is sent to `/query`
 
-Then there was a GET request with a url matching `/query`
-And it had headers including `{"foo": "baz"}`
-And it was sent
+Then expected calls are verified
 
 Scenario Outline: Header is added regardless of HTTP method.
+Given expected request headers:
+"""
+{"foo":"bar"}
+"""
+And expected &lt;method&gt; sent to `/query`
+
 When the request header `foo` is assigned `bar`
 And a &lt;method&gt; is sent to `/query`
 
-Then there was a &lt;method&gt; request with a url matching `/query`
-And it had headers including `{"foo": "bar"}`
-And it was sent
+Then expected calls are verified
 
 Examples:
 | method  |
@@ -777,26 +812,34 @@ are cleared and will not be present in subsequent requests.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Clearing the request.
 Scenario: Request body is cleared.
-Given the request body is assigned:
+Given expected request body:
+"""
+{"request":1}
+"""
+And expected PUT sent to `/profile`
+Given expected request body:
+"""
+"""
+And expected PUT sent to `/store`
+
+When the request body is assigned:
 """
 {"request":1}
 """
 And a PUT is sent to `/profile`
+And a PUT is sent to `/store`
 
-When a PUT is sent to `/store`
-Then there was a PUT request with a url matching `/store`
-And it had a body not matching:
-"""
-{"request":1}
-"""
-And it was sent
+Then expected calls are verified
 
 Scenario: Request parameter
+Given expected GET sent to `/query?foo=bar`
+And expected GET sent to `/resource`
+
 Given the request query parameter `foo` is assigned `bar`
 And a GET is sent to `/query`
 
 When a GET is sent to `/resource`
-Then there was a GET request sent with a url matching `/resource$`</code></pre>
+Then expected calls are verified</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -812,6 +855,200 @@ Then there was a GET request sent with a url matching `/resource$`</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resource_cleanup">Resource Cleanup</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="__span_class_feature_name_resource_cleanup_span"><span class="feature name">Resource Cleanup</span></h3>
+<div class="paragraph">
+<p>Resources created during testing can be marked for deletion.</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_initial_success_span"><span class="scenario name">Initial Success</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/cleanup.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Resource Cleanup
+
+Scenario: Successful Basic Deletion
+Given expected DELETE sent to `/some/path`
+
+When a resource is created at `/some/path`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/cleanup.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should match %r&lt;delete <a href="http://www.example.com/some/path&gt" class="bare">http://www.example.com/some/path&gt</a>;</p>
+</li>
+<li>
+<p><strong>And</strong> the output should not contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">ERROR</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_returned_4xx_span"><span class="scenario name">Returned 4xx</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/cleanup_failure.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Resource Cleanup
+
+Scenario: Failed Deletion
+Given expected response status of `409`
+And expected DELETE sent to `/some/path`
+
+When a resource is created at `/some/path`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/cleanup_failure.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should match %r&lt;(?:.<strong>delete <a href="http://www.example.com/some/path" class="bare">http://www.example.com/some/path</a>.</strong>){3}&gt;</p>
+</li>
+<li>
+<p><strong>And</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">ERROR</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_success_upon_retry_span"><span class="scenario name">Success Upon Retry</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/cleanup_retried.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Resource Cleanup
+
+Scenario: Success Upon Retry
+Given expected response status sequence of `[504, 200]`
+And expected DELETE sent to `/some/path`
+
+When a resource is created at `/some/path`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict -o ../../out.log features/cleanup_retried.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should match %r&lt;(?:.<strong>delete <a href="http://www.example.com/some/path" class="bare">http://www.example.com/some/path</a>.</strong>){2}&gt;</p>
+</li>
+<li>
+<p><strong>And</strong> the output should not contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">ERROR</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_unreached_success_span"><span class="scenario name">Unreached Success</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/cleanup_unreached.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Resource Cleanup
+
+Scenario: Unreached Success
+Given expected response status sequence of `[504, 504, 504, 200]`
+And expected DELETE sent to `/some/path`
+
+When a resource is created at `/some/path`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict -o ../../out.log features/cleanup_unreached.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should match %r&lt;(?:.<strong>delete <a href="http://www.example.com/some/path" class="bare">http://www.example.com/some/path</a>.</strong>){3}&gt;</p>
+</li>
+<li>
+<p><strong>And</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">ERROR</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -1428,7 +1665,7 @@ Then the value of the response body children `.val` has elements which are all a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-15 22:28:26 -05:00
+Last updated 2017-11-16 16:15:35 -05:00
 </div>
 </div>
 </body>

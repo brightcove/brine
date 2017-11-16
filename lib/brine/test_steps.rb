@@ -8,7 +8,7 @@ HTTP_METHOD='GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS'
 class StubResponse
   attr_accessor :body, :status
 
-  def intialize
+  def initialize
     @body = ''
     @status = 200
   end
@@ -55,8 +55,21 @@ class StubBuilder
   end
 end
 
+class ResponseStatusSequenceStubBuilder < StubBuilder
+  def initialize(stub, seq)
+    @request = stub.request
+    @response = stub.response
+    @enum = seq.to_enum
+  end
 
-
+  def make_response()
+    begin
+      @val = @enum.next
+    end
+    [@val, {}, @response.body]
+  end
+end
+  
 def stub
   @stub ||= StubBuilder.new
 end
@@ -70,8 +83,17 @@ Before do
   $stubs = Faraday::Adapter::Test::Stubs.new
   @client = Faraday.new(url: ENV['ROOT_URL'] ||
                         'http://localhost:8080') do |conn|
+    conn.response :logger, nil
     conn.adapter :test, $stubs
   end
+end
+
+Given(/^expected response status of `([^`]*)`$/) do |status|
+  stub.response.status = status
+end
+
+Given(/^expected response status sequence of `([^`]*)`$/) do |seq|
+  @stub = ResponseStatusSequenceStubBuilder.new(stub, seq)  
 end
 
 Given(/^expected request body:$/) do |body|
