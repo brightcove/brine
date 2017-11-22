@@ -3,9 +3,6 @@ Feature: An argument that includes {{ }} interpolation markers will be
     that template using the current binding environment which will then
     also be transformed.
 
-  Backround
-    Given brine is mixed
-
   Scenario Outline: A single value template is expanded
       using a simple bound value.
     Given a file named "features/transform_template.feature" with:

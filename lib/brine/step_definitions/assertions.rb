@@ -1,4 +1,4 @@
-# assertions.rb
+# assertions.rb - General assertions to be used with a Selector
 
 Then(/^it is equal to `([^`]*)`$/) do |value|
   selector.assert_that(value) {|v| eq v}

@@ -1,9 +1,6 @@
 Feature: Matching
   It can be asserted that a value matches another string or regex
 
-  Background
-    Given brine is mixed
-
   Scenario: Assorted positive and negative assertions.
     Given a file named "features/is_matching.feature" with:
       """

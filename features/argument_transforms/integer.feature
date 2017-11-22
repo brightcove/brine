@@ -1,9 +1,6 @@
 Feature: An argument that could represent an integer will be
     transformed into an integer type.
 
-  Backround
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_integer.feature" with:
       """

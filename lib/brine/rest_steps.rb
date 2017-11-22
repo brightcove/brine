@@ -45,13 +45,6 @@ When(/^`([^`]*)` is bound to `([^`]*)` from the response body$/) do |name, path|
 end
 
 #
-# Cleanup
-#
-When(/^a resource is created at `([^`]*)`$/) do |path|
-  track_created_resource path
-end
-
-#
 # Response attribute (non-body) assertions
 #
 Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value that is not empty$/) do

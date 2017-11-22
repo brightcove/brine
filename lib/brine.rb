@@ -29,6 +29,7 @@ def brine_mix
   require 'brine/step_definitions/assignment'
   require 'brine/step_definitions/request_construction'
   require 'brine/step_definitions/assertions'
+  require 'brine/step_definitions/cleanup'
   require 'brine/step_definitions/selection'
 
   require 'brine/transforms'

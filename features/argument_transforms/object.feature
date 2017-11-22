@@ -1,9 +1,6 @@
 Feature: An argument that could represent a JSON object will be
     transformed into an object whose elements will also be transformed.
 
-  Backround
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_object.feature" with:
       """

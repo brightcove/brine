@@ -2,9 +2,6 @@ Feature: An argument that includes leading or trailing whitespace
     will be transformed so that such whitespace is removed
     and that value will also be transformed.
 
-  Backround
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_whitespace.feature" with:
       """

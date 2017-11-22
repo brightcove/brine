@@ -1,9 +1,6 @@
 Feature: Equal to
   It can be asserted that a value is equal to another value
 
-  Backround
-    Given brine is mixed
-
   Scenario: Assorted positive and negative assertions.
     Given a file named "features/is_equal_to.feature" with:
       """

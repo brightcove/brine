@@ -1,8 +1,5 @@
 Feature: A valid ...
 
-  Background
-    Given brine is mixed
-
   Scenario: Positive and negative assertions for JSON types.
     Given a file named "features/is_a_valid.feature" with:
       """

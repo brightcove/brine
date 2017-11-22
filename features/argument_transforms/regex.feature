@@ -1,8 +1,5 @@
 Feature: An argument that is enclosed in slashes (/) will be transformed into a regex.
 
-  Background
-    Given brine is mixed
-
   Scenario Outline: Assorted basic inputs are provided.
     Given a file named "features/transform_regex.feature" with:
       """

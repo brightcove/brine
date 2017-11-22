@@ -1,6 +1,4 @@
 Feature: Deprecation Messaging
-  Background
-    Given brine is mixed
 
   Scenario: Deprecation Message is Displayed
     Given a file named "features/deprecation.feature" with:
