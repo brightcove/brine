@@ -1,3 +1,4 @@
+@wip
 Feature: Adding Query Parameters
 
   Scenario: Query parameters are added to requests.
