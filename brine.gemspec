@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.0'
 
-  s.add_runtime_dependency   'cucumber'
+  s.add_runtime_dependency   'cucumber', '~> 2.4'
   s.add_runtime_dependency   'mustache'
   s.add_runtime_dependency   'oauth2'
   s.add_runtime_dependency   'rspec'
