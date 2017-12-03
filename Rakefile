@@ -2,6 +2,8 @@
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new
 
+task default: %w[check]
+
 task :check do
   ENV['ROOT_URL'] = 'http://www.example.com'
   if (ENV['WATCH'])

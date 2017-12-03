@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    brine (0.4.0)
+    brine-dsl (0.5.0)
       cucumber (~> 2.4)
       faraday
       faraday_middleware
@@ -114,7 +114,7 @@ PLATFORMS
 DEPENDENCIES
   aruba!
   asciidoctor!
-  brine!
+  brine-dsl!
   guard!
   guard-cucumber!
   rake!

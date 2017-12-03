@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name         = 'brine'
-  s.version      = '0.4.0'
+  s.name         = 'brine-dsl'
+  s.version      = '0.5.0'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Matt Whipple"]
   s.email        = ["mwhipple@brightcove.com"]
-  s.license      = 'Apache 2.0'
+  s.license      = 'MIT'
   s.homepage     = "http://github.com/brightcove/brine"
   s.summary      = "Cucumber@REST in Brine"
   s.description  = "Cucumber@REST in Brine"
