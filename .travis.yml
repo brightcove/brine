@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+- 2.3
+- 2.4
+deploy:
+  provider: rubygems
+  gem: brine-dsl
+  api_key:
+    secure: QrX84AYqIs2Mz/5SaziW528tWzhx6pBZg93rwGWk8FyCjTZd2yILm+1O2BE/52JQclk/9lbJqzjJYsEirCC+5CmvddojiQCpX/ABeIbBq/DhNjomKf0L+tVglcZMbC/n3Xl6Xaa2kWv00mXxn71Ndj+uqCBq7oPXEZ6Z9Bf2x+Fz4+Mb0yN7tylCsQJ7WUR+EuMccXJ/eRIeVLlBqDtu7Ki534kKwOKWarkGvmvJMaXDRUSVm4dYkLDE+byoZTqu2LhcRcchCQauatDjMIv+NEhoVF9nvJPaFfSBnV64i+RwVIDemNgtSAGfZxmw6Jlf8ZWnlNDCvkXqN4dypqrlIiIZpeJpAZg0zj48sV6PNNNqr5xPgepTbNw8ShUHIQr9E8m9ePnyf1kg6FtkbnP0HYuabNw3XMIa7ZTzeCfKH6hwHFpBfNntZO9Ph6mhBsx3VkBq1RzjM3JKGOQqILsq3EZJdwRL5r+WWp8J6FtHWMfsHxQ5Fj4bAZPBYHKyamLEl14l/grnl+PussGT09DYkDInnmihprHw/5Pl/lOJk7OtmrNB2OrRlDt9spsua4P+sZdiQwqnG/p2UXQSeShQoYbm4pgqrbfKUF3Bye3uYhujXfCu2/vEN9ddv2UBKCCZA/iqZohmZbGZadeayBLLVvB/CTFzEI5z9ya0f8TDTzo=
+  on:
+    tags: true
