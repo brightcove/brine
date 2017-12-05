@@ -75,23 +75,17 @@ cover all of the functionality needed to exercise and validate all of
 the functionality exposed by your REST API.
 
 == Installation
-Presently the gem for this project isn't being published anywhere:
-primarily because tracking down a local gem repository seems scary. If
-this project is open sourced then this will probably change but in the
-meantime the project can be used off of GitHub by adding this to your
-`Gemfile` and performing the usual `bundle install` dance:
+Brine is published as `brine-dsl` on rubygems, the page for which is
+at https://rubygems.org/gems/brine-dsl. The latest version and other
+gem metadata can be viewed on that page. Brine can be used by
+declaring that gem in your project Gemfile such as:
 
 [source,ruby]
 ----
-git 'git@github.com:brightcove/brine.git', :branch => 'master' do
-  gem 'brine'
-end
+gem 'brine-dsl', '~> 1.0'
 ----
 
-Specific branches and refs can be targetted as
-documented http://bundler.io/git.html[here]. This should likely be
-done in any cases where you're not actively tracking Brine and don't want
-your tests to suddenly break because of changes to it.
+(after version 1.0 is released).
 
 Brine can then be "mixed in" to your project (which adds assorted
 modules to the `World` and loads all the step definitions and other

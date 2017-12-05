@@ -578,24 +578,18 @@ the functionality exposed by your REST API.</p>
 <h2 id="_installation">Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Presently the gem for this project isn&#8217;t being published anywhere:
-primarily because tracking down a local gem repository seems scary. If
-this project is open sourced then this will probably change but in the
-meantime the project can be used off of GitHub by adding this to your
-<code>Gemfile</code> and performing the usual <code>bundle install</code> dance:</p>
+<p>Brine is published as <code>brine-dsl</code> on rubygems, the page for which is
+at <a href="https://rubygems.org/gems/brine-dsl" class="bare">https://rubygems.org/gems/brine-dsl</a>. The latest version and other
+gem metadata can be viewed on that page. Brine can be used by
+declaring that gem in your project Gemfile such as:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">git 'git@github.com:brightcove/brine.git', :branch =&gt; 'master' do
-  gem 'brine'
-end</code></pre>
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">gem 'brine-dsl', '~&gt; 1.0'</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Specific branches and refs can be targetted as
-documented <a href="http://bundler.io/git.html">here</a>. This should likely be
-done in any cases where you&#8217;re not actively tracking Brine and don&#8217;t want
-your tests to suddenly break because of changes to it.</p>
+<p>(after version 1.0 is released).</p>
 </div>
 <div class="paragraph">
 <p>Brine can then be "mixed in" to your project (which adds assorted
@@ -1142,7 +1136,7 @@ wiring and documentation. The current supported types are:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-15 22:28:26 -05:00
+Last updated 2017-12-05 10:47:56 -05:00
 </div>
 </div>
 </body>
