@@ -1,6 +1,9 @@
 # encoding: utf-8
+require 'bundler'
 require 'cucumber/rake/task'
+
 Cucumber::Rake::Task.new
+Bundler::GemHelper.install_tasks
 
 task default: %w[check]
 
