@@ -25,6 +25,13 @@ Then(/^it is less than or equal to `([^`]*)`$/) do |value|
   selector.assert_that(value) {|v| be <= v}
 end
 
+# Be a little smarter than default.
+Then(/^it is empty$/) do
+  selector.assert_that(nil) do
+    satisfy{|i| i.nil? || (i.respond_to?(:empty?) && i.empty?) }
+  end
+end
+
 Then(/^it is including `([^`]*)`$/) do |value|
   selector.assert_that(value) {|v| include v }
 end

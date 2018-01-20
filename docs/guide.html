@@ -1099,6 +1099,12 @@ which the step was evaluated.</p>
 <dd>
 <p>Assert that the current select value includes/is a superset of <code>VALUE</code>.</p>
 </dd>
+<dt class="hdlist1"><code>Then it is empty</code></dt>
+<dd>
+<p>  Assert that value is empty or null. Any type which is not testable for emptiness
+(such as booleans or numbers) will always return false. Null is treated as an empty
+value so that it can be treated as such for endpoints that return null in place of empty collections, and non-null empty values can easily be tested for using conjunction.</p>
+</dd>
 <dt class="hdlist1"><code>Then it is a valid `$TYPE`</code></dt>
 <dd>
 <p>  Assert that the selected value is a valid instance of a <code>TYPE</code>. Presently this
@@ -1136,7 +1142,7 @@ wiring and documentation. The current supported types are:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-12-05 10:47:56 -05:00
+Last updated 2018-01-19 15:47:20 -05:00
 </div>
 </div>
 </body>

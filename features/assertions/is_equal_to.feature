@@ -1,7 +1,7 @@
 Feature: Equal to
-  It can be asserted that a value is equal to another value
+  It can be asserted that a value is equal to another value.
 
-  Scenario: Assorted positive and negative assertions.
+  Scenario: Assorted positive and negative assertions pass.
     Given a file named "features/is_equal_to.feature" with:
       """
 
