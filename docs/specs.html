@@ -451,6 +451,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></a></li>
 <li><a href="#__span_class_feature_name_matching_span"><span class="feature name">Matching</span></a></li>
 <li><a href="#__span_class_feature_name_including_span"><span class="feature name">Including</span></a></li>
+<li><a href="#__span_class_feature_name_empty_span"><span class="feature name">Empty</span></a></li>
 <li><a href="#__span_class_feature_name_a_valid_span"><span class="feature name">A valid &#8230;&#8203;</span></a></li>
 </ul>
 </li>
@@ -1247,10 +1248,10 @@ Then the value of the response body children `..val` has elements which are all 
 <div class="sect2">
 <h3 id="__span_class_feature_name_equal_to_span"><span class="feature name">Equal to</span></h3>
 <div class="paragraph">
-<p>It can be asserted that a value is equal to another value</p>
+<p>It can be asserted that a value is equal to another value.</p>
 </div>
 <div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_3"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
+<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_pass_span"><span class="scenario name">Assorted positive and negative assertions pass.</span></h4>
 <div class="ulist step-list">
 <ul>
 <li>
@@ -1334,10 +1335,10 @@ Examples:
 <div class="sect2">
 <h3 id="__span_class_feature_name_matching_span"><span class="feature name">Matching</span></h3>
 <div class="paragraph">
-<p>It can be asserted that a value matches another string or regex</p>
+<p>It can be asserted that a value matches another string or regex.</p>
 </div>
 <div class="sect3">
-<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_4"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
+<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_span_3"><span class="scenario name">Assorted positive and negative assertions.</span></h4>
 <div class="ulist step-list">
 <ul>
 <li>
@@ -1347,8 +1348,8 @@ Examples:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert value matchiness
-Scenario: String in response body matched against a regex
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert value matchiness.
+Scenario: String in response body is matched against a regex.
 When the response body is assigned:
 """
 http://www.github.com?var=val
@@ -1440,6 +1441,99 @@ And the value of the response body is not including:
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__span_class_feature_name_empty_span"><span class="feature name">Empty</span></h3>
+<div class="paragraph">
+<p>It can be asserted that a value is empty.</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_assorted_positive_and_negative_assertions_pass_span_2"><span class="scenario name">Assorted positive and negative assertions pass.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/is_empty.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Assert emptiness for multiple types.
+Scenario: Empty body is empty.
+When the response body is assigned ``
+Then the value of the response body is empty
+
+Scenario: Whitespace-only body is empty.
+When the response body is assigned:
+"""
+
+"""
+Then the value of the response body is empty
+
+Scenario: Empty string is empty.
+When the response body is assigned `""`
+Then the value of the response body is empty
+
+Scenario: Non-empty string is not empty.
+When the response body is assigned `blah`
+Then the value of the response body is not empty
+
+Scenario: Quoted whitespace is not empty.
+When the response body is assigned `" "`
+Then the value of the response body is not empty
+
+Scenario: Empty arrays are empty.
+When the response body is assigned `[]`
+Then the value of the response body is empty
+
+Scenario: Non-empty arrays are not empty.
+When the response body is assigned `[[]]`
+Then the value of the response body is not empty
+
+Scenario: Empty objects are empty.
+When the response body is assigned `{}`
+Then the value of the response body is empty
+
+Scenario: Non-empty objects are not empty.
+When the response body is assigned `{"foo":{}}`
+Then the value of the response body is not empty
+
+Scenario: Null values are empty.
+When the response body is assigned `{"foo": null}`
+Then the value of the response body child `foo` is empty
+
+Scenario: False is not empty.
+When the response body is assigned `false`
+Then the value of the response body is not empty
+
+Scenario: 0 is not empty.
+When the response body is assigned `0`
+Then the value of the response body is not empty</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/is_empty.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">12 passed</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -1665,7 +1759,7 @@ Then the value of the response body children `.val` has elements which are all a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-22 15:28:10 -05:00
+Last updated 2018-01-19 13:05:05 -05:00
 </div>
 </div>
 </body>
