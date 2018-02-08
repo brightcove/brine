@@ -4,13 +4,67 @@ Matt Whipple <http://github.com/mwhipple[@mwhipple]>
 :keywords: Brine, Cucumber, REST, DSL
 
 == Overview
+
 The following are some recipes to address issues which may arise while using
 Brine but are not considered part of Brine's responsibility (at least presently).
 Many of these are focused on simplicity and ease rather than robustness or elegance,
 and modification to address specific cases should be expected.
 
-== "Assurances"
+Many of these will also be platform specific and be subject to further organization
+once platforms beyond ruby are supported.
+
+== Intercepting of HTTP Calls
+
 === Context
+
+There may be cases where the request or reponse may need to be modified
+in some way before or after transmission, for example to add a custom header
+which is somehow specific to the testing configuration and therefore outside
+of anything that belongs in the specification.
+
+=== Solution
+
+This can be done through the registration of custom Faraday middleware on
+the Brine client. All of the registered middleware attaches
+to the generated connection through an array of functions in
+https://github.com/brightcove/brine/blob/master/lib/brine/requester.rb[requester.rb].
+Each function accepts the connection object as its single parameter. The array of functions
+is exposed as `connection_handlers`  and can be modified through getting that property
+from either the default `World` (for the default client) or from an appropriate `ClientBuilder`
+if creating custom clients and mutating it accordingly (setting the reference is not suported).
+You could just build your own client without the facilities provided by Brine.
+
+=== Recipe
+
+An example to add a custom header could be implemented as follows:
+
+[source,ruby]
+----
+require 'faraday'
+class CustomHeaderAdder < Faraday::Middleware
+  def initialize(app, key, val)
+    super(app)
+    @key = key
+    @val = val
+  end
+
+  def call(env)
+    env[:request_headers].merge!({@key => @val})
+    @app.call(env)
+  end
+end
+
+...
+
+connection_handlers.unshift(proc do |conn|
+  conn.use CustomHeaderAdder, 'x-header', 'I am a test'
+end)
+----
+
+== "Assurances"
+
+=== Context
+
 Ideally all tests should be as self-contained and isolated as possible;
 when writing functional tests, however, there are cases where this isn't
 feasible or possible. In some cases a system depends on another external
@@ -28,6 +82,7 @@ and the number of accounts is limited, then that is likely to unfortunately prev
 complete test isolation.
 
 === Solution
+
 In such cases a standard solution is to designate certain resources to be reused for
 certain tests. These are analogous to the concept of "fixtures" in some test suites
 though there may be slight differences in implementation and reliance on them.
@@ -41,6 +96,7 @@ validate that preconditions are met; ideally if such preconditions can be establ
 idempotently then the assurances can do so before the validation.
 
 ==== Assurances are NOT Tests
+
 **Assurances validate a state which is desired to be consistently retained within the
 system rather than being changed**. This means that they should _not_ be used for tests
 as that would require state changes, nor should they clean up after themselves (as that
