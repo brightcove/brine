@@ -32,21 +32,32 @@ module ClientBuilding
     self
   end
 
+  # This is represented as list of functions so that it can be more easily customized for
+  # unexpected use cases.
+  # It should likely be broken up a bit more sensibly and more useful insertion commands added...
+  # but it's likely enough of a power feature and platform specific to leave pretty raw.
+  def connection_handlers
+    @connection_handlers ||= [
+      proc do |conn|
+        conn.request :json
+        if @oauth2
+          conn.request :oauth2, @oauth2.token, :token_type => @oauth2.token_type
+        end
+      end,
+      proc do |conn|
+        if @logging
+          conn.response :logger, nil, :bodies => (@logging.casecmp('DEBUG') == 0)
+        end
+        conn.response :json, :content_type => /\bjson$/
+      end,
+      proc{|conn| conn.adapter Faraday.default_adapter }
+    ]
+  end
+
   def client_for_host(host, logging: ENV['BRINE_LOG_HTTP'])
+    @logging = logging
     Faraday.new(host) do |conn|
-      conn.request :json
-
-      if @oauth2
-        conn.request :oauth2, @oauth2.token, :token_type => @oauth2.token_type
-      end
-
-      if logging
-        conn.response :logger, nil, :bodies => (logging.casecmp('DEBUG') == 0)
-      end
-
-      conn.response :json, :content_type => /\bjson$/
-
-      conn.adapter Faraday.default_adapter
+      connection_handlers.each{|h| h.call(conn) }
     end
   end
 end

@@ -427,11 +427,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#__assurances">"Assurances"</a>
+<li><a href="#_intercepting_of_http_calls">Intercepting of HTTP Calls</a>
 <ul class="sectlevel2">
 <li><a href="#_context">Context</a></li>
 <li><a href="#_solution">Solution</a></li>
 <li><a href="#_recipe">Recipe</a></li>
+</ul>
+</li>
+<li><a href="#__assurances">"Assurances"</a>
+<ul class="sectlevel2">
+<li><a href="#_context_2">Context</a></li>
+<li><a href="#_solution_2">Solution</a></li>
+<li><a href="#_recipe_2">Recipe</a></li>
 </ul>
 </li>
 </ul>
@@ -447,13 +454,74 @@ Brine but are not considered part of Brine&#8217;s responsibility (at least pres
 Many of these are focused on simplicity and ease rather than robustness or elegance,
 and modification to address specific cases should be expected.</p>
 </div>
+<div class="paragraph">
+<p>Many of these will also be platform specific and be subject to further organization
+once platforms beyond ruby are supported.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_intercepting_of_http_calls">Intercepting of HTTP Calls</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_context">Context</h3>
+<div class="paragraph">
+<p>There may be cases where the request or reponse may need to be modified
+in some way before or after transmission, for example to add a custom header
+which is somehow specific to the testing configuration and therefore outside
+of anything that belongs in the specification.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_solution">Solution</h3>
+<div class="paragraph">
+<p>This can be done through the registration of custom Faraday middleware on
+the Brine client. All of the registered middleware attaches
+to the generated connection through an array of functions in
+<a href="https://github.com/brightcove/brine/blob/master/lib/brine/requester.rb">requester.rb</a>.
+Each function accepts the connection object as its single parameter. The array of functions
+is exposed as <code>connection_handlers</code>  and can be modified through getting that property
+from either the default <code>World</code> (for the default client) or from an appropriate <code>ClientBuilder</code>
+if creating custom clients and mutating it accordingly (setting the reference is not suported).
+You could just build your own client without the facilities provided by Brine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_recipe">Recipe</h3>
+<div class="paragraph">
+<p>An example to add a custom header could be implemented as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ruby" data-lang="ruby">require 'faraday'
+class CustomHeaderAdder &lt; Faraday::Middleware
+  def initialize(app, key, val)
+    super(app)
+    @key = key
+    @val = val
+  end
+
+  def call(env)
+    env[:request_headers].merge!({@key =&gt; @val})
+    @app.call(env)
+  end
+end
+
+...
+
+connection_handlers.unshift(proc do |conn|
+  conn.use CustomHeaderAdder, 'x-header', 'I am a test'
+end)</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="__assurances">"Assurances"</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_context">Context</h3>
+<h3 id="_context_2">Context</h3>
 <div class="paragraph">
 <p>Ideally all tests should be as self-contained and isolated as possible;
 when writing functional tests, however, there are cases where this isn&#8217;t
@@ -474,7 +542,7 @@ complete test isolation.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_solution">Solution</h3>
+<h3 id="_solution_2">Solution</h3>
 <div class="paragraph">
 <p>In such cases a standard solution is to designate certain resources to be reused for
 certain tests. These are analogous to the concept of "fixtures" in some test suites
@@ -517,7 +585,7 @@ up test runs through the use of parallelism/asynchronicity.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_recipe">Recipe</h3>
+<h3 id="_recipe_2">Recipe</h3>
 <div class="paragraph">
 <p>This can be done using standard cucumber tags. Assurances can be defined in designated
 <code>assure_*.feature</code> files where each Feature is appropriately tagged:</p>
@@ -560,7 +628,7 @@ Cucumber behavior so that the full test suite can be more stochastic
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-25 10:06:13 -04:00
+Last updated 2018-02-08 14:37:47 EST
 </div>
 </div>
 </body>
