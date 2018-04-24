@@ -12,19 +12,19 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.0'
 
-  s.add_runtime_dependency   'cucumber', '~> 2.4'
-  s.add_runtime_dependency   'mustache'
-  s.add_runtime_dependency   'oauth2'
-  s.add_runtime_dependency   'rspec'
-  s.add_runtime_dependency   'jsonpath'
-  s.add_runtime_dependency   'faraday'
-  s.add_runtime_dependency   'faraday_middleware'
+  s.add_runtime_dependency     'cucumber',           '~> 2.4'
+  s.add_runtime_dependency     'mustache',           '~> 1.0'
+  s.add_runtime_dependency     'oauth2',             '~> 1.4'
+  s.add_runtime_dependency     'rspec',              '~> 3.7'
+  s.add_runtime_dependency     'jsonpath',           '~> 0.8'
+  s.add_runtime_dependency     'faraday',            '~> 0.12'
+  s.add_runtime_dependency     'faraday_middleware', '~> 0.12'
 
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'aruba'
-  s.add_development_dependency 'guard'
-  s.add_development_dependency 'guard-cucumber'
-  s.add_development_dependency 'asciidoctor'
+  s.add_development_dependency 'rake',		     '~> 12.3'
+  s.add_development_dependency 'aruba',		     '~> 0.14'
+  s.add_development_dependency 'guard',		     '~> 2.14'
+  s.add_development_dependency 'guard-cucumber',     '~> 2.1'
+  s.add_development_dependency 'asciidoctor',	     '~> 1.5'
 
   s.files        = `git ls-files`.split("\n")
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")
