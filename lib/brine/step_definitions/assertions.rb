@@ -42,3 +42,9 @@ end
 Then(/^it is a valid `([^`]*)`$/) do |type|
   selector.assert_that(type) {|t| type_check_for(t) }
 end
+
+Then(/^it is of length `([^`]*)`$/) do |length|
+  selector.assert_that(length) do |l|
+    satisfy{|i| i.respond_to?(:length) && i.length == l}
+  end
+end

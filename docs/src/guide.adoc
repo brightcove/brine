@@ -413,6 +413,10 @@ _see <<_selection_and_assertion>>_
 (such as booleans or numbers) will always return false. Null is treated as an empty
 value so that it can be treated as such for endpoints that return null in place of empty collections, and non-null empty values can easily be tested for using conjunction.
 
+`Then it is of length {grave}$VALUE{grave}`::
+  Assert that the value exposes a length attribute and the value of that
+attribute is `VALUE`.
+
 `Then it is a valid {grave}$TYPE{grave}`::
   Assert that the selected value is a valid instance of a `TYPE`. Presently this
 is focused on standard data types (intially based on those specified by JSON),

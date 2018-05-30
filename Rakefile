@@ -31,5 +31,6 @@ check - run tests
 Environment Variables
 ---
 WATCH - (guard) automatically rerun tests on file changes
+FEATURE - path to specific cucumber feature to run
 """
 end
