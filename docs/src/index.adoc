@@ -5,12 +5,24 @@ Matt Whipple <http://github.com/mwhipple[@mwhipple]>
 
 Cucumber DSL for testing REST APIs
 
-== Documentation
-The following are the documentation resources presently available.
+== Overview
+
+The documentation should provide the background information to
+get started using Brine and a framework for figuring out specific details.
+The focus of guides will be on concepts and high level information while
+more comprehensive and finer grained information will be provided by
+specifications and source. Recipes will be provided for problems which
+are common, interesting, or anything anyone wants to contribute :).
+
+== Documents
 
 link:guide.html[icon:book[] User Guide]::
   A guide to writing specifications using the Brine provided DSL.
+
 link:specs.html[icon:cogs[] Specification]::
   The Gherkin specification for all of Brine's features.
+
 link:cookbook.html[icon:cutlery[] Cookbook]::
   Solutions to some problems which Brine does not solve directly.
+
+_TODO: The current Cookbook name should be qualified to match its scope_

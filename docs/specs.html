@@ -440,6 +440,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__span_class_feature_name_resource_cleanup_span"><span class="feature name">Resource Cleanup</span></a></li>
 </ul>
 </li>
+<li><a href="#_assignment">Assignment</a>
+<ul class="sectlevel2">
+<li><a href="#__span_class_feature_name_a_parameter_span"><span class="feature name">A Parameter</span></a></li>
+<li><a href="#__span_class_feature_name_a_random_string_span"><span class="feature name">A Random String</span></a></li>
+<li><a href="#__span_class_feature_name_a_timestamp_span"><span class="feature name">A Timestamp</span></a></li>
+</ul>
+</li>
 <li><a href="#_selection">Selection</a>
 <ul class="sectlevel2">
 <li><a href="#__span_class_feature_name_any_element_span"><span class="feature name">Any Element</span></a></li>
@@ -1059,6 +1066,164 @@ When a resource is created at `/some/path`</code></pre>
 <p><strong>And</strong> it should pass</p>
 </li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assignment">Assignment</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="__span_class_feature_name_a_parameter_span"><span class="feature name">A Parameter</span></h3>
+<div class="paragraph">
+<p>An identifier can be assigned the value of the provided parameter.</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_parameter_assignment_span"><span class="scenario name">Parameter assignment.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/parameter.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Parameter Assignment.
+Scenario: Simple assignment.
+Given `foo` is assigned `bar`
+When the response body is assigned `{{ foo }}`
+Then the value of the response body is equal to `bar`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/parameter.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">1 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__span_class_feature_name_a_random_string_span"><span class="feature name">A Random String</span></h3>
+<div class="paragraph">
+<p>An identifier can be assigned a random string with decent entropy.</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_random_string_assignment_span"><span class="scenario name">Random string assignment.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/random.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Random Assignment.
+Scenario: Several unique variables.
+Given `v1` is assigned a random string
+And `v2` is assigned a random string
+And `v3` is assigned a random string
+When the response body is assigned `[ "{{ v1 }}","{{ v2 }}","{{ v3 }}" ]`
+Then the value of the response body does not have any element that is empty
+And the value of the response body child `"[0]"` is equal to `{{ v1 }}`
+And the value of the response body children `"[1:2]"` does not have any element that is equal to `{{ v1 }}`
+And the value of the response body child `"[2]"` is not equal to `{{ v2 }}`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/random.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">8 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__span_class_feature_name_a_timestamp_span"><span class="feature name">A Timestamp</span></h3>
+<div class="paragraph">
+<p>An identifier can be assigned a current timestamp.</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_timestamp_assignment_span"><span class="scenario name">Timestamp assignment.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/timestamp.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Timestamp Assignment.
+Scenario: Newer than some old date.
+Given `v1` is assigned a timestamp
+When the response body is assigned `{{ v1 }}`
+Then value of the response body is greater than `2018-06-17T12:00:00Z`
+
+Scenario: Values increase.
+Given `v1` is assigned a timestamp
+When the response body is assigned `{{ v1 }}`
+Then the value of the response body is not empty
+
+When `v2` is assigned a timestamp
+And the response body is assigned `{{ v2 }}`
+Then the value of the response body is greater than or equal to `{{ v1 }}`
+
+When `v3` is assigned a timestamp
+And the response body is assigned `{{ v3 }}`
+Then the value of the response body is greater than or equal to `{{ v1 }}`
+And the value of the response body is greater than or equal to `{{ v2 }}`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/timestamp.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1833,7 +1998,7 @@ Then the value of the response body children `.val` has elements which are all a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-30 13:07:46 EDT
+Last updated 2018-06-17 14:59:41 EDT
 </div>
 </div>
 </body>

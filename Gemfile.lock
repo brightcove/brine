@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    brine-dsl (0.7.0)
+    brine-dsl (0.8.0)
       cucumber (~> 2.4)
       faraday (~> 0.12)
       faraday_middleware (~> 0.12)
