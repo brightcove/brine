@@ -1,23 +1,37 @@
-# cleaner_upper.rb -- clean up resources created during test run
+##
+# @file cleaner_upper.rb
+# Clean up resources created during test run.
 #
-# Will issue DELETE call for all tracked URLs which will normally be triggered in a hook.
+# Will issue DELETE call for all tracked URLs which will normally be triggered
+# in a hook.
 #
-# The present approach for this is to explicitly track created resources to which
-# DELETE calls will be sent. Cleaning up of resources will be given some further attention
-# in the future, but this functionality should be preserved.
+# The present approach for this is to explicitly track created resources to
+# which DELETE calls will be sent. Cleaning up of resources will be given some
+# further attention in the future, but this functionality should be preserved.
 
+##
+# A command object for the delete which will be executed as part of cleaning up.
 class DeleteCommand
-  attr_accessor :client, :path
 
-  def initialize(client, path,
-                 oks:[200,204],
-                 attempts: 3)
+  ##
+  # Construct a command with the required paramters to perform the delete.
+  #
+  # @param client The Faraday client which will send the delete message.
+  # @param path The path of the resource to be deleted.
+  # @param oks The response status codes which will be considered successful.
+  # @param attempts The number of times this command should be tried,
+  # retrying if an unsuccessful status code is received.
+  def initialize(client, path, oks: [200,204], attempts: 3)
     @client = client
     @path = path
     @oks = oks
     @attempts = attempts
   end
 
+  ##
+  # Issue the delete based on the parameters provided during construction.
+  #
+  # @returns true if a successful response is obtained, otherwise false.
   def cleanup
     while @attempts > 0
       begin
@@ -33,6 +47,11 @@ class DeleteCommand
   end
 end
 
+##
+# A mixin which provides resource cleanup.
+#
+# Exposes methods to keep a stack of DeleteCommands corresponding to each
+# created resource which are then popped and invoked to perform the cleanup.
 module CleanerUpper
 
   # HTTP client object used to issue DELETE calls

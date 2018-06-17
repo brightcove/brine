@@ -4,6 +4,7 @@ Matt Whipple <http://github.com/mwhipple[@mwhipple]>
 :keywords: Brine, Cucumber, RESt, DSL
 
 == Request Construction
+
 gherkin::../../features/request_construction/basic.feature[spec.erb]
 gherkin::../../features/request_construction/body.feature[spec.erb]
 gherkin::../../features/request_construction/params.feature[spec.erb]
@@ -11,7 +12,13 @@ gherkin::../../features/request_construction/headers.feature[spec.erb]
 gherkin::../../features/request_construction/clearing.feature[spec.erb]
 
 == Resource Cleanup
+
 gherkin::../../features/resource_cleanup/cleanup.feature[spec.erb]
+
+== Assignment
+gherkin::../../features/assignment/parameter.feature[spec.erb]
+gherkin::../../features/assignment/random.feature[spec.erb]
+gherkin::../../features/assignment/timestamp.feature[spec.erb]
 
 == Selection
 gherkin::../../features/selectors/any.feature[spec.erb]

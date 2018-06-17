@@ -550,7 +550,8 @@ type.</p>
 more intelligent comparison of inputs which have been transformed to a
 richer data type with those that have not been transformed (normally strings).
 As an example comparing a date/time value with a string will attempt to parse
-the string to a date/time so that the values can be compared using the proper semantics.</p>
+the string to a date/time so that the values can be compared using the proper
+semantics.</p>
 </dd>
 <dt class="hdlist1"><a href="#_resource_cleanup">Resource Cleanup</a></dt>
 <dd>
@@ -616,7 +617,8 @@ requiring any additional ruby code.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We&#8217;ll write some tests against <a href="http://myjson.com/api" class="bare">http://myjson.com/api</a>
-(selected fairly arbitrary from the list at  <a href="https://github.com/toddmotto/public-apis" class="bare">https://github.com/toddmotto/public-apis</a>).
+(selected fairly arbitrary from the list at
+<a href="https://github.com/toddmotto/public-apis" class="bare">https://github.com/toddmotto/public-apis</a>).
 The API is being explored for the sake of this tutorial,
 which also serves to bolster this library to support the effort.</p>
 </div>
@@ -648,7 +650,8 @@ end</code></pre>
 <p>which could then be called with <code>rake cucumber</code>. The rake approach
 can be extended for different tasks for each environment, each
 of which sets the appropriate environment variables allowing the
-test code itself to follow <a href="https://12factor.net/config">Twelve-Factor App guidelines</a>
+test code itself to follow
+<a href="https://12factor.net/config">Twelve-Factor App guidelines</a>
 where Rake provides sugary convenience.</p>
 </div>
 </div>
@@ -673,8 +676,8 @@ testing the response status from a GET request.</p>
 <h3 id="_a_write_request">A Write Request</h3>
 <div class="paragraph">
 <p>For POST, PATCH and PUT requests you&#8217;ll normally want to include a request body.
-To support this, additional data can be added to the requests before they are sent
-(see <a href="#_request_construction">Request Construction</a>).</p>
+To support this, additional data can be added to the requests before they are
+sent (see <a href="#_request_construction">Request Construction</a>).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -723,14 +726,16 @@ can check that the <code>uri</code> response child matches the expected pattern.
 <h2 id="_environment_variables">Environment Variables</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Some Brine behavior can be tuned by passing it appropriate environment variables, listed here.</p>
+<p>Some Brine behavior can be tuned by passing it appropriate environment
+variables, listed here.</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>BRINE_LOG_HTTP</code></dt>
 <dd>
-<p>Output HTTP traffic to stdout. Any truthy value will result in request and response
-metadata being logged, a value of <code>DEBUG</code> (case insensitive) will also log the bodies.</p>
+<p>Output HTTP traffic to stdout. Any truthy value will result in request and
+response metadata being logged, a value of <code>DEBUG</code> (case insensitive) will also
+log the bodies.</p>
 </dd>
 <dt class="hdlist1"><code>BRINE_LOG_BINDING</code></dt>
 <dd>
@@ -747,15 +752,16 @@ metadata being logged, a value of <code>DEBUG</code> (case insensitive) will als
 <h3 id="_the_use_of_code_code_s">The use of <code>`</code>s</h3>
 <div class="paragraph">
 <p>Backticks/grave accents are used as <em>parameter delimiters</em>. It is perhaps
-most helpful to think of them in those explicit terms rather than thinking of them
-as an alternate <em>quote</em> construct. In particular quoting implies that the parameter
-value is a string value, while the step transforms allow for alternate data types.</p>
+most helpful to think of them in those explicit terms rather than thinking of
+them as an alternate <em>quote</em> construct. In particular quoting implies that the
+parameter value is a string value, while the step transforms allow for
+alternative data types.</p>
 </div>
 <div class="paragraph">
-<p><code>`</code>s were chosen as they are less common than
-many other syntactical elements and also allow for the use of logically significant
-quoting within paremeter values while hopefully avoiding the need for escape artistry
-(as used for argument transforms).</p>
+<p><code>`</code>s were chosen as they are less common than many other syntactical
+elements and also allow for the use of logically significant
+quoting within paremeter values while hopefully avoiding the need for escape
+artistry (as used for argument transforms).</p>
 </div>
 </div>
 </div>
@@ -764,16 +770,19 @@ quoting within paremeter values while hopefully avoiding the need for escape art
 <h2 id="_selection_and_assertion">Selection and Assertion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As tests are generally concerned with performing assertions, a testing DSL should be
-able to express the variety of assertions that may be needed. Because these are likely
-to be numerous, it could easily lead to duplicated logic or geometric growth of code due
-to the combinations of types of assertions and the means to select the inputs for the assertion.</p>
+<p>As tests are generally concerned with performing assertions, a testing DSL
+should be able to express the variety of assertions that may be needed. Because
+these are likely to be numerous, it could easily lead to duplicated logic or
+geometric growth of code due to the combinations of types of assertions and the
+means to select the inputs for the assertion.</p>
 </div>
 <div class="paragraph">
-<p>To avoid this issue the concepts of selection and assertion are considered separate operations in Brine.
-Internally this corresponds to two steps: the first assigns a selector;
-the second passes the assertion to that selector which is responsible for applying the assertion against
-the selected value(s). In standard step use this will still be expressed as a single step,
+<p>To avoid this issue the concepts of selection and assertion are considered
+separate operations in Brine. Internally this corresponds to two steps: the
+first assigns a selector;
+the second passes the assertion to that selector which is responsible for
+applying the assertion against the selected value(s). In standard step use this
+will still be expressed as a single step,
 and dynamic step definitions are used to split the work appropriately.</p>
 </div>
 <div class="paragraph">
@@ -786,27 +795,31 @@ and dynamic step definitions are used to split the work appropriately.</p>
 </div>
 <div class="paragraph">
 <p>Will be split where the subject of the step (<code>the value of the response body</code>)
-defines the selector and the predicate of the step <code>is equal to `foo`</code> defines
-the assertion (which is translated to a step such as <code>Then it is equal to `foo`</code>).</p>
+defines the selector and the predicate of the step
+<code>is equal to `foo`</code> defines the assertion (which is translated to a
+step such as <code>Then it is equal to `foo`</code>).</p>
 </div>
 <div class="paragraph">
-<p>The result of this is that the assertion steps will always follow a pattern where the subject
-resembles <code>the value of &#8230;&#8203;</code> and the predicate always resembles <code>is &#8230;&#8203;</code>. Learning the selection
-phrases and the assertion phrases and combining them should be a more efficient and flexible way
-to become familiar with the language instead of focusing on the resulting combined steps.</p>
+<p>The result of this is that the assertion steps will always follow a pattern
+where the subject resembles <code>the value of &#8230;&#8203;</code> and the predicate always
+resembles <code>is &#8230;&#8203;</code>. Learning the selection phrases and the assertion phrases
+and combining them should be a more efficient and flexible way to become
+familiar with the language instead of focusing on the resulting combined steps.</p>
 </div>
 <div class="paragraph">
 <p>The chosen approach sacrifices eloquence for the sake of consistency.
-The predicate will always start with <code>is</code> which can lead to awkward language such as
-<code>is including</code> rather than simply <code>includes</code>.
+The predicate will always start with <code>is</code> which can lead to awkward language
+such as <code>is including</code> rather than simply <code>includes</code>.
 The consistency provides additional benefits such as consistent modification:
-for instance <code>is not</code> can always be use for negation rather than working out the appropriate
-phrasing for a more natural sounding step (let alone the logic).</p>
+for instance <code>is not</code> can always be use for negation rather than working out the
+appropriate phrasing for a more natural sounding step (let alone the logic).</p>
 </div>
 <div class="paragraph">
-<p>One of the secondary goals of this is that assertion step definitions should very simple to
-write and modifiers (such as negation) should be provided for free to those definitions.
-As assertion definitions are likely to be numerous and potentially customized, this should help optimize code economy.</p>
+<p>One of the secondary goals of this is that assertion step definitions should
+be very simple to write and modifiers (such as negation) should be provided for
+free to those definitions.
+As assertion definitions are likely to be numerous and potentially customized,
+this should help optimize code economy.</p>
 </div>
 <div class="sect2">
 <h3 id="_selection_modifiers">Selection Modifiers</h3>
@@ -922,12 +935,15 @@ JsonPath expressions <em>not</em> listed below will not be explicitly disallowed
 <div class="sect2">
 <h3 id="_cardinality">Cardinality</h3>
 <div class="paragraph">
-<p>Each traversal expression will select <em>all</em> matching nodes which is therefore represented as a collection.
-Often, however, only a single node is expected or desired. Therefore the traversal expression will also
-be accompanied by a phrase which defines the expected cardinality, normally <code>child</code> vs. <code>children</code>. <code>children</code> will
-<em>always</em> return an array while <code>child</code> will return what would be the first element in that array. <code>child</code> should be
-used when accessing a specific node within the tree, while <code>children</code> should be used for what amounts to a query
-across multiple nodes (such as testing the value of a field for every element in a collection).</p>
+<p>Each traversal expression will select <em>all</em> matching nodes which is therefore
+represented as a collection. Often, however, only a single node is expected or
+desired. Therefore the traversal expression will also be accompanied by a phrase
+which defines the expected cardinality, normally <code>child</code> vs. <code>children</code>.
+<code>children</code> will <em>always</em> return an array while <code>child</code> will return what would be
+the first element in that array. <code>child</code> should be used when accessing a
+specific node within the tree, while <code>children</code> should be used for what amounts
+to a query across multiple nodes (such as testing the value of a field for every
+element in a collection).</p>
 </div>
 </div>
 <div class="sect2">
@@ -1010,7 +1026,7 @@ The order of the parameters in the resulting URL should be considered undefined.
 </dd>
 <dt class="hdlist1"><code>When the request header `$HEADER` is assigned `$VALUE`</code></dt>
 <dd>
-<p>  Assign <code>VALUE</code> to the request header <code>HEADER</code>.
+<p>Assign <code>VALUE</code> to the request header <code>HEADER</code>.
 Will overwrite any earlier value for the specified header, including earlier steps or defaults.</p>
 </dd>
 </dl>
@@ -1029,6 +1045,9 @@ Will overwrite any earlier value for the specified header, including earlier ste
 </div>
 <div class="sect2">
 <h3 id="_assignment">Assignment</h3>
+<div class="paragraph">
+<p><a href="specs.html#_assignment"><span class="icon"><i class="fa fa-cogs"></i></span> Specification</a></p>
+</div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>When `$IDENTIFIER` is assigned `$VALUE`</code></dt>
@@ -1056,11 +1075,14 @@ which the step was evaluated.</p>
 <div class="paragraph">
 <p><em>see <a href="#_selection_and_assertion">Selection and Assertion</a></em></p>
 </div>
+<div class="paragraph">
+<p><em>TODO: Replace all the explicit attributes.</em></p>
+</div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>Then the value of the response status is</code></dt>
+<dt class="hdlist1"><code>Then the value of the response (body|status|headers) is</code></dt>
 <dd>
-<p>Select the status code of the current HTTP response.</p>
+<p>Select the sepecified attribute of the current HTTP response.</p>
 </dd>
 <dt class="hdlist1"><code>Then the value of the response body [$TRAVERSAL] is [not]</code></dt>
 <dd>
@@ -1147,7 +1169,7 @@ wiring and documentation. The current supported types are:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-30 12:55:31 EDT
+Last updated 2018-06-17 15:09:36 EDT
 </div>
 </div>
 </body>

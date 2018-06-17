@@ -1,10 +1,12 @@
-# brine.rb -- loader file for the rest of brine
+##
+# @file brine.rb
+# Loader file for the rest of brine.
 #
 # The primary goal of this file is to load all resources needed to use brine.
-# A secondary goal which should inform how that is done is that loading this file by itself
-# should provide new objects but not otherwise impact existing state such as by
-# modifying the World or defining any Steps, Transforms, or similar.
-# Those types of changes should be done by [#brine_mix].
+# A secondary goal which should inform how that is done is that loading this
+# file by itself should provide new objects but not otherwise impact existing
+# state such as by  modifying the World or defining any Steps, Transforms, etc.
+# Those types of changes should be done by @ref #brine_mix.
 
 require 'brine/cleaner_upper'
 require 'brine/mustache_binder'
@@ -13,7 +15,8 @@ require 'brine/util'
 require 'brine/selector'
 require 'brine/type_checks'
 
-# Modules to add to World
+##
+# Meta-module for modules to mix into World.
 module Brine
   include CleanerUpper
   include MustacheBinder
@@ -23,8 +26,10 @@ module Brine
   include TypeChecking
 end
 
-# Load the more side effecty files and return the Module,
-# expected to be called as `World(brine_mix)`
+##
+# Load the files with side effects and return @ref Brine.
+#
+# Expected to be called as `World(brine_mix)`
 def brine_mix
   require 'brine/step_definitions/assignment'
   require 'brine/step_definitions/request_construction'
