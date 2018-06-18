@@ -445,6 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#__span_class_feature_name_a_parameter_span"><span class="feature name">A Parameter</span></a></li>
 <li><a href="#__span_class_feature_name_a_random_string_span"><span class="feature name">A Random String</span></a></li>
 <li><a href="#__span_class_feature_name_a_timestamp_span"><span class="feature name">A Timestamp</span></a></li>
+<li><a href="#__span_class_feature_name_a_value_from_a_response_attribute_span"><span class="feature name">A Value From A Response Attribute.</span></a></li>
 </ul>
 </li>
 <li><a href="#_selection">Selection</a>
@@ -1144,9 +1145,9 @@ And `v2` is assigned a random string
 And `v3` is assigned a random string
 When the response body is assigned `[ "{{ v1 }}","{{ v2 }}","{{ v3 }}" ]`
 Then the value of the response body does not have any element that is empty
-And the value of the response body child `"[0]"` is equal to `{{ v1 }}`
-And the value of the response body children `"[1:2]"` does not have any element that is equal to `{{ v1 }}`
-And the value of the response body child `"[2]"` is not equal to `{{ v2 }}`</code></pre>
+And the value of the response body child `.[0]` is equal to `{{ v1 }}`
+And the value of the response body children `.[1:2]` does not have any element that is equal to `{{ v1 }}`
+And the value of the response body child `.[2]` is not equal to `{{ v2 }}`</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -1224,6 +1225,66 @@ And the value of the response body is greater than or equal to `{{ v2 }}`</code>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">2 passed</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__span_class_feature_name_a_value_from_a_response_attribute_span"><span class="feature name">A Value From A Response Attribute.</span></h3>
+<div class="paragraph">
+<p>An identifier can be assigned a value extracted from a response attribute.</p>
+</div>
+<div class="sect3">
+<h4 id="__span_class_scenario_name_assorted_attribute_extractions_span"><span class="scenario name">Assorted attribute extractions.</span></h4>
+<div class="ulist step-list">
+<ul>
+<li>
+<p><strong>Given</strong> a file named "features/response_attribute.feature" with:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">Feature: Reponse Attribute Path Assignment.
+Scenario: Response body.
+Given the response body is assigned `foo`
+When `myVar` is assigned the response body
+And the response body is assigned `{{ myVar }}`
+Then the value of the response body is equal to `foo`
+
+Scenario: Response body child.
+Given the response body is assigned `{"response": "foo"}`
+When `myVar` is assigned the response body child `.response`
+And the response body is assigned `{{ myVar }}`
+Then the value of the response body is equal to `foo`
+
+Scenario: Response body children.
+Given the response body is assigned `{"response": "foo"}`
+When `myVar` is assigned the response body children `.response`
+And the response body is assigned `{{{ myVar }}}`
+Then the value of the response body is equal to `["foo"]`</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>When</strong> I run <code>cucumber --strict features/response_attribute.feature</code></p>
+</li>
+<li>
+<p><strong>Then</strong> the output should contain:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-gherkin" data-lang="gherkin">3 passed</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>And</strong> it should pass</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1998,7 +2059,7 @@ Then the value of the response body children `.val` has elements which are all a
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-06-17 14:59:41 EDT
+Last updated 2018-06-17 22:22:57 EDT
 </div>
 </div>
 </body>

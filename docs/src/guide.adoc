@@ -372,8 +372,11 @@ element in a collection).
   Access the `KEY` named child of the starting node. The leading `.` can be
   omitted if at the start of an expression.
 
-`[$FROM:$TO]`::
-  Return a slice of the array containing the elements at index `FROM` through
+`.[$INDEX]`::
+  Access the element of the array at index `INDEX`
+
+`.[$FROM:$TO]`::
+  Access a slice of the array containing the elements at index `FROM` through
   `TO` (including both limits).
 
 == Resource Cleanup
@@ -458,6 +461,10 @@ link:specs.html#_assignment[icon:cogs[] Specification]
   Assigns to `IDENTIFIER` a timestamp value representing the instant at
   which the step was evaluated.
 
+`When {grave}$IDENTIFIER{grave} is assigned the response {response_attribute} [$TRAVERSAL]`::
+  Assigns to `IDENTIFIER` the value extracted from the specified response
+  attribtute (at the optional traversal path).
+
 === Selection
 
 link:specs.html#_selection[icon:cogs[] Specification]
@@ -479,6 +486,7 @@ _TODO: Replace all the explicit attributes._
   Select all elements from the structure within the response body.
 
 === Assertion
+
 link:specs.html#_assertion[icon:cogs[] Specification]
 
 _see <<_selection_and_assertion>>_
@@ -493,13 +501,15 @@ _see <<_selection_and_assertion>>_
   Assert that the current select value includes/is a superset of `VALUE`.
 
 `Then it is empty`::
-  Assert that value is empty or null. Any type which is not testable for emptiness
-(such as booleans or numbers) will always return false. Null is treated as an empty
-value so that it can be treated as such for endpoints that return null in place of empty collections, and non-null empty values can easily be tested for using conjunction.
+  Assert that value is empty or null. Any type which is not testable for
+  emptiness (such as booleans or numbers) will always return false. Null is
+  treated as an empty value so that it can be treated as such for endpoints that
+  return null in place of empty collections, and non-null empty values can
+  easily be tested for using conjunction.
 
 `Then it is of length {grave}$VALUE{grave}`::
   Assert that the value exposes a length attribute and the value of that
-attribute is `VALUE`.
+  attribute is `VALUE`.
 
 `Then it is a valid {grave}$TYPE{grave}`::
   Assert that the selected value is a valid instance of a `TYPE`. Presently this

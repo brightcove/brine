@@ -546,8 +546,8 @@ type.</p>
 </dd>
 <dt class="hdlist1">Type Coercion</dt>
 <dd>
-<p>Related to transforms, a facility to coerce types is also provided. This allows
-more intelligent comparison of inputs which have been transformed to a
+<p>Related to transforms, a facility to coerce types is also provided. This
+allows more intelligent comparison of inputs which have been transformed to a
 richer data type with those that have not been transformed (normally strings).
 As an example comparing a date/time value with a string will attempt to parse
 the string to a date/time so that the values can be compared using the proper
@@ -734,8 +734,8 @@ variables, listed here.</p>
 <dt class="hdlist1"><code>BRINE_LOG_HTTP</code></dt>
 <dd>
 <p>Output HTTP traffic to stdout. Any truthy value will result in request and
-response metadata being logged, a value of <code>DEBUG</code> (case insensitive) will also
-log the bodies.</p>
+response metadata being logged, a value of <code>DEBUG</code> (case insensitive) will
+also log the bodies.</p>
 </dd>
 <dt class="hdlist1"><code>BRINE_LOG_BINDING</code></dt>
 <dd>
@@ -824,33 +824,38 @@ this should help optimize code economy.</p>
 <div class="sect2">
 <h3 id="_selection_modifiers">Selection Modifiers</h3>
 <div class="paragraph">
-<p>To pursue economical flexibility Brine steps attempt to balance step definitions which accommodate variations
-while keeping the step logic and patterns fairly simple. Selection steps in particular generally accept some
-parameters that affect their behavior. This allows the relatively small number of selection steps to provide
-the flexibility to empower the more numerous assertion steps.</p>
+<p>To pursue economical flexibility Brine steps attempt to balance step definitions
+which accommodate variations while keeping the step logic and patterns fairly
+simple. Selection steps in particular generally accept some parameters that
+affect their behavior. This allows the relatively small number of selection
+steps to provide the flexibility to empower the more numerous assertion steps.</p>
 </div>
 <div class="sect3">
 <h4 id="_traversal">Traversal</h4>
 <div class="paragraph">
-<p>Selection steps can generally target the root of the object specified (such as the response body)
-or some nodes within the object if it is a non-scalar value (for instance a child of the response body).
-This is indicated in the <a href="#_selection">step reference selection steps</a> by the <code>[$TRAVERSAL]</code> placeholder.
-<code>child `$EXPRESSION`</code> or <code>children `$EXPRESSION`</code> can optionally be
-inserted at the placeholder to select nested nodes as described in <a href="#_traversal_2">Traversal</a>.</p>
+<p>Selection steps can generally target the root of the object specified (such as
+the response body) or some nodes within the object if it is a non-scalar value
+(for instance a child of the response body). This is indicated in the
+<a href="#_selection">step reference selection steps</a> by the <code>[$TRAVERSAL]</code> placeholder.
+<code>child `$EXPRESSION`</code> or <code>children `$EXPRESSION`</code> can
+optionally be inserted at the placeholder to select nested nodes as described
+in <a href="#_traversal_2">Traversal</a>.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_negation">Negation</h4>
 <div class="paragraph">
 <p>The selectors also currently handle negation of the associated assertions.
-This is potentially counter-intuitive but as previously mentioned the intent is that this
-should ease the creation of assertions. If negation is added to a selector that it is expected that
-the assertion will <em>fail</em>.</p>
+This is potentially counter-intuitive but as previously mentioned the intent is
+that this should ease the creation of assertions. If negation is added to a
+selector that it is expected that the assertion will <em>fail</em>.</p>
 </div>
 <div class="paragraph">
-<p>Negation will be normally indicated in the <a href="#_selection">step reference selection steps</a> by the presence
-of the <code>[not]</code> placeholder. A similar placeholder may be used that is more readable but leads to an equivalent
-inversion of the semantics of the statement. To negate the step, the text within the <code>[]</code>s should be inserted
+<p>Negation will be normally indicated in the
+<a href="#_selection">step reference selection steps</a> by the presence
+of the <code>[not]</code> placeholder. A similar placeholder may be used that is more
+readable but leads to an equivalent inversion of the semantics of the statement.
+To negate the step, the text within the <code>[]</code>s should be inserted
 in the indicated position.</p>
 </div>
 <div class="admonitionblock note">
@@ -860,10 +865,12 @@ in the indicated position.</p>
 <i class="fa icon-note" title="Future Versions"></i>
 </td>
 <td class="content">
-Handling this in the selectors is (as mentioned) counter-intuitive and unnecessarily couples the selector
-to the assertion. It is currently done for practical reasons but is likely to be replaced in a future version
-after (or as part of) the initial port of the library to another platform. When it is replaced, all existing steps
-will remain supported through at least one more major revision and most should (most should remain unchanged).
+Handling this in the selectors is (as mentioned) counter-intuitive and
+unnecessarily couples the selector to the assertion. It is currently done for
+practical reasons but is likely to be replaced in a future version after (or as
+part of) the initial port of the library to another platform. When it is
+replaced, all existing steps will remain supported through at least one more
+major revision and most should (most should remain unchanged).
 </td>
 </tr>
 </table>
@@ -885,9 +892,12 @@ Use at your own risk, this feature is <strong>not presently supported</strong>.
 </table>
 </div>
 <div class="paragraph">
-<p>For anyone that likes to live on the (relative) edge or if this gathers notable interest&#8230;&#8203;the above also
-provides an implicit feature: after a value is selected multiple assertions could be performed against it.
-For instance:</p>
+<p>For anyone that likes to live on the (relative) edge or if this gathers notable
+interest&#8230;&#8203;the above also provides an implicit feature: after a value is
+selected multiple assertions could be performed against it.</p>
+</div>
+<div class="paragraph">
+<p>For instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -896,9 +906,10 @@ And it is of the type `String`</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Though this may work in simple cases the present design is likely to produce surprising results since
-some aspects (such as negation) are handled by the selector so it would be inherited by the conjunctions
-even though it wouldn&#8217;t read that way.</p>
+<p>Though this may work in simple cases the present design is likely to produce
+surprising results since some aspects (such as negation) are handled by the
+selector so it would be inherited by the conjunctions even though it wouldn&#8217;t
+read that way.</p>
 </div>
 </div>
 </div>
@@ -907,13 +918,14 @@ even though it wouldn&#8217;t read that way.</p>
 <h2 id="_traversal_2">Traversal</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The language exposed by Brine is flat but the data returned by the server is likely
-to include deeper data structures such as objects and collections. To allow selection within
-such structures a <code>traversal</code> language is embedded within some steps which will be indicated
-by the use of the <code>TRAVERSAL</code> placeholder.</p>
+<p>The language exposed by Brine is flat but the data returned by the server is
+likely to include deeper data structures such as objects and collections. To
+allow selection within such structures a <code>traversal</code> language is embedded within
+some steps which will be indicated by the use of the <code>TRAVERSAL</code> placeholder.</p>
 </div>
 <div class="paragraph">
-<p>The traversal language consists of a selected subset of <a href="http://goessner.net/articles/JsonPath/">JsonPath</a>.</p>
+<p>The traversal language consists of a selected subset of
+<a href="http://goessner.net/articles/JsonPath/">JsonPath</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -922,12 +934,14 @@ by the use of the <code>TRAVERSAL</code> placeholder.</p>
 <i class="fa icon-note" title="The Selected Subset"></i>
 </td>
 <td class="content">
-The subset of JsonPath functionality has been chosen that is believed to support all needed
-test cases without requiring deep familiarity with JsonPath. This may lead to more numerous simple steps
-in place of fewer steps that use unsupported expressions. Additionally Brine is intended to be
-ported to a range of platforms and so only those steps outlined here will be supported across those platforms.
-JsonPath expressions <em>not</em> listed below will not be explicitly disallowed but are not officially supported
-(will not be tested and will not be ported to another platform if needed).
+The subset of JsonPath functionality has been chosen that is believed to support
+all needed test cases without requiring deep familiarity with JsonPath. This may
+lead to more numerous simple steps in place of fewer steps that use unsupported
+expressions. Additionally Brine is intended to be ported to a range of platforms
+and so only those steps outlined here will be supported across those platforms.
+JsonPath expressions <em>not</em> listed below will not be explicitly disallowed but
+are not officially supported (will not be tested and will not be ported to
+another platform if needed).
 </td>
 </tr>
 </table>
@@ -952,8 +966,17 @@ element in a collection).</p>
 <dl>
 <dt class="hdlist1"><code>.$KEY</code></dt>
 <dd>
-<p>  Access the <code>KEY</code> named child of the starting node. The leading <code>.</code> can be
+<p>Access the <code>KEY</code> named child of the starting node. The leading <code>.</code> can be
 omitted if at the start of an expression.</p>
+</dd>
+<dt class="hdlist1"><code>.[$INDEX]</code></dt>
+<dd>
+<p>Access the element of the array at index <code>INDEX</code></p>
+</dd>
+<dt class="hdlist1"><code>.[$FROM:$TO]</code></dt>
+<dd>
+<p>Access a slice of the array containing the elements at index <code>FROM</code> through
+<code>TO</code> (including both limits).</p>
 </dd>
 </dl>
 </div>
@@ -964,26 +987,32 @@ omitted if at the start of an expression.</p>
 <h2 id="_resource_cleanup">Resource Cleanup</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>All test suites should clean up after themselves as a matter of hygiene and to help enforce test independence
-and reproducibility. This is particularly important for this library given that it is likely the systems under test
-are likely to remain running; accumulated uncleaned resources are at best a nuisance to have to weed through and
-at worst raise some costs or other due to heightened consumption of assorted resources (as opposed to more
-ephemeral test environments).</p>
+<p>All test suites should clean up after themselves as a matter of hygiene and to
+help enforce test independence and reproducibility. This is particularly
+important for this library given that it is likely the systems under test
+are likely to remain running; accumulated uncleaned resources are at best a
+nuisance to have to weed through and at worst raise some costs or other due to
+heightened consumption of assorted resources (as opposed to more ephemeral test
+environments).</p>
 </div>
 <div class="paragraph">
-<p>Brine therefore provides mechanisms to assist in cleaning up those resources which are created as part of a test run.
-A conceptual hurdle for this type of functionality is that it is very unlikely to be part of the feature that is being
-specified, and therefore should ideally not be part of the specification. Depending on the functionality
-(and arguably the <a href="https://www.martinfowler.com/articles/richardsonMaturityModel.html">maturity</a>) of the
-API, most or all of the cleanup can be automagically done based on convention. There are tentative plans to support
-multiple techniques for cleaning up resources based on how much can be implicitly ascertained&#8230;&#8203;though presently there
-exists only one.</p>
+<p>Brine therefore provides mechanisms to assist in cleaning up those resources
+which are created as part of a test run. A conceptual hurdle for this type of
+functionality is that it is very unlikely to be part of the feature that is
+being specified, and therefore should ideally not be part of the specification.
+Depending on the functionality (and arguably the
+<a href="https://www.martinfowler.com/articles/richardsonMaturityModel.html">maturity</a>)
+of the API, most or all of the cleanup can be automagically done based on
+convention. There are tentative plans to support multiple techniques for
+cleaning up resources based on how much can be implicitly
+ascertained&#8230;&#8203;though presently there exists only one.</p>
 </div>
 <div class="sect2">
 <h3 id="_step_indicating_resource_to_delete">Step indicating resource to DELETE</h3>
 <div class="paragraph">
-<p>If the API supports DELETE requests to remove created resources but it is either desirable or necessary to specify
-what those resource PATHS are, a step can be used to indicate which resources should be DELETEd upon test completion.</p>
+<p>If the API supports DELETE requests to remove created resources but it is either
+desirable or necessary to specify what those resource PATHS are, a step can be
+used to indicate which resources should be DELETEd upon test completion.</p>
 </div>
 <div class="paragraph">
 <p><em>see <a href="#_cleanup">Cleanup Step Definitions</a></em></p>
@@ -1007,27 +1036,34 @@ a <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder</a>.</p>
 <dl>
 <dt class="hdlist1"><code>When a $METHOD is sent to `$PATH`</code></dt>
 <dd>
-<p>  As every request to a REST API is likely to have a significant
-HTTP <code>METHOD</code> and <code>PATH</code>, this step is considered required and is therefore used
-to send the built request. This should therefore be the <strong>last</strong> step for any
-given request that is being built.</p>
+<p>As every request to a REST API is likely to have a significant
+HTTP <code>METHOD</code> and <code>PATH</code>, this step is considered required and is therefore
+used to send the built request. This should therefore be the <strong>last</strong> step for
+any given request that is being built.</p>
 </dd>
 <dt class="hdlist1"><code>When the request body is assigned:</code></dt>
 <dd>
-<p>  The multiline content provided will be assigned to the body of the request.
+<p>The multiline content provided will be assigned to the body of the request.
 This will normally likely be the JSON representation of data.</p>
 </dd>
-<dt class="hdlist1"><code>When the request query parameter `$PARAMETER` is assigned `$VALUE`</code></dt>
-<dd>
-<p>  Assign <code>VALUE</code> to the request query <code>PARAMETER</code>.
-The value will be URL encoded and the key/value pair appended to the URL using
-the appropriate <code>?</code> or <code>&amp;</code> delimiter.
-The order of the parameters in the resulting URL should be considered undefined.</p>
-</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><code>When the request query parameter `$PARAMETER` is assigned
+`$VALUE`</code>::
+  Assign <code>VALUE</code> to the request query <code>PARAMETER</code>.
+  The value will be URL encoded and the key/value pair appended to the URL using
+  the appropriate <code>?</code> or <code>&amp;</code> delimiter.
+  The order of the parameters in the resulting URL should be considered
+  undefined.</p>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>When the request header `$HEADER` is assigned `$VALUE`</code></dt>
 <dd>
 <p>Assign <code>VALUE</code> to the request header <code>HEADER</code>.
-Will overwrite any earlier value for the specified header, including earlier steps or defaults.</p>
+Will overwrite any earlier value for the specified header, including earlier
+steps or defaults.</p>
 </dd>
 </dl>
 </div>
@@ -1038,7 +1074,8 @@ Will overwrite any earlier value for the specified header, including earlier ste
 <dl>
 <dt class="hdlist1"><code>When a resouce is created at `$PATH`</code></dt>
 <dd>
-<p>Mark <code>PATH</code> as a resource to DELETE after the test is run. See <a href="#_resource_cleanup">Resource Cleanup</a></p>
+<p>Mark <code>PATH</code> as a resource to DELETE after the test is run.
+See <a href="#_resource_cleanup">Resource Cleanup</a></p>
 </dd>
 </dl>
 </div>
@@ -1056,13 +1093,18 @@ Will overwrite any earlier value for the specified header, including earlier ste
 </dd>
 <dt class="hdlist1"><code>When `$IDENTIFIER` is assigned a random string</code></dt>
 <dd>
-<p>  Assigns a random string (UUID) to <code>IDENTIFIER</code>.
+<p>Assigns a random string (UUID) to <code>IDENTIFIER</code>.
 This is particularly useful to assist with test isolation.</p>
 </dd>
 <dt class="hdlist1"><code>When `$IDENTIFIER` is assigned a timestamp</code></dt>
 <dd>
-<p>  Assigns to <code>IDENTIFIER</code> a timestamp value representing the instant at
+<p>Assigns to <code>IDENTIFIER</code> a timestamp value representing the instant at
 which the step was evaluated.</p>
+</dd>
+<dt class="hdlist1"><code>When `$IDENTIFIER` is assigned the response (body|status|headers) [$TRAVERSAL]</code></dt>
+<dd>
+<p>Assigns to <code>IDENTIFIER</code> the value extracted from the specified response
+attribtute (at the optional traversal path).</p>
 </dd>
 </dl>
 </div>
@@ -1123,13 +1165,15 @@ which the step was evaluated.</p>
 </dd>
 <dt class="hdlist1"><code>Then it is empty</code></dt>
 <dd>
-<p>  Assert that value is empty or null. Any type which is not testable for emptiness
-(such as booleans or numbers) will always return false. Null is treated as an empty
-value so that it can be treated as such for endpoints that return null in place of empty collections, and non-null empty values can easily be tested for using conjunction.</p>
+<p>Assert that value is empty or null. Any type which is not testable for
+emptiness (such as booleans or numbers) will always return false. Null is
+treated as an empty value so that it can be treated as such for endpoints that
+return null in place of empty collections, and non-null empty values can
+easily be tested for using conjunction.</p>
 </dd>
 <dt class="hdlist1"><code>Then it is of length `$VALUE`</code></dt>
 <dd>
-<p>  Assert that the value exposes a length attribute and the value of that
+<p>Assert that the value exposes a length attribute and the value of that
 attribute is <code>VALUE</code>.</p>
 </dd>
 <dt class="hdlist1"><code>Then it is a valid `$TYPE`</code></dt>
@@ -1169,7 +1213,7 @@ wiring and documentation. The current supported types are:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-06-17 15:09:36 EDT
+Last updated 2018-06-17 22:38:06 EDT
 </div>
 </div>
 </body>
