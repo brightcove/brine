@@ -10,22 +10,22 @@ Then(/^the response #{RESPONSE_ATTRIBUTES} has `([^`]*)` with a value that is no
 end
 
 Then(/^the response #{RESPONSE_ATTRIBUTES} includes? the entries:$/) do |attribute, table|
-  replaced_with('Then', "the value of the response #{attribute} is including:\n\"\"\"#{table.hashes.to_json}\"\"\"", '0.9')
+  replaced_with('Then', "the value of the response #{attribute} is including:", '0.9', kv_table(table).to_json)
 end
 
 Then(/^the response body is a list of length (\d+)$/) do |length|
-  replaced_with('Then', "the value of the response body is of length #{length}", '0.9')
+  replaced_with('Then', "the value of the response body is of length `#{length}`", '0.9')
 end
 
 Then(/^the response body is a list (with|without) an entry containing:$/) do |with, data|
   neg = (with == 'without') ? 'not ' : ''
-  replaced_with('Then', "the value of the response body does #{neg}have any element that is including:\n\"\"\"#{table.hashes.to_json}\"\"\"", '0.9')
+  replaced_with('Then', "the value of the response body does #{neg}have any element that is including:", '0.9', table.hashes.to_json)
 end
 
 Then(/^the response body has `([^`]*)` which (in|ex)cludes? the entries:$/) do
   |child, in_or_ex, table|
   neg = (in_or_ex=='ex') ? 'not ' : ''
-  replaced_with('Then', "the value of the response body child `#{child}` is #{neg}including:\n\"\"\"#{table.hashes.to_json}\"\"\"", '0.9')
+  replaced_with('Then', "the value of the response body child `#{child}` is #{neg}including:", '0.9', kv_table(table).to_json)
 end
 
 # This file is legacy or unsorted steps which will be deprecated or moved into

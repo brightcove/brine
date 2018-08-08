@@ -33,3 +33,21 @@ Feature: Deprecation Messaging
       DEPRECATION:
       """
     And it should pass
+
+  Scenario: 0.9 depprecations
+    Given a file named "features/0.9.feature" with:
+      """
+
+Feature: 0.9
+  Scenario: includes the entries
+    When the response body is assigned `{"foo":"bar"}`
+    Then the response body includes the entries:
+      | foo | bar |
+
+      """
+    When I run `cucumber --strict features/0.9.feature`
+    Then the output should contain:
+      """
+      1 passed
+      """
+    And it should pass
