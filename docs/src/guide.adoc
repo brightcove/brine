@@ -366,6 +366,8 @@ specific node within the tree, while `children` should be used for what amounts
 to a query across multiple nodes (such as testing the value of a field for every
 element in a collection).
 
+
+
 === Expressions
 
 `.$KEY`::
@@ -522,3 +524,56 @@ wiring and documentation. The current supported types are:
  * `Integer`
  * `Array`
  * `Boolean`
+
+=== Handling Nested elements
+
+Using brine should provide easy to understand tests. Given:
+
+[source,gherkin]
+----
+When the request body is assigned:
+  """
+  {"name":"Jet Li",
+  "skills":"Being the one, Multiverse-homicide"}
+  """
+And a POST is sent to `/people`
+----
+
+A check on skills could follow up, with the response returning the created
+object inside an object with `data` and `links` sub-objects (Hypermedia API)
+
+[source,gherkin]
+----
+Then the value of the response status is equal to `201`
+And the value of the response body child `data.skills` is a valid `Array`
+And the value of the response body child `data.skills` is including:
+  """
+  "Multiverse-homicide"
+  """
+And the value of the response body child `data.skills` is including:
+  """
+  "Being the one"
+  """
+----
+
+The above example uses child comparison to type as well as value, verifies
+multiple elements from PUT body. This can be useful if your response contains
+HATEOAS (Hypermedia As The Engine Of Application State) Links. The end goal is
+that anyone reading the specification will be able to ascertain without
+cucumber or DSL knowledge what the intent is.
+
+If order can be guaranteed then checks could be combined into a simpler format
+
+[source,gherkin]
+----
+Then the value of the response status is equal to `201`
+And the value of the response body child `data.skills` is a valid `Array`
+And the value of the response body child `data` is including:
+ """
+ {"skills":["Being the one", "Multiverse-homicide"]}
+ """
+----
+
+On a more serious note, the above could also be used to verify business logic
+such as for medical professionals working with large insurers or healthcare
+the line-items usually have to be sorted by price descending.
