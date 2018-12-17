@@ -444,7 +444,7 @@ a https://en.wikipedia.org/wiki/Builder_pattern[Builder].
 
 === Cleanup
 
-`When a resouce is created at {grave}$PATH{grave}`::
+`When a resource is created at {grave}$PATH{grave}`::
   Mark `PATH` as a resource to DELETE after the test is run.
   See <<_resource_cleanup>>
 
