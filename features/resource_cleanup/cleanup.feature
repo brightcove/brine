@@ -14,7 +14,7 @@ Feature: Resource Cleanup
       """
 
     When I run `cucumber --strict features/cleanup.feature`
-    Then the output should match %r<delete http://www.example.com/some/path>
+    Then the output should match %r<(?i:delete) http://www.example.com/some/path>
     And the output should not contain:
       """
       ERROR
@@ -35,7 +35,7 @@ Feature: Resource Cleanup
       """
 
     When I run `cucumber --strict features/cleanup_failure.feature`
-    Then the output should match %r<(?:.*delete http://www.example.com/some/path.*){3}>
+    Then the output should match %r<(?:.*(?i:delete) http://www.example.com/some/path.*){3}>
     And the output should contain:
       """
       ERROR
@@ -56,7 +56,7 @@ Feature: Resource Cleanup
       """
 
     When I run `cucumber --strict -o ../../out.log features/cleanup_retried.feature`
-    Then the output should match %r<(?:.*delete http://www.example.com/some/path.*){2}>
+    Then the output should match %r<(?:.*(?i:delete) http://www.example.com/some/path.*){2}>
     And the output should not contain:
       """
       ERROR
@@ -78,9 +78,9 @@ Feature: Resource Cleanup
       """
 
     When I run `cucumber --strict -o ../../out.log features/cleanup_unreached.feature`
-    Then the output should match %r<(?:.*delete http://www.example.com/some/path.*){3}>
+    Then the output should match %r<(?:.*(?i:delete) http://www.example.com/some/path.*){3}>
     And the output should contain:
       """
       ERROR
       """
-    And it should pass    
+    And it should pass
