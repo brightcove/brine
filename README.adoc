@@ -27,3 +27,7 @@ Contributing::
   ticket. All of the current choices were driven by practicality rather than
   preference or being considered the best long term solution for the problem, so
   there's still a strong chance for collaboration and convergence.
+
+== Development
+
+Run `make help`
