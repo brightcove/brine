@@ -13,8 +13,8 @@ When(/^the request header `([^`]*)` is assigned `([^`]*)`$/) do |header, value|
   add_header(header, value)
 end
 
-When(/^the request auth basic header `([^`]*)` is assigned `([^`]*)`$/) do |header, value|
-  add_header(header, Base64.encode64(value))
+When (/^the request credentials are set for basic auth user `([^`]*)` and password `([^`]*)`$/) do |user, password|
+  add_header('Authorization', 'Basic ' + Base64.strict_encode64(user + ':' + password))
 end
 
 When(/^an? (GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS) is sent to `([^`]*)`$/) do |method, url|
