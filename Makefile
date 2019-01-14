@@ -21,6 +21,7 @@ required-command = $(or ${_$1_which},					\
 ################
 
 BUNDLE := $(call required-command,bundle)
+PYTHON := $(call required-command,python)
 
 ########
 # Help #
@@ -53,3 +54,18 @@ check: ${BUILD_DIR}bundler_updated
 	${BUNDLE} exec rake check
 
 clean: ; rm -rf ${OUT_DIRS}
+
+########
+# Docs #
+########
+
+SPHINX       = ${PYTHON} -msphinx
+DOCS_SRCDIR := docs/
+DOCS_OUTDIR := ${DOCS_SRCDIR}_build
+OUT_DIRS    += ${DOCS_OUTDIR}
+
+.PHONY: sphinx-help docs
+
+sphinx-help: ; @${SPHINX} -M help "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"
+
+docs: ; @${SPHINX} -M html "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"

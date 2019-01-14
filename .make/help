@@ -10,3 +10,6 @@ Common Tasks
 make check
 	Run all tests.
 
+make docs
+	Generate the documentation (for local viewing only).
+
