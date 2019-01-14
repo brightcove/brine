@@ -32,12 +32,16 @@ Request Construction
 .. literalinclude:: ../features/request_construction/clearing.feature
    :language: gherkin
 
+.. _spec_resource_cleanup:
+
 ****************
 Resource Cleanup
 ****************
 
 .. literalinclude:: ../features/resource_cleanup/cleanup.feature
    :language: gherkin
+
+.. _spec_assignment:
 
 **********
 Assignment
@@ -55,6 +59,8 @@ Assignment
 .. literalinclude:: ../features/assignment/response_attribute.feature
    :language: gherkin
 
+.. _spec_selection:
+
 *********
 Selection
 *********
@@ -64,6 +70,8 @@ Selection
 
 .. literalinclude:: ../features/selectors/all.feature
    :language: gherkin
+
+.. _spec_assertion:
 
 *********
 Assertion

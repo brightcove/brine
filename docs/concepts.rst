@@ -105,8 +105,6 @@ literal text within the placeholder should be included at the indicated position
    (i.e. the implementation may change for version 2 but all steps will be supported
    until at least version 3).
 
-.. _resource_cleanup:
-
 .. _handling nested elements:
 
 ************************
@@ -162,6 +160,8 @@ If order can be guaranteed then checks could be combined into a simpler format:
 On a more serious note, the above could also be used to verify business logic
 such as for medical professionals working with large insurers or healthcare
 the line-items usually have to be sorted by price descending.
+
+.. _resource_cleanup:
 
 ****************
 Resource Cleanup
