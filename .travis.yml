@@ -1,7 +1,5 @@
-language: ruby
-rvm:
-- 2.3
-- 2.4
+language: generic
+script: make check
 deploy:
   provider: rubygems
   gem: brine-dsl
