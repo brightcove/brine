@@ -56,7 +56,7 @@ Resource Cleanup
 
    :samp:`When a resource is created at \`{PATH}\``
 	Mark :samp:`{PATH}` as a resource to DELETE after the test is run.
-	
+
 .. _step_reference_assignment:
 
 **********
@@ -98,7 +98,7 @@ Selection
 .. glossary::
 
    :samp:`Then the value of the response {|response_attribute|} {[TRAVERSAL]} is {[not]}`
-	Select the specified response attribute (at the optional traversal path) 
+	Select the specified response attribute (at the optional traversal path)
 	of the current HTTP response.
 
    :samp:`Then the value of the response {|response_attribute|} {[TRAVERSAL]} does {[not]} have any element that is``
