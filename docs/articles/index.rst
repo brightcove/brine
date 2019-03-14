@@ -14,5 +14,5 @@ to convey information addressing more specific concerns.
 .. toctree::
    :caption: Articles
 
-   assurances   
+   assurances
    intercepting_http_calls
