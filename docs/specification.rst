@@ -65,6 +65,9 @@ Assignment
 Selection
 *********
 
+.. literalinclude:: ../features/selectors/response_attributes.feature
+   :language: gherkin
+
 .. literalinclude:: ../features/selectors/any.feature
    :language: gherkin
 
