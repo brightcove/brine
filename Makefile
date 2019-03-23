@@ -36,8 +36,8 @@ out-dir-for-runtime = $(abspath build/$1)/
 # Dependencies #
 ################
 
-BUNDLE := $(call required-command,bundle)
-PYTHON := $(call required-command,python)
+BUNDLE = $(call required-command,bundle)
+PYTHON = $(call required-command,python)
 
 ########
 # Help #
@@ -93,14 +93,14 @@ RUBY_OUT_DIR := $(call out-dir-for-runtime,ruby)
 
 ## Bundler Dance ##
 ${RUBY_OUT_DIR}bundler_installed: | ${RUBY_OUT_DIR}
-	cd ruby && ${BUNDLE} install > $@
+	cd ruby && ${BUNDLE} install --path "${RUBY_OUT_DIR}" > $@
 ${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
 	cd ruby && ${BUNDLE} update > $@
 
 .PHONY: ruby-check
 ruby-check: ${RUBY_OUT_DIR}bundler_updated
 	export ROOT_URL=http://www.example.com; \
-	export CUCUMBER_OPTS="--require $(abspath ruby/feature_setup.rb)"; \
+	export CUCUMBER_OPTS="$$CUCUMBER_OPTS --require $(abspath ruby/feature_setup.rb)"; \
 	cd ruby && ${BUNDLE} exec rake check
 
 ############

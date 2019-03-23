@@ -6,11 +6,12 @@ require 'rspec'
 HTTP_METHOD='GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS'
 
 class StubResponse
-  attr_accessor :body, :status
+  attr_accessor :body, :status, :headers
 
   def initialize
     @body = ''
     @status = 200
+    @headers = {}
   end
 end
 
@@ -113,6 +114,11 @@ end
 When(/^the response body is assigned:$/) do |input|
     @response ||= StubResponse.new
     @response.body = input
+end
+
+When(/^the response headers is assigned `([^`]*)`$/) do |input|
+    @response ||= StubResponse.new
+    @response.headers = input
 end
 
 When(/^the response body is assigned `([^`]*)`/) do |input|

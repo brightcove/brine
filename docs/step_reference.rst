@@ -78,7 +78,7 @@ Assignment
 	Assigns to :samp:`IDENTIFIER` a timestamp value representing the instant
 	at which the step is evaluated.
 
-   :samp:`When \`{IDENTIFIER}\` is assigned the response \`{|response_attribute|}\` {[TRAVERSAL]}
+   :samp:`When \`{IDENTIFIER}\` is assigned the response {(body|status|headers)} {[TRAVERSAL]}`
 	Assigns to :samp:`IDENTIFIER` the value extracted from the specified response attribute
 	(at the optional traversal path).
 
@@ -97,15 +97,15 @@ Selection
 
 .. glossary::
 
-   :samp:`Then the value of the response {|response_attribute|} {[TRAVERSAL]} is {[not]}`
+   :samp:`Then the value of the response {(body|status|headers)} {[TRAVERSAL]} is {[not]}`
 	Select the specified response attribute (at the optional traversal path)
 	of the current HTTP response.
 
-   :samp:`Then the value of the response {|response_attribute|} {[TRAVERSAL]} does {[not]} have any element that is``
+   :samp:`Then the value of the response {(body|status|headers)} {[TRAVERSAL]} does {[not]} have any element that is`
 	Select any (at least one) element from the structure within the specified response attribute
 	(at the optional traversal path).
 
-   :samp:`Then the value of the {|response_attribute|} {[TRAVERSAL]} has elements which are all`
+   :samp:`Then the value of the {(body|status|headers)} {[TRAVERSAL]} has elements which are all`
 	Select all elements from the structure within the specified response attribute (at the optional traversal path).
 
 
@@ -161,6 +161,4 @@ Assertion
 	- ``Integer``
 	- ``Array``
 	- ``Boolean``
-
-.. |response_attribute| replace:: body|status|headers
 
