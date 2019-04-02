@@ -82,7 +82,7 @@ end
 
 Before do
   $stubs = Faraday::Adapter::Test::Stubs.new
-  @client = Faraday.new(url: ENV['ROOT_URL'] ||
+  @client = Faraday.new(url: brine_root_url ||
                         'http://localhost:8080') do |conn|
     conn.response :logger, nil
     conn.adapter :test, $stubs

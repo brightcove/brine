@@ -28,8 +28,18 @@ module BrineUtil
 end
 
 def replaced_with(type, new_step, version, multiline=nil)
-  warn """
-DEPRECATION: This step will be removed in version #{version}. Replace with:
-#{type} #{new_step}\n#{multiline}""" unless ENV['BRINE_QUIET_DEPRECATIONS']
+  deprecation_message(version, "Replace with: #{type} #{new_step}\n#{multiline}")
   step new_step, multiline
+end
+
+##
+# Output a deprecation message with contents `msg`
+#
+# Nothing will be output if BRINE_QUIET_DEPRECATIONS is set.
+#
+# @param version [String] Version at which this feature will be removed.
+# @param message [String] The message to log.
+##
+def deprecation_message(version, message)
+  warn "DEPRECATION - Removal planned for #{version}: #{message}" unless ENV['BRINE_QUIET_DEPRECATIONS']
 end
