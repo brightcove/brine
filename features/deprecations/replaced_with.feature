@@ -30,7 +30,7 @@ Feature: Deprecation Messaging
       """
     And the output should contain:
       """
-      DEPRECATION:
+      DEPRECATION
       """
     And it should pass
 
@@ -51,3 +51,4 @@ Feature: 0.9
       1 passed
       """
     And it should pass
+

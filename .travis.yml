@@ -1,5 +1,7 @@
 language: generic
 script: make check
+before_install:
+  - gem install bundler
 deploy:
   provider: rubygems
   gem: brine-dsl
