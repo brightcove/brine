@@ -1,10 +1,35 @@
-# requester.rb - Provide request construction and response storage
+##
+# @file requester.rb
+# Request construction and response storage
+##
 
 require 'oauth2'
 require 'faraday_middleware'
+require 'brine/util'
 
+##
+# The root url to which Brine will send requests.
+#
+# This will normally be the value of ENV['BRINE_ROOT_URL'],
+# and that value should be directly usable after older
+# ENV['ROOT_URL'] is end-of-lifed (at which point this can be removed.
+#
+# @return [String] The root URL to use or nil if none is provided.
+##
+def brine_root_url
+  if ENV['BRINE_ROOT_URL']
+    ENV['BRINE_ROOT_URL']
+  elsif ENV['ROOT_URL']
+    deprecation_message('1.0', 'ROOT_URL is deprecated, replace with BRINE_ROOT_URL') if ENV['ROOT_URL']
+    ENV['ROOT_URL']
+  end
+end
+
+##
 # Parameter object used to configure OAuth2 middleware
+#
 # Also used to provide basic DSL for configuration
+##
 class OAuth2Params
   attr_accessor :token, :token_type
 
@@ -85,7 +110,7 @@ module Requesting
   # return Faraday client object so that it could be used directly
   # or passed to another object
   def client
-    @client ||= client_for_host((ENV['ROOT_URL'] || 'http://localhost:8080'),
+    @client ||= client_for_host(brine_root_url || 'http://localhost:8080',
                                 logging: ENV['BRINE_LOG_HTTP'])
   end
 
