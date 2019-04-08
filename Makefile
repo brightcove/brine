@@ -93,9 +93,14 @@ RUBY_OUT_DIR := $(call out-dir-for-runtime,ruby)
 
 ## Bundler Dance ##
 ${RUBY_OUT_DIR}bundler_installed: | ${RUBY_OUT_DIR}
-	cd ruby && ${BUNDLE} install --path "${RUBY_OUT_DIR}" > $@
+	@echo "Running bundle install.."
+	@cd ruby && ${BUNDLE} install --path "${RUBY_OUT_DIR}"
+	@touch "$@"
+
 ${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
-	cd ruby && ${BUNDLE} update > $@
+	@echo "Running bundle update.."
+	@cd ruby && ${BUNDLE} update
+	@touch "$@"
 
 .PHONY: ruby-check
 ruby-check: ${RUBY_OUT_DIR}bundler_updated

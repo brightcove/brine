@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/brightcove/brine.svg?branch=master
+   :target: https://travis-ci.org/brightcove/brine
+
 #####
 Brine
 #####
