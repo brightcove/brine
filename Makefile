@@ -83,7 +83,9 @@ OUT_DIRS    += ${DOCS_OUTDIR}
 
 sphinx-help: ; @${SPHINX} -M help "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"
 
-docs: ; @${SPHINX} -M html "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"
+docs:
+	@${SPHINX} -M html "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"
+	@echo "Docs created under file://$(realpath ${DOCS_OUTDIR})"
 
 ########
 # Ruby #
