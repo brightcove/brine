@@ -68,7 +68,7 @@ Type Coercion
 	Steps to facilitate this are provided.
 
 Authentication
-	Presently OAuth2 is supporte to issue authenticated requests during a
+	Presently OAuth2 is supported to issue authenticated requests during a
 	test (likely using a feature :keyword:`Background`).
 
 Request Construction and Response Assertion Step Definitions
