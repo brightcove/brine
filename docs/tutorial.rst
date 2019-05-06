@@ -40,13 +40,13 @@ This can be specified when running :term:`Cucumber` with a command such as:
 ...or by any other means that populates the environment appropriately.
 
 A personally preferred approach is to have per-environment make files and
-including the desired file(s) into the main file.
+include the desired file(s) into the main file.
 
 ===========
 A Basic GET
 ===========
 
-Most tests will involve some form of issueing requests and performing assertions
+Most tests will involve some form of issuing requests and performing assertions
 on the responses. Let's start with a simple version of that pattern,
 testing the response status from a GET request.
 
@@ -58,7 +58,7 @@ A Write Request
 ===============
 
 For POST, PATCH, and PUT requests you'll normally want to include a request body.
-To support this, additional data can be added to the rquess before they are sent.
+To support this, additional data can be added to requests before they are sent.
 
 .. literalinclude:: ../tutorial/post_status.feature
    :language: gherkin
@@ -72,8 +72,8 @@ Test Response Properties
 ========================
 
 http://myjson.com/api returns the link to the created resource which is based
-off of a generated it. That means the exact response cannot be verified, but instead
-property based testing can be done to verify that the data is sande and therefore
+off of a generated id. That means the exact response cannot be verified, but instead
+property based testing can be done to verify that the data is sane and therefore
 likely trustworthy. In this case we can check that the ``uri`` response child matches
 the expected pattern.
 
