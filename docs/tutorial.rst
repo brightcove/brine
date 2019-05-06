@@ -72,7 +72,7 @@ Test Response Properties
 ========================
 
 http://myjson.com/api returns the link to the created resource which is based
-off of a generated it. That means the exact response cannot be verified, but instead
+off of a generated id. That means the exact response cannot be verified, but instead
 property based testing can be done to verify that the data is sane and therefore
 likely trustworthy. In this case we can check that the ``uri`` response child matches
 the expected pattern.
