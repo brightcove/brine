@@ -14,7 +14,7 @@ alternative data types.
 
 :samp:`\``\ s were chosen as they are less common than many other syntactical
 elements and also allow for the use of logically significant
-quoting within paremeter values while hopefully avoiding the need for escape
+quoting within parameter values while hopefully avoiding the need for escape
 artistry (as used for argument transforms).
 
 ***********************
@@ -92,16 +92,16 @@ Negation
 The selectors also currently handle negation of the associated assertions.
 This is potentially counter-intuitive but as previously mentioned the intent is
 that this should ease the creation of assertions. If negation is added to a
-selector that it is expected that the assertion will *fail*.
+selector then it is expected that the assertion will *fail*.
 
-Negation will indicated in the :ref:`step_reference` by the presence of a
+Negation is indicated in the :ref:`step_reference` by the presence of a
 `[not]` or semantically equivalent placeholder. To negate the step the
 literal text within the placeholder should be included at the indicated position.
 
 .. note::
 
    The implementation of negation is planned to be changed in a future version
-   but all any existing steps will be supported at least through one major version
+   but all/any existing steps will be supported at least through one major version
    (i.e. the implementation may change for version 2 but all steps will be supported
    until at least version 3).
 
@@ -138,7 +138,7 @@ object inside an object with ``data`` and ``links`` sub-objects (Hypermedia API)
      "Being the one"
      """
 
-The above example uses child comparison to type as well as value, verifies
+The above example uses child comparison against type and value, and verifies
 multiple elements from PUT body. This can be useful if your response contains
 HATEOAS (Hypermedia As The Engine Of Application State) Links. The end goal is
 that anyone reading the specification will be able to ascertain without
@@ -171,7 +171,7 @@ All test suites should clean up after themselves as a matter of hygiene and to
 help enforce test independence and reproducibility. This is particularly
 important for this library given that the systems under test
 are likely to remain running; accumulated uncleaned resources are at best a
-nuisance to have to weed through and at worst can raise costs due to
+nuisance to weed through, and at worst can raise costs due to
 heightened consumption of assorted resources (unlike more ephemeral test
 environments).
 
