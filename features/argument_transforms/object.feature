@@ -1,66 +1,45 @@
-Feature: An argument that could represent a JSON object will be
-    transformed into an object whose elements will also be transformed.
+Feature: Object
+  An argument that could represent a JSON object will be
+  transformed into an object whose elements will also be transformed.
 
-  Scenario Outline: Assorted basic inputs are provided.
-    Given a file named "features/transform_object.feature" with:
-      """
-
-Feature: Transform object arguments.
-  Scenario: Docstring simple object.
+  Scenario Outline: Docstring simple object.
     When the response body is assigned:
-      \"\"\"
+      """
       <input>
-      \"\"\"
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+      """
+    Then the value of the response body is a valid `Object`
+    And the value of the response body is equal to `<input>`
 
-  Scenario: Inline simple object.
+  Examples:
+    | input                                               |
+    | {}                                                  |
+    | {"a":1}                                             |
+    | {"foo":"bar", "num":1, "list": ["1", 2, true]}      |
+    | {"foo": {"bar":{ "num":1, "list": ["1", 2, true]}}} |
+    | {"foo": "\"list\": [\"1\", 2, true]"}               |
+
+  Scenario Outline: Inline simple object.
     When the response body is assigned `<input>`
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
 
-      """
-    When I run `cucumber features/transform_object.feature`
-    Then the output should contain:
-      """
-      2 passed
-      """
-    And it should pass
+    Then the value of the response body is a valid `Object`
+    And the value of the response body is equal to `<input>`
 
-    Examples:
-      | input                                               | expected                                      |
-      | {}                                                  | {}                                            |
-      | {"a":1}                                             | {"a":1}                                       |
-      | {"foo":"bar", "num":1, "list": ["1", 2, true]}      | {"foo":"bar","num":1,"list":["1",2,true]}     |
-      | {"foo": {"bar":{ "num":1, "list": ["1", 2, true]}}} | {"foo":{"bar":{"num":1,"list":["1",2,true]}}} |
-      | {"foo": "\"list\": [\"1\", 2, true]"}               | {"foo":"\\"list\\": [\\"1\\", 2, true]"}      |
+  Examples:
+    | input                                               |
+    | {}                                                  |
+    | {"a":1}                                             |
+    | {"foo":"bar", "num":1, "list": ["1", 2, true]}      |
+    | {"foo": {"bar":{ "num":1, "list": ["1", 2, true]}}} |
+    | {"foo": "\"list\": [\"1\", 2, true]"}               |
             
-  Scenario: Passed an Object split over multiple lines
-    Given a file named "features/transform_object_splitline.feature" with:
-      """
-
-Feature: Using an object argument split over multiple lines
   Scenario: Object split over lines
     When the response body is assigned:
-      \"\"\"
+      """
       {
         "foo":"bar"
       }
-      \"\"\"
+      """
     Then the value of the response body is equal to:
-      \"\"\"
+      """
       {"foo":"bar"}
-      \"\"\"
-
       """
-    When I run `cucumber --strict features/transform_object_splitline.feature`
-    Then the output should contain:
-      """
-      1 passed
-      """
-    And it should pass
-            

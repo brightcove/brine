@@ -1,41 +1,33 @@
-Feature: An argument that could represent an integer will be
-    transformed into an integer type.
+Feature: Integer
+  An argument that could represent an integer will be transformed into an integer type.
 
-  Scenario Outline: Assorted basic inputs are provided.
-    Given a file named "features/transform_integer.feature" with:
-      """
-
-Feature: Transform integer arguments.
-  Scenario: Docstring simple value.
+  Scenario Outline: Docstring simple value.
     When the response body is assigned:
-      \"\"\"
+      """
       <input>
-      \"\"\"
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+      """
+    Then the value of the response body is a valid `Integer`
+    And the value of the response body is equal to `<input>`
 
-  Scenario: Inline simple value.
+  Examples:
+    |               input |
+    |                   0 |
+    |                  -0 |
+    |                  10 |
+    |                 -10 |
+    |  123456789123456789 |
+    | -123456789123456789 |
+
+  Scenario Outline: Inline simple value.
     When the response body is assigned `<input>`
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+    Then the value of the response body is a valid `Integer`
+    And the value of the response body is equal to `<input>`
 
-      """
-    When I run `cucumber --strict features/transform_integer.feature`
-    Then the output should contain:
-      """ar
-      2 passed
-      """
-    And it should pass
-
-    Examples:
-      |               input |            expected |
-      |                   0 |                   0 |
-      |                  -0 |                   0 |
-      |                  10 |                  10 |
-      |                 -10 |                 -10 |
-      |  123456789123456789 |  123456789123456789 |
-      | -123456789123456789 | -123456789123456789 |
+  Examples:
+    |               input |
+    |                   0 |
+    |                  -0 |
+    |                  10 |
+    |                 -10 |
+    |  123456789123456789 |
+    | -123456789123456789 |

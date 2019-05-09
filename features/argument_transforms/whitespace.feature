@@ -1,51 +1,36 @@
-Feature: An argument that includes leading or trailing whitespace
-    will be transformed so that such whitespace is removed
-    and that value will also be transformed.
+Feature: Whitespace
+  An argument that includes leading or trailing whitespace
+  will be transformed so that such whitespace is removed
+  and that value will also be transformed.
 
-  Scenario Outline: Assorted basic inputs are provided.
-    Given a file named "features/transform_whitespace.feature" with:
-      """
-
-Feature: Transform arguments with leading and/or trailing whitespace.
-  Scenario: Docstring simple value.
+  Scenario Outline: Docstring simple value.
     When the response body is assigned:
-      \"\"\"
+      """
       <input>
-      \"\"\"
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+      """
+    Then the value of the response body is equal to `<expected>`
 
-  Scenario: Inline simple value.
+  Scenario Outline: Inline simple value.
     When the response body is assigned `<input>`
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+    Then the value of the response body is equal to `<expected>`
 
-  Scenario: Docstring value with a leading and trailing line.
+  Examples:
+    | input              | expected     |
+    | 	true             | true         |
+    |   123	         | 123          |
+    |  ["a"]	         | ["a"]        |
+
+  Scenario Outline: Docstring value with a leading and trailing line.
     When the response body is assigned:
-    \"\"\"
+      """
 
-    <input>
-
-    \"\"\"
-    Then the response body as JSON is:
-    \"\"\"
-    '<expected>'
-    \"\"\"
+      <input>
 
       """
-    When I run `cucumber --strict features/transform_whitespace.feature`
-    Then the output should contain:
-      """
-      3 passed
-      """
-    And it should pass
+    Then the value of the response body is equal to `<expected>`
 
-    Examples:
-      | input                     | expected     |
-      | 	true              | true         |
-      |   123	                  | 123          |
-      |  ["a"]	                  | ["a"]        |
+  Examples:
+    | input              | expected     |
+    | 	true             | true         |
+    |   123	         | 123          |
+    |  ["a"]	         | ["a"]        |

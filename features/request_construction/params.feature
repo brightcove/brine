@@ -1,10 +1,5 @@
 Feature: Adding Query Parameters
 
-  Scenario: Query parameters are added to requests.
-    Given a file named "features/params.feature" with:
-
-      """
-Feature: Request query parameters can be specified.
   Scenario: A single parameter is appended to the URL.
     Given expected GET sent to `/query?foo=bar`
 
@@ -29,6 +24,7 @@ Feature: Request query parameters can be specified.
     And a GET is sent to `/query`
 
     Then expected calls are verified
+
   Examples:
     | input         | encoded                  |
     | bar & grill   | bar+%26+grill            |
@@ -42,6 +38,7 @@ Feature: Request query parameters can be specified.
     And a <method> is sent to `/query`
 
     Then expected calls are verified
+
   Examples:
     | method  |
     | POST    |
@@ -49,11 +46,3 @@ Feature: Request query parameters can be specified.
     | DELETE  |
     | HEAD    |
     | OPTIONS |
-      """
-
-    When I run `cucumber features/params.feature`
-    Then the output should contain:
-      """
-      10 passed
-      """
-    And it should pass

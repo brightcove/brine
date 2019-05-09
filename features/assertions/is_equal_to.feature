@@ -1,16 +1,11 @@
-Feature: Equal to
+Feature: Equal To
   It can be asserted that a value is equal to another value.
 
-  Scenario: Assorted positive and negative assertions pass.
-    Given a file named "features/is_equal_to.feature" with:
-      """
-
-Feature: Assert value equality
   Scenario: String in response body
     When the response body is assigned:
-      \"\"\"
+      """
       foo
-      \"\"\"
+      """
     Then the value of the response body is equal to `foo`
     And the value of the response body is not equal to `foot`
 
@@ -21,19 +16,19 @@ Feature: Assert value equality
 
   Scenario: Object in response body
     When the response body is assigned:
-      \"\"\"
+      """
       {
         "foo": "bar"
       }
-      \"\"\"
+      """
     Then the value of the response body is equal to:
-      \"\"\"
+      """
       {"foo":"bar"}
-      \"\"\"
+      """
     And the value of the response body is not equal to:
-      \"\"\"
+      """
       {"foo": "baz"}
-      \"\"\"
+      """
 
   Scenario: List in response body
     When the response body is assigned `[1, "foo", true]`
@@ -50,11 +45,3 @@ Feature: Assert value equality
     | {"foo": "bar"}                       |
     | {"foo": "bar", "baz": 1, "extra": 2} |
     | {"foo": "bar", "baz": 2}             |
-
-      """
-    When I run `cucumber --strict features/is_equal_to.feature`
-    Then the output should contain:
-      """
-      8 passed
-      """
-    And it should pass

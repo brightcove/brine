@@ -1,37 +1,25 @@
-Feature: An argument that could represent a boolean value will be
-    transformed into a boolean type.
+Feature: Boolean
+  An argument that could represent a boolean value will be transformed into a boolean type.
 
-  Scenario Outline: Assorted basic inputs are provided.
-    Given a file named "features/transform_boolean.feature" with:
-      """
-
-Feature: Transform boolean arguments.
-  Scenario: Docstring simple value.
+  Scenario Outline: Docstring simple value.
     When the response body is assigned:
-      \"\"\"
+      """
       <input>
-      \"\"\"
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+      """
+    Then the value of the response body is a valid `Boolean`
+    And the value of the response body is equal to `<input>`
 
-  Scenario: Inline simple value.
+  Examples:
+    | input     |
+    | true      |
+    | false     |
+
+  Scenario Outline: Inline simple value.
     When the response body is assigned `<input>`
-    Then the response body as JSON is:
-      \"\"\"
-      '<expected>'
-      \"\"\"
+    Then the value of the response body is a valid `Boolean`
+    And the value of the response body is equal to `<input>`
 
-      """
-    When I run `cucumber --strict features/transform_boolean.feature`
-    Then the output should contain:
-      """
-      2 passed
-      """
-    And it should pass
-
-    Examples:
-      | input     | expected |
-      | true      | true     |
-      | false     | false    |
+  Examples:
+    | input     |
+    | true      |
+    | false     |
