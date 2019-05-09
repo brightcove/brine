@@ -15,6 +15,7 @@ class TypeChecks
       Number: be_a_kind_of(Numeric),
       Integer: be_a_kind_of(Integer),
       Array: be_a_kind_of(Array),
+      DateTime: be_a_kind_of(Time),
       Boolean: satisfy{|it| it == true || it == false }
     }
   end
