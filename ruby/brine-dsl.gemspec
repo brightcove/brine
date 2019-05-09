@@ -21,10 +21,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency     'faraday_middleware', '~> 0.12'
 
   s.add_development_dependency 'rake',               '~> 12.3'
-  s.add_development_dependency 'aruba',              '~> 0.14'
-  s.add_development_dependency 'guard',              '~> 2.14'
-  s.add_development_dependency 'guard-cucumber',     '~> 2.1'
-  s.add_development_dependency 'asciidoctor',        '~> 1.5'
 
   s.files        = `git ls-files`.split("\n")
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")

@@ -1,20 +1,15 @@
 Feature: Empty
   It can be asserted that a value is empty.
 
-  Scenario: Assorted positive and negative assertions pass.
-    Given a file named "features/is_empty.feature" with:
-      """
-
-Feature: Assert emptiness for multiple types.
   Scenario: Empty body is empty.
     When the response body is assigned ``
     Then the value of the response body is empty
 
   Scenario: Whitespace-only body is empty.
     When the response body is assigned:
-      \"\"\"
+      """
              
-      \"\"\"
+      """
     Then the value of the response body is empty
 
   Scenario: Empty string is empty.
@@ -56,12 +51,4 @@ Feature: Assert emptiness for multiple types.
   Scenario: 0 is not empty.
     When the response body is assigned `0`
     Then the value of the response body is not empty
-
-      """
-    When I run `cucumber --strict features/is_empty.feature`
-    Then the output should contain:
-      """
-      12 passed
-      """
-    And it should pass
 

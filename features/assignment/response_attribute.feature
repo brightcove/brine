@@ -1,11 +1,6 @@
-Feature: A value from a response attribute can be assigned.
+Feature: Response Attribute
   An identifier can be assigned a value extracted from a response attribute.
 
-  Scenario: Assorted response attribute assignments.
-    Given a file named "features/assignment/response_attribute.feature" with:
-      """
-
-Feature: Reponse Attribute Path Assignment.
   Scenario: Response body.
     Given the response body is assigned `foo`
     When `myVar` is assigned the response body
@@ -29,11 +24,3 @@ Feature: Reponse Attribute Path Assignment.
     When `myVar` is assigned the response headers child `test`
     And the response body is assigned `{{ myVar }}`
     Then the value of the response body is equal to `val`
-
-      """
-    When I run `cucumber --strict features/assignment/response_attribute.feature`
-    Then the output should contain:
-      """
-      4 passed
-      """
-    And it should pass
