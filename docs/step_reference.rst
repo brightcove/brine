@@ -155,10 +155,13 @@ Assertion
 	domain types pending soe minor wiring and documentation.
 	The current supported types are:
 
-	- ``Object`` - JSON style object/associative array
-	- ``String``
-	- ``Number``
-	- ``Integer``
 	- ``Array``
 	- ``Boolean``
+	- ``DateTime``
+	- ``Integer``
+	- ``Number``
+        - ``Object`` - JSON style object/associative array
+	- ``String``
+
+
 
