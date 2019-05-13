@@ -5,6 +5,9 @@ require 'rspec'
 #
 HTTP_METHOD='GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS'
 
+ENV['BRINE_DURATION_SECONDS_short'] = '3'
+ENV['BRINE_DURATION_SECONDS_long'] = '6'
+
 class StubResponse
   attr_accessor :body, :status, :headers
 
@@ -13,6 +16,19 @@ class StubResponse
     @status = 200
     @headers = {}
   end
+end
+
+class DelayedStubResponse < StubResponse
+
+  def initialize(delay)
+    super()
+    @activation = Time.now + delay
+  end
+
+  def body
+    Time.now < @activation ? nil : @body
+  end
+
 end
 
 class StubRequest
@@ -133,6 +149,10 @@ end
 When /^the response status is assigned `([^`]*)`$/ do |status|
   @response ||= StubResponse.new
   @response.status = status.to_i    # this coercion isn't needed but is a guarantee
+end
+
+When /^the response is delayed `([^`]*)` seconds$/ do |seconds|
+   @response = DelayedStubResponse.new(seconds)
 end
 
 Then(/^the response body as JSON is:$/) do |text|

@@ -32,3 +32,10 @@ range of technologies and platforms, and align with the ideas espoused by
 
    Log values as they are assigned to variables in Brine steps.
 
+.. envvar:: BRINE_DURATION_SECONDS_${duration}
+
+   How long in seconds :ref:`polling` will be done when :samp:`{duration}` is specified.
+
+.. envvar:: BRINE_POLL_INTERVAL_SECONDS
+
+   The amount of time to wait between attempts when :ref:`polling`.

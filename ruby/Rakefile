@@ -2,7 +2,7 @@
 require 'bundler'
 require 'cucumber/rake/task'
 
- Cucumber::Rake::Task.new(:check) do |t|
+Cucumber::Rake::Task.new(:check) do |t|
   # Cucumber needs some help to deal with the features and support being split.
   t.libs = "#{__dir__}"
 end

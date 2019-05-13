@@ -167,5 +167,24 @@ Assertion
         - ``Object`` - JSON style object/associative array
 	- ``String``
 
+*******
+Actions
+*******
 
+:ref:`Specification <spec_eventually>`
+
+.. seealso::
+
+   Actions
+	:ref:`actions`
+
+.. glossary::
+
+   :samp:`Given actions are defined such that`
+	Collect subsequent steps as actions to be later performed.
+
+   :samp:`Then the actions are {[not]} successful within a \`${DURATION}\` period`
+	Repeatedly attempt to perform collected actions over the course of
+	:samp:`{DURATION}`. Succeed if the actions are performed successfully,
+	fail if the duration expirees without a successful performance.
 

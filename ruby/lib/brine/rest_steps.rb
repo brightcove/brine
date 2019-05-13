@@ -1,6 +1,6 @@
 require 'rspec'
 require 'brine/util'
-require 'brine/selector'
+require 'brine/selecting'
 require 'jsonpath'
 
 # Chopping Block

@@ -1,10 +1,14 @@
-# = transformers.rb:: Argument Transforms for Brine
+##
+# @file  transformers.rb
+# Argument Transforms for Brine.
 #
 # The Transforms that convert provided inputs to support richer
 # functionaliy than the simple strings which Cucumber provides.
 
-# == Scalar transforms
+##
+# @defgroup Scalar transforms
 # Convert inputs into basic Ruby data types which represent a single value
+##
 
 # Integers
 Transform /\A(-?\d+)\z/ do |number|
@@ -31,8 +35,10 @@ Transform /^#{DATE}T#{TIME}#{MILLIS}#{TZ}$/ do |date|
           Time.parse(date)
 end
 
-# == Structure transforms
+##
+# @defgroup Structure transforms
 # Converts inputs to general data structures
+##
 
 # Lists
 Transform /\A\[.*\]\z/m do |input|
@@ -46,8 +52,10 @@ Transform /\A{.*}\z$/m do |input|
     JSON.parse(input)
 end
 
-# == Atypical transforms
+##
+# @defgroup Atypical transforms
 # Transforms for which data type is not the primary focus
+##
 
 # Whitespace removal transforms
 # Handle stripping leading and trailing whitespace.

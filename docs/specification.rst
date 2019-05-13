@@ -97,3 +97,11 @@ Assertion
 
 .. literalinclude:: ../features/assertions/is_a_valid.feature
    :language: gherkin
+
+*******
+Actions
+*******
+
+.. _spec_eventually:
+
+.. literalinclude:: ../features/actions/eventually.feature

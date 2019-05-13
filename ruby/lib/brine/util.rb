@@ -1,4 +1,5 @@
 # Assorted utility functions
+# The deprecation piece should be extracted and the rest considered dead.
 module BrineUtil
   # reevaluate passed block until it returns without throwing an exception
   # or `time` elapses; retry every `interval`
