@@ -39,6 +39,10 @@ The requests which are sent as part of a test are constructed using a
 	Will overwrite any earlier value for the specified header,
 	including default values or those set in earlier steps.
 
+   :samp:`When the request credentials are set for basic auth user \`{USER}\` and password \`{PASSWORD}\``
+	Assign HTTP Basic :samp:`Authorization` header.
+	Will overwrite any earlier value for the :samp:`Authorization` header, including those set in earlier steps.
+
 .. _step_reference_resource_cleanup:
 
 ****************
