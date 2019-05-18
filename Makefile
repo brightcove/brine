@@ -1,22 +1,5 @@
 include buildsrc/gmsl
-
-######################
-# Make Library Stuff #
-######################
-# Likely to be reused and should be extracted accordingly.
-
-##
-# The path to a required command; abort with an error if not found.
-#
-# The requested command must be on the PATH/located by `which`.
-#
-# @param $1[in] The basename of the command to seek.
-# @return The path to the command, make will abort if not found.
-##
-required-command = $(or ${_$1_which},					\
-                        $(eval _$1_which=$(shell which $1)),		\
-                        ${_$1_which},					\
-                        $(error '$1' is missing, please install $1))
+include buildsrc/bc/bml
 
 ###################
 # Local Functions #
@@ -86,6 +69,13 @@ sphinx-help: ; @${SPHINX} -M help "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"
 docs:
 	@${SPHINX} -M html "${DOCS_SRCDIR}" "${DOCS_OUTDIR}"
 	@echo "Docs created under file://$(realpath ${DOCS_OUTDIR})"
+
+###########
+# Release #
+###########
+
+.PHONY: release
+release: ; buildsrc/bc/release build.properties
 
 ########
 # Ruby #
