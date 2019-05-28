@@ -210,7 +210,7 @@ later evaluated.
 Restricted Official Usage
 =========================
 
-This functionality could be used to support a wide rannge
+This functionality could be used to support a wide range
 of functionality, but functionality will be added to the core library
 conservatively in response to use cases established in practice or in
 response to opened issues. Reservation to add such features is due to
