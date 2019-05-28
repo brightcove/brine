@@ -1,0 +1,3 @@
+[submodule "buildsrc/bc"]
+	path = buildsrc/bc
+	url = https://github.com/brightcove/buildsrc
