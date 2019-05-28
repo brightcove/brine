@@ -1,4 +1,5 @@
 include buildsrc/gmsl
+buildsrc/bc/bml: ; git submodule init && git submodule update
 include buildsrc/bc/bml
 
 ###################
@@ -77,6 +78,9 @@ docs:
 .PHONY: release
 release: ; buildsrc/bc/release build.properties
 
+include build.properties
+export VERSION
+
 ########
 # Ruby #
 ########
@@ -94,11 +98,14 @@ ${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
 	@cd ruby && ${BUNDLE} update
 	@touch "$@"
 
-.PHONY: ruby-check
+.PHONY: ruby-check ruby-publish
 ruby-check: ${RUBY_OUT_DIR}bundler_updated
 	export BRINE_ROOT_URL=http://www.example.com; \
 	export CUCUMBER_OPTS="$$CUCUMBER_OPTS --require $(abspath ruby/feature_setup.rb)"; \
 	cd ruby && ${BUNDLE} exec rake check
+
+ruby-publish: ${RUBY_OUT_DIR}bundler_updated
+	cd ruby && ${BUNDLE} exec rake release
 
 ############
 # Tutorial #
