@@ -1,6 +1,7 @@
 ##
 # @file assignment.rb
 # Assignment related steps.
+##
 
 ##
 # Assign the provided parameter.
@@ -8,7 +9,7 @@
 # @param name - The identifier to which the value will be bound.
 # @param value - The value to bind to the identifier.
 When(/^`([^`]*)` is assigned `([^`]*)`$/) do |name, value|
-  bind(name, value)
+  perform { bind(name, value) }
 end
 
 ##
@@ -16,7 +17,7 @@ end
 #
 # @param name - The identifier to which a random string will be bound.
 When(/^`([^`]*)` is assigned a random string$/) do |name|
-  bind(name, SecureRandom.uuid)
+  perform { bind(name, SecureRandom.uuid) }
 end
 
 ##
@@ -24,7 +25,7 @@ end
 #
 # @param name - The identifier to which the current timestamp will be bound.
 When(/^`([^`]*)` is assigned a timestamp$/) do |name|
-  bind(name, DateTime.now)
+  perform { bind(name, DateTime.now) }
 end
 
 ##
@@ -37,5 +38,5 @@ end
 # whether to extract a single match or a collection of all matching.
 When(/^`([^`]*)` is assigned the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)?$/) do
   |name, attribute, plural, path|
-  bind(name, dig_from_response(attribute, path, !plural.nil?))
+  perform { bind(name, dig_from_response(attribute, path, !plural.nil?)) }
 end

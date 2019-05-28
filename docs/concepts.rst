@@ -197,3 +197,96 @@ used to indicate which resources should be DELETEd upon test completion.
 
    Steps
 	:ref:`step_reference_resource_cleanup`
+
+.. _actions:
+
+*******
+Actions
+*******
+
+Brine offers the ability to define a bundle of _actions_ which can be
+later evaluated.
+
+Restricted Official Usage
+=========================
+
+This functionality could be used to support a wide range
+of functionality, but functionality will be added to the core library
+conservatively in response to use cases established in practice or in
+response to opened issues. Reservation to add such features is due to
+`YAGNI <http://wiki.c2.com/?YouArentGonnaNeedIt>`_ with an additional
+concern that some of that functionality could obscure the primary intent
+of this library and foster its use for situations where a another solution
+(such as a general purpose language) may be better suited.
+
+Such functionality which is not offered by the official library can
+leverage the _actions_ featue and be implemented with a fairly small
+amount of code; more information will be provided through Articles.
+
+Supported Functionality
+=======================
+
+.. _polling:
+
+Polling
+-------
+
+For any system which may perform background work or uses a model of
+eventual consistency there may be a delay before the expected state
+is realized. To support such cases Brine supports the concept of polling.
+Polling allows the definition of a set of actions which will be repeated
+until they succeed for until some duration of time expires (at which point
+the actions will fail).
+
+For example a code block such as:
+
+.. code-block:: gherkin
+
+   When actions are defined ssuch that
+     When a GET is sent to `/tasks/{{task_id}}/status`
+     Then the value of the response body child `completed` is equal to `true`
+   And the actions are successful within a `short` period
+
+Will repeatedly issue a request to the specified status endpoint until the
+resource indicates it is completed. The indendation is not required but may
+help readability. It is important that any such actions definition is *closed*
+(something is done with the actions), otherwise the system will just continue to
+collect actions.
+
+Specifying Duration
+^^^^^^^^^^^^^^^^^^^
+
+Specifications should represent the contract with customers, and therefore any delay
+captured in the specification should correspond to what is guaranteed to clients.
+
+If your system has a duration within which it is guaranteed that the tested state must be realized
+then such time should be in the specification and parsed from that file (this parsing is not
+currently supported, an issue should be opened if this is desired). In other cases the
+duration should be specified using an appropriately fuzzy term (such as `short`) which can
+be passed as a parameter to the system. The durations can be defined using environment variables
+of the format :envvar:`BRINE_DURATION_SECONDS_${duration}`, so for the above a setting such as
+`BRINE_DURATION_SECONDS_short=5` would poll for 5 seconds. In addition to not polluting the
+specification with what may not belong there, the use of such looser terms
+allows for values to be varied due to any variations within or between environments or
+deployments.
+
+Specifying Polling Frequency
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A reasonable default value for the interval between polling attempts will be set, currently
+0.25 seconds. If for any reason it is desired to change this time then a new value can be
+provided as the :envvar:`BRINE_POLL_INTERVAL_SECONDS` environment variable.
+
+Currently all polling will use the same global setting for the polling interval. If there is
+a desire to have finer control, then open an issue (most likely through support for per-duration
+overrides).
+
+.. note::
+	The interval will affect the precision of the polling duration. With the numbers in
+	the example above a naive view would assume that the intervals will fit neatly into
+	the duration with a maximum of (:math:`5.0/0.25+initial`) 21 attempts, but each execution will take some
+	time, and a sleeping thread will be activated in *no less than* the time requested.
+	Therefore the polling will not align with the duration and the interval also determines
+	how much the effective polling duration deviates from that requested. The values should be
+	adjusted/padded appropriately (anticipate :math:`duration +/- interval`).
+	Precise matching of durations is non-trivial and outside the scope of this project.
