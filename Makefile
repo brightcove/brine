@@ -1,5 +1,7 @@
 include buildsrc/gmsl
+buildsrc/bc/bml: ; git submodule init && git submodule update
 include buildsrc/bc/bml
+
 
 ###################
 # Local Functions #
