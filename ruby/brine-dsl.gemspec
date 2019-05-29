@@ -2,8 +2,7 @@
 raise 'VERSION must be specified in environment' unless ENV['VERSION']
 Gem::Specification.new do |s|
   s.name         = 'brine-dsl'
-  s.version      = '0.9.0'
-#  s.version      = ENV['VERSION']
+  s.version      = ENV['VERSION'][1..-1]
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Matt Whipple"]
   s.email        = ["mwhipple@brightcove.com"]
