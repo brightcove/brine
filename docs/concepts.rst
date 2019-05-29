@@ -242,7 +242,7 @@ For example a code block such as:
 
 .. code-block:: gherkin
 
-   When actions are defined ssuch that
+   When actions are defined such that
      When a GET is sent to `/tasks/{{task_id}}/status`
      Then the value of the response body child `completed` is equal to `true`
    And the actions are successful within a `short` period
