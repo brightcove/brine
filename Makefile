@@ -101,8 +101,7 @@ ${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
 .PHONY: ruby-check ruby-publish
 ruby-check: ${RUBY_OUT_DIR}bundler_updated
 	export BRINE_ROOT_URL=http://www.example.com; \
-	export CUCUMBER_OPTS="$$CUCUMBER_OPTS --require $(abspath ruby/feature_setup.rb)"; \
-	cd ruby && ${BUNDLE} exec rake check
+	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) 
 
 ruby-publish: ${RUBY_OUT_DIR}bundler_updated
 	cd ruby && ${BUNDLE} exec rake release
@@ -112,8 +111,6 @@ ruby-publish: ${RUBY_OUT_DIR}bundler_updated
 ############
 
 .PHONY: tutorial
-tutorial: export FEATURE=$(abspath tutorial)
 tutorial: ${RUBY_OUT_DIR}bundler_updated
 	export BRINE_ROOT_URL=https://api.myjson.com; \
-	export CUCUMBER_OPTS="--require ${FEATURE}/support/env.rb"; \
-	cd ruby && ${BUNDLE} exec rake check
+	cd ruby && ${BUNDLE} exec cucumber --require $(abspath tutorial)/support/env.rb $(abspath tutorial)

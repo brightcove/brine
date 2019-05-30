@@ -1,12 +1,5 @@
 # encoding: utf-8
 require 'bundler'
-require 'cucumber/rake/task'
-
-Cucumber::Rake::Task.new(:check) do |t|
-  # Cucumber needs some help to deal with the features and support being split.
-  t.libs = "#{__dir__}"
-end
 
 Bundler::GemHelper.install_tasks
 
-task default: %w[check]
