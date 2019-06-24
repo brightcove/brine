@@ -32,6 +32,10 @@ range of technologies and platforms, and align with the ideas espoused by
 
    Log values as they are assigned to variables in Brine steps.
 
+.. envvar:: BRINE_LOG_TRANSFORMS
+
+   Log how parameter inputs are being transformed.
+
 .. envvar:: BRINE_DURATION_SECONDS_${duration}
 
    How long in seconds :ref:`polling` will be done when :samp:`{duration}` is specified.

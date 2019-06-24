@@ -30,7 +30,7 @@ def brine_mix
   require 'brine/step_definitions/perform'
   require 'brine/step_definitions/selection'
 
-  require 'brine/transforms'
+  require 'brine/transforming'
   require 'brine/hooks'
 
   Brine
