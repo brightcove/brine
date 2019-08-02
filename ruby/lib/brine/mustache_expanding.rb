@@ -2,7 +2,6 @@
 # @file mustache_expanding.rb
 # Support for expanding Mustache templates with a defined binding.
 ##
-
 module Brine
 
   ##
@@ -33,15 +32,52 @@ module Brine
 
     ##
     # Expanded Mustache template using binding environment.
-    # Mustache in...no Mustache out.
+    #
+    # This exists to support latent expansion and template retrieval.
     #
     # @param [String] template Template content to expand with binding.
     # @return [String] The contents of `template` with any expansions done using `binding`.
     ##
-    def shave_value(template)
-      Mustache.render(template, binding)
+    class BrineTemplate < Mustache
+
+      ##
+      # Instantiate a Brine template.
+      #
+      # @param tmpl [String] The string content of the template.
+      # @param binding [Hash] A reference to the (mutable) binding.
+      ##
+      def initialize(tmpl, binding)
+        @template = tmpl
+        @binding = binding
+      end
+
+      ##
+      # Expand the template using the current bindings.
+      ##
+      def expand
+        begin
+          context.push(@binding)
+          render
+        ensure
+          context.pop
+        end
+      end
+
+      ##
+      # Stringify as template contents.
+      #
+      # This supports cases such as dynamic steps
+      # where a string is expected but the template should not yet
+      # be expanded.
+      ##
+      def to_s
+        @template
+      end
     end
 
+    def as_template(str)
+      BrineTemplate.new(str, binding)
+    end
   end
 
   ##

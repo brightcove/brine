@@ -105,7 +105,7 @@ module Brine
 
         # Template Expansion
         Transformer.new('Template', /.*{{.*}}.*/) {|input|
-          transformed_parameter(shave_value(input)) },
+          as_template(input) },
 
         # Scalars
         Transformer.new('Integer', /\A-?\d+\z/) {|input|
@@ -131,11 +131,27 @@ module Brine
     # Transform the provided input using #parameter_transformers.
     #
     # @param [String] input The String input as provided by Cucumber.
-    # @param [Object] The input converted by the handling Transformer.
+    # @return [Object] The input converted by the handling Transformer.
     ##
     def transformed_parameter(input)
       parameter_transformers.find {|it| it.can_handle? input }
         .transform(input)
+    end
+
+    ##
+    # Expand val if needed and transform the result.
+    #
+    # If val is not `expand`able it will be returned as is.
+    #
+    # @param [Object] val The value to potentially expand.
+    # @return The expanded value of val.
+    ##
+    def expand(val)
+      if val.respond_to? :expand
+        transformed_parameter(val.expand)
+      else
+        val
+      end
     end
 
   end
@@ -146,6 +162,9 @@ module Brine
   include ParameterTransforming
 end
 
+##
+# Configure Cucumber to use these transformers.
+##
 Transform /.*/ do |input|
   transformed_parameter(input)
 end

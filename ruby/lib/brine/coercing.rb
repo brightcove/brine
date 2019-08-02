@@ -69,6 +69,7 @@ module Brine
       def coerce(first, second)
         @map[[first.class, second.class]].call(first, second)
       end
+
     end
 
     ##

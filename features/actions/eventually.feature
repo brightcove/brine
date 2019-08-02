@@ -54,3 +54,23 @@ Feature: Eventually
         {"completed": true}
         """
     Then the actions are successful within a `long` period
+
+  Scenario: Action state is managed properly
+    When actions are defined such that
+      When `expected` is assigned `val`
+      And the response body is assigned:
+        """
+        {"key": "val",
+         "other": "blah"}
+        """
+      Then the value of the response body child `key` is equal to `{{expected}}`
+
+      When `expected` is assigned `blah`
+      Then the value of the response body child `other` is equal to `{{expected}}`
+
+      When the response body is assigned:
+        """
+        {"key": "blah"}
+        """
+      Then the value of the response body child `key` is equal to `{{expected}}`
+    Then the actions are successful within a `short` period
