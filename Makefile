@@ -101,7 +101,7 @@ ${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
 .PHONY: ruby-check ruby-publish
 ruby-check: ${RUBY_OUT_DIR}bundler_updated
 	export BRINE_ROOT_URL=http://www.example.com; \
-	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) 
+	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) ${CUCUMBER_OPTS}
 
 ruby-publish: ${RUBY_OUT_DIR}bundler_updated
 	cd ruby && ${BUNDLE} exec rake release

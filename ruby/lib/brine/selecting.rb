@@ -3,6 +3,8 @@
 # Selection of one or more values to be used by Brine (normally for assertion).
 ##
 
+require 'brine/transforming.rb'
+
 module Brine
 
   ##
@@ -23,6 +25,7 @@ module Brine
     # which it applied against the targeted value.
     ##
     class Selector
+      include ParameterTransforming
       include RSpec::Matchers
 
       ##
@@ -69,7 +72,7 @@ module Brine
       def assert_that(value, negated=nil)
         # shim while moving negation to assertions.
         negated = @negated if negated.nil?
-        target, value = coercer.coerce(@target, value)
+        target, value = coercer.coerce(expand(@target), expand(value))
         message = negated ? :to_not : :to
         matcher = filter_matcher(yield(value))
         expect(target).send(message, matcher)
@@ -156,11 +159,12 @@ end
 RESPONSE_ATTRIBUTES='(status|headers|body)'
 Then(/^the value of `([^`]*)` is( not)? (.*)$/) do |value, negated, assertion|
   select(value, (!negated.nil?))
-  step "it is #{assertion}"
+  # Stringify in case the assertion clause is a template.
+  step "it is #{assertion.to_s}"
 end
 
 def dig_from_response(attribute, path=nil, plural=false)
   root = response.send(attribute.to_sym)
   return root if !path
-  JsonPath.new("$.#{path}").send(plural ? :on : :first, root)
+  JsonPath.new("$.#{path}").send(plural ? :on : :first, expand(root))
 end
