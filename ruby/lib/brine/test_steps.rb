@@ -3,7 +3,8 @@ require 'rspec'
 # Steps used to test this library
 # Not loaded by default (except in the tests)
 #
-HTTP_METHOD='GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS'
+http_method='(GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS)'
+grave_param='`([^`]*)`'
 
 ENV['BRINE_DURATION_SECONDS_short'] = '3'
 ENV['BRINE_DURATION_SECONDS_long'] = '6'
@@ -105,11 +106,11 @@ Before do
   end
 end
 
-Given(/^expected response status of `([^`]*)`$/) do |status|
+Given(/^expected response status of #{grave_param}$/) do |status|
   stub.response.status = status
 end
 
-Given(/^expected response status sequence of `([^`]*)`$/) do |seq|
+Given(/^expected response status sequence of #{grave_param}$/) do |seq|
   @stub = ResponseStatusSequenceStubBuilder.new(stub, seq)  
 end
 
@@ -121,7 +122,7 @@ Given(/^expected request headers:$/) do |headers|
   stub.request.headers = headers
 end
 
-Given(/^expected (#{HTTP_METHOD}) sent to `([^`]*)`/) do |method, path|
+Given(/^expected #{http_method} sent to #{grave_param}$/) do |method, path|
   stub.request.method = method
   stub.request.path = path
   build_stub
@@ -132,12 +133,12 @@ When(/^the response body is assigned:$/) do |input|
     @response.body = input
 end
 
-When(/^the response headers is assigned `([^`]*)`$/) do |input|
+When(/^the response headers is assigned #{grave_param}$/) do |input|
     @response ||= StubResponse.new
     @response.headers = input
 end
 
-When(/^the response body is assigned `([^`]*)`/) do |input|
+When(/^the response body is assigned #{grave_param}$/) do |input|
     @response ||= StubResponse.new
     @response.body = input
 end
@@ -146,12 +147,12 @@ When(/^the response body is:$/) do |input|
   replaced_with('When', 'the response body is assigned:', '1.0.0', input.to_json)
 end
 
-When /^the response status is assigned `([^`]*)`$/ do |status|
+When /^the response status is assigned #{grave_param}$/ do |status|
   @response ||= StubResponse.new
   @response.status = status.to_i    # this coercion isn't needed but is a guarantee
 end
 
-When /^the response is delayed `([^`]*)` seconds$/ do |seconds|
+When /^the response is delayed #{grave_param} seconds$/ do |seconds|
    @response = DelayedStubResponse.new(seconds)
 end
 

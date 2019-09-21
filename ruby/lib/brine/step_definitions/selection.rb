@@ -1,5 +1,10 @@
-#RESPONSE_ATTRIBUTES='(status|headers|body)'
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)? is( not)? (.*)(?<!:)$/) do
+response_attribute='(status|headers|body)'
+grave_param='`([^`]*)`'
+maybe_not='( not)?'
+traversal='(?: child(ren)? `([^`]*)`)?'
+assertion='(.*)'
+
+Then(/^the value of the response #{response_attribute}#{traversal} is#{maybe_not} #{assertion}(?<!:)$/) do
   |attribute, plural, path, negated, assertion|
   perform do
     select(dig_from_response(attribute, path, !plural.nil?), (!negated.nil?))
@@ -7,7 +12,7 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`
   end
 end
 
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)? is( not)? (.*)(?<=:)$/) do
+Then(/^the value of the response #{response_attribute}#{traversal} is#{maybe_not} #{assertion}(?<=:)$/) do
   |attribute, plural, path, negated, assertion, multi|
   perform do
     select(dig_from_response(attribute, path, !plural.nil?), (!negated.nil?))
@@ -15,7 +20,7 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`
   end
 end
 
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)? does( not)? have any element that is (.*)(?<!:)$/) do
+Then(/^the value of the response #{response_attribute}#{traversal} does#{maybe_not} have any element that is #{assertion}(?<!:)$/) do
   |attribute, plural, path, negated, assertion|
   perform do
     select_any(dig_from_response(attribute, path, !plural.nil?), (!negated.nil?))
@@ -23,7 +28,7 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`
   end
 end
 
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)? does( not)? have any element that is (.*)(?<=:)$/) do
+Then(/^the value of the response #{response_attribute}#{traversal} does#{maybe_not} have any element that is #{assertion}(?<=:)$/) do
   |attribute, plural, path, negated, assertion, multi|
   perform do
     select_any(dig_from_response(attribute, path, !plural.nil?), (!negated.nil?))
@@ -32,7 +37,7 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`
 end
 
 #Would be negated with `not all' which would be equivalent to any(not ) but that's not readily supported
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)? has elements which are all (.*)(?<!:)$/) do
+Then(/^the value of the response #{response_attribute}#{traversal} has elements which are all #{assertion}(?<!:)$/) do
   |attribute, plural, path, assertion|
   perform do
     select_all(dig_from_response(attribute, path, !plural.nil?), false)
@@ -40,7 +45,7 @@ Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`
   end
 end
 
-Then(/^the value of the response #{RESPONSE_ATTRIBUTES}(?: child(ren)? `([^`]*)`)? has elements which are all (.*)(?<=:)$/) do
+Then(/^the value of the response #{response_attribute}#{traversal} has elements which are all #{assertion}(?<=:)$/) do
   |attribute, plural, path, assertion, multi|
   perform do
     select_all(dig_from_response(attribute, path, !plural.nil?), false)

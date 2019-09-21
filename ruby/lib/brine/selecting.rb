@@ -156,8 +156,12 @@ end
 #
 # Steps
 #
-RESPONSE_ATTRIBUTES='(status|headers|body)'
-Then(/^the value of `([^`]*)` is( not)? (.*)$/) do |value, negated, assertion|
+response_attribute='(status|headers|body)'
+grave_param='`([^`]*)`'
+maybe_not='( not)?'
+assertion='(.*)'
+
+Then(/^the value of #{grave_param} is#{maybe_not} #{assertion}$/) do |value, negated, assertion|
   select(value, (!negated.nil?))
   # Stringify in case the assertion clause is a template.
   step "it is #{assertion.to_s}"
