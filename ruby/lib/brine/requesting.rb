@@ -1,19 +1,18 @@
 ##
 # @file requesting.rb
-# Request construction and response storage.
+# Provide request construction and response storage.
 ##
-
 module Brine
 
   ##
-  # Module in charge of constructing requests and saving responses.
+  # Support constructing requests and saving responses.
   ##
   module Requesting
     require 'faraday_middleware'
     require 'brine/client_building'
 
     ##
-    # The root url to which Brine will send requests.
+    # Retrieve the root url to which Brine will send requests.
     #
     # This will normally be the value of ENV['BRINE_ROOT_URL'],
     # and that value should be directly usable after older
@@ -21,7 +20,7 @@ module Brine
     #
     # @brine_root_url is used if set to allow setting this value more programmatically.
     #
-    # @return [String] The root URL to use or nil if none is provided.
+    # @return [String] Return the root URL to use or nil if none is provided.
     ##
     def brine_root_url
       if @brine_root_url
@@ -37,8 +36,8 @@ module Brine
     ##
     # Normalize an HTTP method for the HTTP client library (to a lowercased symbol).
     #
-    # @param [String] method A text representation of the HTTP method.
-    # @return [Symbol] A representation of `method` usable by the HTTP client library.
+    # @param method [String] Provide a text representation of the HTTP method.
+    # @return [Symbol] Return `method` in a form potentially usable by the HTTP client library.
     ##
     def parse_method(method)
       method.downcase.to_sym
@@ -49,19 +48,19 @@ module Brine
     #
     # This will generally be a connection as created by the ClientBuilding module.
     #
-    # @param [Faraday::Connection, #run_request] client The client which will be used to issue HTTP requests.
+    # @param client [Faraday::Connection, #run_request] Provide the client which will be used to issue HTTP requests.
     ##
     def set_client(client)
       @client = client
     end
 
     ##
-    # The currently active client which will be used to issue HTTP calls.
+    # Return the currently active client which will be used to issue HTTP calls.
     #
     # This will be initialized as neded on first access
     # to a default client constructed by the ClientBuilding module.
     #
-    # @return [Faraday::Connection, #run_request] The currently active client object.
+    # @return [Faraday::Connection, #run_request] Return the active HTTP client.
     ##
     def client
       @client ||= client_for_host(brine_root_url)
@@ -82,7 +81,7 @@ module Brine
     #
     # This will override any previous body value.
     #
-    # @param [Object] The new data to be placed in the request body.
+    # @param obj [Object] Provide the data to place in the request body.
     ##
     def set_request_body(obj)
       @body = obj
@@ -99,9 +98,8 @@ module Brine
     # methods will always be inclued in the request and therefore such data should
     # be cleared using `#reset_request` if it is not desired.
     #
-    # @param [Symbol] method The client friendly representation of the HTTP method for the request
-    #                        (@see #parse_method).
-    # @param [String] url The url to which the request will be sent.
+    # @param method [Symbol] Provide the HTTP method for the request such as returned by #parse_method.
+    # @param url [String] Specify the url to which the request will be sent.
     ##
     def send_request(method, url)
       @response = client.run_request(method, url, @body, headers) do |req|
@@ -110,21 +108,21 @@ module Brine
     end
 
     ##
-    # The response for the last sent request.
+    # Return the response for the last sent request.
     #
-    # @return [Faraday::Response] The most recent response.
+    # @return [Faraday::Response] Return the most recent response.
     ##
     def response
       @response
     end
 
     ##
-    # The headers for the request currently being built.
+    # Expose the headers for the request currently being built.
     #
-    # Will be initialized as needed on first access,
+    # This will be initialized as needed on first access,
     # with a default specifying JSON content-type.
     #
-    # @return [Hash] The headers to use for the constructed request.
+    # @return [Hash] Return the headers to use for the constructed request.
     ##
     def headers
       @headers ||= {content_type: 'application/json'}
@@ -133,8 +131,8 @@ module Brine
     ##
     # Set the specified header to the provided value.
     #
-    # @param [String] k The name of the header whose value will be set.
-    # @param [Object] v The value to set for the specified header.
+    # @param k [String] Specify the name of the header whose value will be set.
+    # @param v [Object] Provide the value to set for the specified header.
     #                   This should normally be a String, but some other types may work.
     ##
     def set_header(k, v)
@@ -142,11 +140,11 @@ module Brine
     end
 
     ##
-    # The query parameters which will be attached to the constructeed request.
+    # Expose the query parameters which will be attached to the constructeed request.
     #
-    # Will be initialized to an empty hash as needed upon first access.
+    # This will be initialized to an empty hash as needed upon first access.
     #
-    # @return [Hash] The query parameters to use for request construction.
+    # @return [Hash] Return the query parameters to use for the constructed request.
     ##
     def request_params
       @request_params ||= {}
@@ -155,8 +153,8 @@ module Brine
     ##
     # Assign the provided value to the specified request query parameter.
     #
-    # @param [String] k The name of the query parameter whose value is being assigned.
-    # @param [Object] v The value to assign the query parameter (normally a String).
+    # @param k [String] Specify the name of the query parameter whose value is being assigned.
+    # @param v [Object] Provide the value to assign the query parameter (normally a String).
     ##
     def set_request_param(k, v)
       request_params[k] = v
@@ -168,4 +166,77 @@ module Brine
   # Mix the Requesting module functionality into the main Brine module.
   ##
   include Requesting
+end
+
+require 'brine/selecting'
+require 'brine/transforming'
+
+##
+# Define a body for the request currently under construction.
+#
+# @param input [String] Define the body contents to use in the request.
+##
+When('the request body is assigned:') do |input|
+  perform { set_request_body(input) }
+end
+
+##
+# Define the indicated query parameter value for the request currently under construction.
+#
+# @param param [Object] Specify the name of the query parameter whose value will be set.
+# @param value [Object] Specify the value to set for the named query parameter.
+##
+When('the request query parameter {grave_param} is assigned {grave_param}') do |param, value|
+  perform { set_request_param(param, value) }
+end
+
+##
+# Define the indicated header value for the request currently under construction.
+#
+# @param header [Object] Specify the name of the header whose value will be set.
+# @param value [Object] Specify the value to set for the named header.
+##
+When('the request header {grave_param} is assigned {grave_param}') do |header, value|
+  perform { set_header(header, value) }
+end
+
+##
+# Issue a request with the provided method to the specified url.
+#
+# Bind the returned response.
+#
+# @param method [String] Specify the HTTP method to use for the request.
+# @param url [Object] Specify the URL to which the request will be sent.
+##
+When('a(n) {http_method} is sent to {grave_param}') do |method, url|
+  perform do
+    send_request(parse_method(method), URI.escape(expand(url, binding)))
+    bind('response', response)
+    reset_request
+  end
+end
+
+##
+# Attach a HTTP Basic Auth header to the request currently under construction.
+#
+# @param user [Object] Specify the user with which to generate the header.
+# @param password [Object] Specify the password with which to generate the header.
+##
+When('the request credentials are set for basic auth user {grave_param} and password {grave_param}') do |user, password|
+  perform do
+    base64_combined = Base64.strict_encode64("#{expand(user, binding)}:#{expand(password, binding)}")
+    set_header('Authorization', "Basic #{base64_combined}")
+  end
+end
+
+##
+# Assign a value extracted from a response attribute to the specified identifier.
+#
+# @param name [Object] Specify the identifier to which the value will be bound.
+# @param attribute [String] Specify the attribute from which the value will be retrieved.
+# @param traversal [Traversal] Provide a traversal to fetch the value out of the attribute.
+##
+When('{grave_param} is assigned the response {response_attribute}{traversal}') do
+  |name, attribute, traversal|
+  perform { bind(expand(name, binding), traversal.visit(response_attribute(attribute))) }
 end

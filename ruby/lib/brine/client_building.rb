@@ -1,18 +1,18 @@
 ##
 # @file client_building.rb
-# Construction of a Faraday connection.
+# Construct a Faraday connection.
 ##
 
 module Brine
 
   ##
-  # Supports construction of a Faraday connection with some common middleware.
+  # Allow construction of a Faraday connection with some common middleware.
   ##
   module ClientBuilding
     require 'oauth2'
 
     ##
-    # Parameter object used to configure OAuth2 middleware
+    # Define OAuth2 middleware configuration.
     #
     # This is essentially a thin wrapper around `https://github.com/oauth-xx/oauth2`
     # to provide a mini-DSL and to facilitate the middleware configuration.
@@ -20,12 +20,12 @@ module Brine
     class OAuth2Params
 
       ##
-      # A token which has been retrieved from the authorization server.
+      # Store the token which has been retrieved from the authorization server.
       ##
       attr_accessor :token
 
       ##
-      # The type of OAuth2 token which will be retrieved.
+      # Specify the type of OAuth2 token which will be retrieved.
       #
       # Currently only `bearer` is supported.
       ##
@@ -44,14 +44,14 @@ module Brine
       # The parameters are forwarded to OAuth2::Client.new which is used to
       # retrieve the token.
       #
-      # @param [String] id The login id to send to request authorization.
-      # @param [String] secret The secret to send to request authorization.
-      # @param [Hash] opts Options with which to create a client,
-      #                   see `https://github.com/oauth-xx/oauth2/blob/master/lib/oauth2/client.rb` for full details,
-      #                   common options will be duplicated here.
-      # @option opts [String] :site The OAuth2 authorization server from which to request a token.
-      # @option opts [String] :token_url The absolute or relative path to the Token endpoint on the authorization server.
-      # @option opts [Hash] :ssl SSL options to pass through to the transport client,
+      # @param id [String] Provide the login id credential with which to request authorization.
+      # @param secret [String] Provide the secret credential with which to request authorization.
+      # @param opts [Hash] Define options with which to create a client,
+      #                    see `https://github.com/oauth-xx/oauth2/blob/master/lib/oauth2/client.rb` for full details,
+      #                    common options will be duplicated here.
+      # @option opts [String] :site Specify the OAuth2 authorization server from which to request a token.
+      # @option opts [String] :token_url Specify the absolute or relative path to the Token endpoint on the authorization server.
+      # @option opts [Hash] :ssl Provide SSL options to pass through to the transport client,
       #                     `{verify: false}` may be useful for self-signed certificates.
       ##
       def fetch_from(id, secret, opts)
@@ -61,10 +61,10 @@ module Brine
     end
 
     ##
-    # Acquire an OAuth2 token within provided configuration block.
+    # Acquire an OAuth2 token with the provided configuration block.
     #
-    # @param [Block] Logic to execute with an OAuth2Params receiver;
-    #               this will normally involve an OAuth2Params#fetch_from call.
+    # @param [Block] Provide logic to execute with an OAuth2Params receiver;
+    #                this will normally involve an OAuth2Params#fetch_from call.
     ##
     def use_oauth2_token(&block)
       @oauth2 = OAuth2Params.new
@@ -72,7 +72,7 @@ module Brine
     end
 
     ##
-    # The handlers/middleware that will be wired while constructing a client.
+    # Expose the handlers/middleware that will be wired while constructing a client.
     #
     # This is represented as list of functions so that it can be more easily customized for
     # unexpected use cases.
@@ -98,13 +98,13 @@ module Brine
     end
 
     ##
-    # Construct a new client to send requests to `host`.
+    # Return a client which will send requests to `host`.
     #
-    # Will configure the client using `#connection_handlers`.
+    # This will configure the client using `#connection_handlers`.
     #
-    # @param [String] host The hostname to which this client will send requests.
-    # @param [String] logging Indicate the desired logging level for this client.
-    # @return [Faraday::Connection] The configured client connection.
+    # @param host [String] Specify the hostname to which this client will send requests.
+    # @param logging [String] Indicate the desired logging level for this client.
+    # @return [Faraday::Connection] Return the configured client connection.
     ##
     def client_for_host(host, logging: ENV['BRINE_LOG_HTTP'])
       @logging = logging

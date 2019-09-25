@@ -1,35 +1,35 @@
 ##
 # @file coering.rb
-# Type coercion to support assertions.
+# Coerce types to support assertions.
 ##
 
 module Brine
 
   ##
-  # A module which allows mixing in Corcer behavior.
+  # Provide type coercion.
   ##
   module Coercing
 
     ##
-    # Coerces the types of  provided objects to support desired assertions.
+    # Coerces the types of provided objects to support assertion evaluation.
     #
     # Coercion is used to support handling richer data types in Brine without
     # introducing noisy type information to the language.
-    # Argument Transforms can be used to convert input provided directly
+    # Transformation code can be used to convert input provided directly
     # to a Brine step, however data extracted from JSON will by default be
     # limited to the small amount of JSON supported data types. As normally
     # the data extracted from JSON will only be directly present on one side
     # of the assertion (most likely the left), the simpler JSON data types can
     # be coerced to a richer type based on the right hand side.
     #
-    # A standard example (and that which is defined at the moment here) is date/time
+    # A standard example (and one which is supported in this file) is date/time
     # values. When testing an API that returns such values it is likely desirable to
     # perform assertions with proper date/time semantics, and the coercer allows
     # such assertions against a value retrieved out of a JSON structure.
     #
-    # The combination of Argument Transforms and the Coercer can also effectively
-    # allow for user defined types to seemlessly exist within the Brine tests.
-    # The date/time implementation is an example of this.
+    # The combination of transforming of ParameterType inputs and the Coercer can
+    # also effectively allow for user defined types to seemlessly exist within the
+    # Brine tests.
     #
     # Implementation (Most of the non-implementation info should later be moved).
     # ---
@@ -62,9 +62,9 @@ module Brine
       #
       # Looks up and invokes the associated coercion function.
       #
-      # @param [Object] first The first operand.
-      # @param [Object] second The second operand.
-      # @return [Array] A pair of the potentially coerced [first, second] values.
+      # @param first [Object] Provide the first operand.
+      # @param second [Object] Provide the second operand.
+      # @return [Array] Return the coerced [first, second] values.
       ##
       def coerce(first, second)
         @map[[first.class, second.class]].call(first, second)
@@ -73,11 +73,11 @@ module Brine
     end
 
     ##
-    # The coercer instance mixed in as a property.
+    # Expose a Coercer as a property.
     #
-    # Will instantiate a Coercer if needed on first access.
+    # A Coercer will be instantiated as needed on first access.
     #
-    # @return [Coercer] The object which will be used to handle coercions.
+    # @return [Coercer] Return the object which will be used to handle coercions.
     ##
     def coercer
       @coercer ||= Coercer.new
@@ -86,7 +86,7 @@ module Brine
   end
 
   ##
-  # Include the Coercing module functionality into the main Brine module.
+  # Mix the Coercing module functionality into the main Brine module.
   ##
   include Coercing
 end

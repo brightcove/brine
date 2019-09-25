@@ -23,6 +23,7 @@ Feature: DateTime
     And `then` is assigned `2017-01-01T12:00:00Z`
     Then the value of `{{ then }}` is less than `{{ now }}`
 
+  @pending @170
   Scenario: Child Comparison
     When `now` is assigned a timestamp
     And the response body is assigned:

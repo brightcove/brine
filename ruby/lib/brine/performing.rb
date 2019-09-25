@@ -1,27 +1,26 @@
 ##
 # @file performing.rb
-# Performing of of potentially deferred actions.
+# Perform potentially deferred actions.
 ##
-
 module Brine
 
   ##
-  # A module supporting either immediate or defered evaluation of logic.
+  # Support either immediate or defered evaluation of logic.
   ##
   module Performing
 
     ##
-    # A passthrough performer which immediately invokes provided actions.
+    # Immediately invoke provided actions.
     #
     # This has no instance state and therefore a Flyweight could be used,
-    # but too few instances are expected to warrant even the minor divergence.
+    # but too few instances are expected to warrant even the minor specialization.
     ##
     class ImmediatePerformer
 
       ##
       # Perform the provided actions immediately.
       #
-      # @param [Proc] A thunk of actions to be performed.
+      # @param [Proc] Provide actions to be performed.
       ##
       def perform(actions)
         actions.call
@@ -29,7 +28,7 @@ module Brine
     end
 
     ##
-    # A Peformer which collects rather than evaluating actions.
+    # Collect actions to be evaluated later.
     ##
     class CollectingPerformer
 
@@ -41,9 +40,9 @@ module Brine
       end
 
       ##
-      # Collect provided actions for later evaluation.
+      # Collect provided actions.
       #
-      # @param [Proc] A thunk of actions to be performed.
+      # @param actions [Proc] Provide actions to collect.
       ##
       def perform(actions)
         @actions << actions
@@ -59,11 +58,11 @@ module Brine
     end
 
     ##
-    # The currently active Performer instance exposed as a property.
+    # Expose the currently active Performer as a property.
     #
     # The default implementation will be wired as needed upon first access.
     #
-    # @return [Performer, #perform] The Performer to which actions will be sent.
+    # @return [Performer, #perform] Return the Performer to which actions will be sent.
     ##
     def performer
       @performer || reset_performer
@@ -72,16 +71,16 @@ module Brine
     ##
     # Reset the Performer instance to the default implementation.
     #
-    # @return [Performer, #perform] The default implementation which will now be the `performer`.
+    # @return [Performer, #perform] Return the default implementation which will now be the active Performer.
     ##
     def reset_performer
       @performer = ImmediatePerformer.new
     end
 
     ##
-    # Pass the actions to the current Performer instance.
+    # Pass the actions to the active Performer instance.
     #
-    # @param [Proc] The thunk of the actions to be performed.
+    # @param actions [Proc] The actions to pass to the Performer.
     ##
     def perform(&actions)
       performer.perform(actions)
@@ -95,12 +94,12 @@ module Brine
     end
 
     ##
-    # The number of seconds between polling attempts.
+    # Determine the number of seconds between polling attempts.
     #
-    # Can be provided by the `BRINE_POLL_INTERVAL_SECONDS` environment variable.
-    # Defaults to `0.5`.
+    # This can be provided by the `BRINE_POLL_INTERVAL_SECONDS` environment variable
+    # (defaults to `0.5`).
     #
-    # @return [Number] The number of seconds to sleep between poll attempts.
+    # @return [Number] Return the number of seconds to sleep between poll attempts.
     ##
     def poll_interval_seconds
       ENV['BRINE_POLL_INTERVAL_SECONDS'] || 0.25
@@ -113,11 +112,11 @@ module Brine
     # will be returned, if any exception is thrown it will be
     # retried until the period elapses.
     #
-    # @param [Number] seconds The period (in seconds) during which the block will be retried.
-    # @param [Number] interval How long to sleep between polling attempts, defaults to `#poll_interval_seconds`.
-    # @param [Block] The logic to retry within the defined period.
+    # @param seconds [Number] Define the period (in seconds) for which the block will be retried.
+    # @param interval [Number] Define how long to sleep between polling attempts (defaults to `#poll_interval_seconds`).
+    # @param [Block] Provide the logic to retry within the defined period.
     # @return [Object] The result of the block if successfully evaluated.
-    # @throws [Exception] The most recent exception thrown from the block if never successfully evaluated.
+    # @throws [Exception] Re-throws the most recent exception thrown from the block if never successfully evaluated.
     ##
     def poll_for(seconds, interval=poll_interval_seconds)
       failure = nil
@@ -134,13 +133,13 @@ module Brine
     end
 
     ##
-    # The duration in seconds for the given handle.
+    # Retrieve the duration in seconds for the given handle.
     #
     # Currently this only supports values provided through environment variables
     # of the format BRINE_DURATION_SECONDS_{handle}.
     #
-    # @param[String] duration The handle/name of the duration whose length should be returned.
-    # @return [Number] The number of seconds to poll for the requested duration.
+    # @param duration [String] Identify the duration whose length should be returned.
+    # @return [Number] Return the number of seconds defined for the requested duration.
     ##
     def retrieve_duration(duration)
       if ENV["BRINE_DURATION_SECONDS_#{duration}"]
@@ -156,4 +155,31 @@ module Brine
   # Mix the Performing module functionality into the main Brine module.
   ##
   include Performing
+end
+
+require 'brine/selecting.rb'
+
+##
+# Collect actions rather than immediately evaluating them.
+##
+When('actions are defined such that') do
+  collect_actions
+end
+
+##
+# Evaluate collected actions for the provided period.
+#
+# This will pass if any evaluation is successful within the specified time.
+#
+# @param negated [Boolean] Specify whether the assertion should be expected to fail.
+# @param period [Object] Specify the period length as returned by #retrieve_duration.
+##
+Then('the actions are{maybe_not} successful within a {grave_param} period') do |negated, period|
+  method = negated ? :to : :to_not
+  expect do
+    poll_for(retrieve_duration(expand(period, binding))) do
+      performer.evaluate
+    end
+  end.send(method, raise_error)
+  reset_performer
 end

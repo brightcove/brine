@@ -93,7 +93,7 @@ ${RUBY_OUT_DIR}bundler_installed: | ${RUBY_OUT_DIR}
 	@cd ruby && ${BUNDLE} install --path "${RUBY_OUT_DIR}"
 	@touch "$@"
 
-${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
+${RUBY_OUT_DIR}bundler_updated: ruby/brine-dsl.gemspec ${RUBY_OUT_DIR}bundler_installed
 	@echo "Running bundle update.."
 	@cd ruby && ${BUNDLE} update
 	@touch "$@"
@@ -101,7 +101,7 @@ ${RUBY_OUT_DIR}bundler_updated: ${RUBY_OUT_DIR}bundler_installed
 .PHONY: ruby-check ruby-publish
 ruby-check: ${RUBY_OUT_DIR}bundler_updated
 	export BRINE_ROOT_URL=http://www.example.com; \
-	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) ${CUCUMBER_OPTS}
+	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) ${CUCUMBER_OPTS} --tags 'not @pending'
 
 ruby-publish: ${RUBY_OUT_DIR}bundler_updated
 	cd ruby && ${BUNDLE} exec rake release

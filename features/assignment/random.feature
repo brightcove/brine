@@ -1,3 +1,4 @@
+@pending @170
 Feature: A Random String
   An identifier can be assigned a random string with decent entropy.
 
