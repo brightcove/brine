@@ -1,4 +1,7 @@
 # cleanup.rb - Track information needed for Resource Cleanup
-When(/^a resource is created at `([^`]*)`$/) do |path|
+
+grave_param='`([^`]*)`'
+
+When(/^a resource is created at #{grave_param}$/) do |path|
   perform { track_created_resource path }
 end
