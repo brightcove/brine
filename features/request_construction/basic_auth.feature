@@ -5,7 +5,7 @@ Feature: Adding Basic Auth
       """
       {"Authorization":"Basic dXNlcjpwYXNz"}
       """
-    And expected GET sent to `/query` with 
+    And expected GET sent to `/query`
 
     When the request credentials are set for basic auth user `user` and password `pass`
     And a GET is sent to `/query`

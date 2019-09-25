@@ -55,7 +55,7 @@ module Brine
           begin
             resp=@client.delete(@path)
             return true if @oks.include?(resp.status)
-          rescue ex
+          rescue Exception => ex
             STDERR.puts "WARNING: #{ex}"
           end
         end
