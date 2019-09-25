@@ -1,6 +1,6 @@
 ##
 # @file hooks.rb
-# Cucumber hook callbacks used by Brine.
+# Register Brine callbacks for Cucumber hooks.
 ##
 
 ##

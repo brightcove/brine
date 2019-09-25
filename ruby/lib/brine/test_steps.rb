@@ -3,8 +3,8 @@ require 'rspec'
 # Steps used to test this library
 # Not loaded by default (except in the tests)
 #
-http_method='(GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS)'
-grave_param='`([^`]*)`'
+
+require 'brine/selecting'
 
 ENV['BRINE_DURATION_SECONDS_short'] = '3'
 ENV['BRINE_DURATION_SECONDS_long'] = '6'
@@ -106,56 +106,56 @@ Before do
   end
 end
 
-Given(/^expected response status of #{grave_param}$/) do |status|
+Given('expected response status of {grave_param}') do |status|
   stub.response.status = status
 end
 
-Given(/^expected response status sequence of #{grave_param}$/) do |seq|
+Given('expected response status sequence of {grave_param}') do |seq|
   @stub = ResponseStatusSequenceStubBuilder.new(stub, seq)  
 end
 
-Given(/^expected request body:$/) do |body|
+Given('expected request body:') do |body|
   stub.request.body = body
 end
 
-Given(/^expected request headers:$/) do |headers|
-  stub.request.headers = headers
+Given('expected request headers:') do |headers|
+  stub.request.headers = transformed_parameter(headers)
 end
 
-Given(/^expected #{http_method} sent to #{grave_param}$/) do |method, path|
+Given('expected {http_method} sent to {grave_param}') do |method, path|
   stub.request.method = method
   stub.request.path = path
   build_stub
 end
 
-When(/^the response body is assigned:$/) do |input|
+When('the response body is assigned:') do |input|
     @response ||= StubResponse.new
-    @response.body = input
+    @response.body = transformed_parameter(input)
 end
 
-When(/^the response headers is assigned #{grave_param}$/) do |input|
+When('the response headers is assigned {grave_param}') do |input|
     @response ||= StubResponse.new
     @response.headers = input
 end
 
-When(/^the response body is assigned #{grave_param}$/) do |input|
+When('the response body is assigned {grave_param}') do |input|
     @response ||= StubResponse.new
     @response.body = input
 end
 
-When /^the response status is assigned #{grave_param}$/ do |status|
+When('the response status is assigned {grave_param}') do |status|
   @response ||= StubResponse.new
   @response.status = status.to_i    # this coercion isn't needed but is a guarantee
 end
 
-When /^the response is delayed #{grave_param} seconds$/ do |seconds|
+When('the response is delayed {int} seconds') do |seconds|
    @response = DelayedStubResponse.new(seconds)
 end
 
-Then(/^the response body as JSON is:$/) do |text|
+Then('the response body as JSON is:') do |text|
   expect(response.body.to_json).to eq text
 end
 
-Then(/^expected calls are verified$/) do
+Then('expected calls are verified') do
   $stubs.verify_stubbed_calls
 end

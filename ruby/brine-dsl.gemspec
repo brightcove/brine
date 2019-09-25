@@ -13,15 +13,15 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.0'
 
-  s.add_runtime_dependency     'cucumber',           '~> 2.4'
-  s.add_runtime_dependency     'mustache',           '~> 1.0'
-  s.add_runtime_dependency     'oauth2',             '~> 1.4'
-  s.add_runtime_dependency     'rspec',              '~> 3.7'
-  s.add_runtime_dependency     'jsonpath',           '~> 0.8'
-  s.add_runtime_dependency     'faraday',            '~> 0.12'
-  s.add_runtime_dependency     'faraday_middleware', '~> 0.12'
+  s.add_runtime_dependency     'cucumber',            '4.0.0.rc.1'
+  s.add_runtime_dependency     'mustache',            '~> 1.0'
+  s.add_runtime_dependency     'oauth2',              '~> 1.4'
+  s.add_runtime_dependency     'rspec',               '~> 3.7'
+  s.add_runtime_dependency     'jsonpath',            '~> 0.8'
+  s.add_runtime_dependency     'faraday',             '~> 0.12'
+  s.add_runtime_dependency     'faraday_middleware',  '~> 0.12'
 
-  s.add_development_dependency 'rake',               '~> 12.3'
+  s.add_development_dependency 'rake',                '~> 12.3'
 
   s.files        = `git ls-files`.split("\n")
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")

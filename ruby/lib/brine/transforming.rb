@@ -1,19 +1,19 @@
 ##
-# @file  transforming.rb
-# Argument Parameter transforming for Brine.
+# @file transforming.rb
+# Transform parameter values for use in Brine.
 ##
 module Brine
 
   ##
   #
-  # A module that converts provided paramters to richer types.
+  # Convert provided paramters to richer types.
   #
   # This eases use of types beyond the Cucumber-provided simple strings.
   ##
   module ParameterTransforming
 
     ##
-    # A class which will transform supported input.
+    # Transform supported input.
     #
     # This implementation is designed around instances being
     # defined with patterns which define whether they should handle
@@ -21,15 +21,19 @@ module Brine
     # (when the patterns match).
     ##
     class Transformer
+
+      ##
+      # Provide an identifier for this Transformer.
+      ##
       attr_reader :type
 
       ##
-      # Return a new Transformer instance configured as specified.
+      # Construct a new Transformer instance configured as specified.
       #
-      # @param [String] type The name of the type produced by this transformer.
+      # @param type [String] Define the name of the type produced by this transformer.
       #                      This will be used for upcoming explicit type conversion.
-      # @param [Regexp] pattern A pattern which input should match for this Transformer to function.
-      # @param [Proc] xfunk The function which will be passed string input and will return
+      # @param pattern [Regexp] Specify a pattern for which this Transformer will handle matching input.
+      # @param xfunk [Proc] Provide the function which will be passed string input and will return
       #                     the output type of this Transformer.
       ##
       def initialize(type, pattern, &xfunc)
@@ -39,10 +43,10 @@ module Brine
       end
 
       ##
-      # Whether this instance should attempt to transform the input.
+      # Indicate whether this instance should attempt to transform the input.
       #
-      # @param [String] input The String input as provided by Cucumber.
-      # @return [Boolean] Whether this#transform should be called for input.
+      # @param input [String] Pass the String input as provided by Cucumber.
+      # @return [Boolean] Indicate whether this#transform should be called for input.
       ##
       def can_handle?(input)
         input =~ @pattern
@@ -51,8 +55,8 @@ module Brine
       ##
       # Transform the provided input.
       #
-      # @param [String] input The String input as provided by Cucumber.
-      # @return [Object] The transformed input into the appropriate type.
+      # @param input [String] Pass the String input as provided by Cucumber.
+      # @return [Object] Return input transformed into the appropriate type.
       ##
       def transform(input)
         STDERR.puts("Handling #{input} as #{@type}") if ENV['BRINE_LOG_TRANSFORMS']
@@ -67,7 +71,7 @@ module Brine
     TZ='(?:Z|(?:[+-]\d{2}:\d{2}))'
 
     ##
-    # The chain of Transformers which will be used to convert parameters.
+    # Expose the chain of Transformers which will be used to convert parameters.
     #
     # In the default implicit mode the list will be iterated over in sequence
     # and the first Transformer which can handle the input will be used.
@@ -130,8 +134,8 @@ module Brine
     ##
     # Transform the provided input using #parameter_transformers.
     #
-    # @param [String] input The String input as provided by Cucumber.
-    # @return [Object] The input converted by the handling Transformer.
+    # @param input [String] Pass the String input as provided by Cucumber.
+    # @return [Object] Return input as converted by the handling Transformer.
     ##
     def transformed_parameter(input)
       parameter_transformers.find {|it| it.can_handle? input }
@@ -143,12 +147,12 @@ module Brine
     #
     # If val is not `expand`able it will be returned as is.
     #
-    # @param [Object] val The value to potentially expand.
-    # @return The expanded value of val.
+    # @param val [Object] Provide the value to potentially expand.
+    # @return [Object] Return the value of val, expanding as appropriate.
     ##
-    def expand(val)
+    def expand(val, binding)
       if val.respond_to? :expand
-        transformed_parameter(val.expand)
+        transformed_parameter(val.expand(binding))
       else
         val
       end
@@ -163,8 +167,10 @@ module Brine
 end
 
 ##
-# Configure Cucumber to use these transformers.
+# Transform grave accent delimited parameters, performing implicit type transformation.
 ##
-Transform /.*/ do |input|
-  transformed_parameter(input)
-end
+ParameterType(
+  name: 'grave_param',
+  regexp: /`([^`]*)`/,
+  transformer: -> (input) { transformed_parameter(input) }
+)

@@ -1,21 +1,20 @@
 ##
 # @file type_checking.rb
-# Checks whether provided values are instances of a specified type.
+# Check whether provided values are instances of a specified type.
 #
-# Provides validation for an extended set of types supported byJSON.
+# Provide validation for an extended set of types beyond those supported by JSON.
 ##
-
 module Brine
 
   ##
-  # Module which adds functionality to check the type of values.
+  # Support asserting the type of values.
   ##
   module TypeChecking
 
     require 'rspec/expectations'
  
     ##
-    # A registry of checks for types which can return a Matcher for provided types.
+    # Define a registry of checks for types which can return a Matcher for registered types.
     ##
     class TypeChecks
       include RSpec::Matchers
@@ -23,7 +22,7 @@ module Brine
       ##
       # Initialize an instance with default checks or those provided.
       #
-      # @param [Hash<String, Matcher>] A hash of Matchers by type, where the Matcher value will be
+      # @param [Hash<String, Matcher>] Provide a hash of Matchers by type, where the Matcher value will be
       #                                used as the Matcher for the specified type.
       #                                It is expected that no map will be provided and the default
       #                                mapping will therefore be used.
@@ -41,9 +40,9 @@ module Brine
       ##
       # Return the Matcher for the specified type or die if not present.
       #
-      # @param [Class] type The type whose Matcher should be returned.
-      # @return [RSpec::Matcher] The Matcher configured for `type`.
-      # @throw Exception if no Matcher exists for `type`.
+      # @param type [Class] Specify the type whose Matcher should be returned.
+      # @return [RSpec::Matcher] Return the Matcher registered for `type`.
+      # @throw Exception Raise an exception if no Matcher exists for `type`.
       ##
       def for_type(type)
         @map[type.to_sym] || raise("Unsupported type #{type}")
@@ -52,8 +51,8 @@ module Brine
       ##
       # Register the provided matcher for the specified type.
       #
-      # @param[Class] type The type for which the Matcher will be registered.
-      # @param[RSpec::Matcher] matcher A matcher to verify that input is an instance of type.
+      # @param type [Class] Specify the type for which the Matcher will be registered.
+      # @param[RSpec::Matcher] matcher Provide a matcher to verify that input is an instance of type.
       ##
       def register_matcher(type, matcher)
         @map[type.to_sym] = matcher
@@ -61,7 +60,7 @@ module Brine
     end
 
     ##
-    # The currently active TypeCheck instance as a property, instantiating as needed.
+    # Expose the currently active TypeCheck instance as a property, instantiating as needed.
     ##
     def type_checks
       @type_check ||= TypeChecks.new
@@ -73,8 +72,9 @@ module Brine
     # This is the primary interface for type_checking to the rest of the system,
     # and is the only one expected to be used during test execution.
     #
-    # @param [Class] type The type for which a Matcher should be returned.
-    # @return [RSpec::Matcher] The Matcher currently registered for the type.
+    # @param type [Class] Specify the type for which a Matcher should be returned.
+    # @return [RSpec::Matcher] Return the Matcher currently registered for the type.
+    # @throw Exception Raise an exception if no Matcher exists for `type`.
     ##
     def type_check_for(type)
       type_checks.for_type(type)
@@ -85,4 +85,15 @@ module Brine
   # Mix the TypeChecking module functionality into the main Brine module.
   ##
   include TypeChecking
+end
+
+require 'brine/transforming'
+
+##
+# Assert that the selected value satisfies the specified type check.
+#
+# @param type [Object] Specify the key for the type checker to evaluate the selection.
+##
+Then('it is a valid {grave_param}') do |type|
+  perform { selector.assert_that(type, binding) {|t| type_check_for(t) } }
 end

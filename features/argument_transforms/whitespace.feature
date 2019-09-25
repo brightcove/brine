@@ -10,6 +10,13 @@ Feature: Whitespace
       """
     Then the value of the response body is equal to `<expected>`
 
+  Examples:
+    | input              | expected     |
+    |	true             | true         |
+    |   123	         | 123          |
+    |  ["a"]	         | ["a"]        |
+
+
   Scenario Outline: Inline simple value.
     When the response body is assigned `<input>`
     Then the value of the response body is equal to `<expected>`

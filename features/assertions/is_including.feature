@@ -5,12 +5,12 @@ Feature: Including
     When the response body is assigned:
       """
       {"foo":"bar",
-      "baz": 1,
-      "other": "blah"}
+       "baz": 1,
+       "other": "blah"}
       """
     Then the value of the response body is including:
       """
-      {"baz":1}
+      {"baz": 1}
       """
     And the value of the response body is not including:
       """
