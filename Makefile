@@ -21,6 +21,7 @@ out-dir-for-runtime = $(abspath build/$1)/
 ################
 
 BUNDLE = $(call required-command,bundle)
+GEM    = $(call required-command,gem)
 PYTHON = $(call required-command,python)
 
 ########
@@ -103,8 +104,12 @@ ruby-check: ${RUBY_OUT_DIR}bundler_updated
 	export BRINE_ROOT_URL=http://www.example.com; \
 	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) ${CUCUMBER_OPTS} --tags 'not @pending'
 
-ruby-publish: ${RUBY_OUT_DIR}bundler_updated
-	cd ruby && ${BUNDLE} exec rake release
+${RUBY_OUT_DIR}brine-dsl.gem: ${RUBY_OUT_DIR}bundler_installed
+	cd ruby && ${GEM} build brine-dsl.gemspec -o $@
+
+.PHONY: ruby-publish
+ruby-publish: ${RUBY_OUT_DIR}brine-dsl.gem ${RUBY_OUT_DIR}bundler_updated
+	${GEM} push $<
 
 ############
 # Tutorial #
