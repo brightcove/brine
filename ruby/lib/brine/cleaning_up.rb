@@ -126,5 +126,5 @@ require 'brine/transforming'
 #                      This should be a String or a Template.
 ##
 When('a resource is created at {grave_param}') do |path|
-  perform { track_created_resource(path) }
+  perform { track_created_resource(expand(path, binding)) }
 end
