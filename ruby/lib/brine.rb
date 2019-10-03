@@ -12,6 +12,7 @@
 ##
 def brine_mix
   require 'brine/assertions'
+  require 'brine/assigning'
   require 'brine/cleaning_up'
   require 'brine/hooks'
   require 'brine/mustache_expanding'

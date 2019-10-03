@@ -11,6 +11,7 @@ module Brine
   # This eases use of types beyond the Cucumber-provided simple strings.
   ##
   module ParameterTransforming
+    require 'brine/mustache_expanding'
 
     ##
     # Transform supported input.
