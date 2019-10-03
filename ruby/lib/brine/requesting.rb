@@ -177,7 +177,10 @@ require 'brine/transforming'
 # @param input [String] Define the body contents to use in the request.
 ##
 When('the request body is assigned:') do |input|
-  perform { set_request_body(input) }
+  body = transformed_parameter(input)
+  perform do
+    set_request_body(expand(body, binding))
+  end
 end
 
 ##
@@ -187,7 +190,7 @@ end
 # @param value [Object] Specify the value to set for the named query parameter.
 ##
 When('the request query parameter {grave_param} is assigned {grave_param}') do |param, value|
-  perform { set_request_param(param, value) }
+  perform { set_request_param(expand(param, value), expand(value, binding)) }
 end
 
 ##
@@ -197,7 +200,7 @@ end
 # @param value [Object] Specify the value to set for the named header.
 ##
 When('the request header {grave_param} is assigned {grave_param}') do |header, value|
-  perform { set_header(header, value) }
+  perform { set_header(expand(header, binding), expand(value, binding)) }
 end
 
 ##
