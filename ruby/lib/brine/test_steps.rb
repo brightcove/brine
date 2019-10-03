@@ -115,7 +115,7 @@ Given('expected response status sequence of {grave_param}') do |seq|
 end
 
 Given('expected request body:') do |body|
-  stub.request.body = body
+  stub.request.body = expand(transformed_parameter(body), binding)
 end
 
 Given('expected request headers:') do |headers|

@@ -213,7 +213,8 @@ end
 ParameterType(
   name: 'assertion',
   regexp: /.*[^:]/,
-  transformer: -> (input) { input }
+  transformer: -> (input) { input },
+  use_for_snippets: false
 )
 
 ##
@@ -337,7 +338,7 @@ Then('the value of the response {response_attribute}{traversal} does{maybe_not} 
   |attribute, traversal, negated, assertion, multi|
   perform do
     select_any(traversal.visit(response_attribute(attribute)), negated)
-    step "it is #{assertion}", multi
+    step "it is #{assertion}:", multi
   end
 end
 
@@ -368,7 +369,6 @@ Then('the value of the response {response_attribute}{traversal} has elements whi
   |attribute, traversal, assertion, multi|
   perform do
     select_all(traversal.visit(response_attribute(attribute)), false)
-    step "it is #{assertion}", multi.to_json
+    step "it is #{assertion}:", multi.to_json
   end
 end
-

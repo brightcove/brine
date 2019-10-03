@@ -16,7 +16,7 @@ Feature: Regular Expression
   Examples:
     | input             | expected                                            |
     | //                | "(?-mix:)"                                          |
-    | /\//              | "(?-mix:\\\\/)"                                     |
+    | /\//              | "(?-mix:\\\\\\/)"                                   |
     | /.*/              | "(?-mix:.*)"                                        |
     | /"[[:alpha:]]?"/  | "(?-mix:\\"[[:alpha:]]?\\")"                        |
     | /foo bar/         | "(?-mix:foo bar)"                                   |
@@ -32,7 +32,7 @@ Feature: Regular Expression
   Examples:
     | input             | expected                                            |
     | //                | "(?-mix:)"                                          |
-    | /\//              | "(?-mix:\\\\/)"                                     |
+    | /\//              | "(?-mix:\\\\\\/)"                                   |
     | /.*/              | "(?-mix:.*)"                                        |
     | /"[[:alpha:]]?"/  | "(?-mix:\\"[[:alpha:]]?\\")"                        |
     | /foo bar/         | "(?-mix:foo bar)"                                   |
