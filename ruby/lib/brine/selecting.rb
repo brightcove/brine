@@ -206,7 +206,6 @@ def response_attribute(attribute)
   response.send(attribute.to_sym)
 end
 
-
 ##
 # Extract assertion step text.
 ##
