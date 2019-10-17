@@ -368,7 +368,7 @@ Then('the value of the response {response_attribute}{traversal} has elements whi
   |attribute, traversal, assertion, multi|
   perform do
     select_all(traversal.visit(response_attribute(attribute)), false)
-    step "it is #{assertion}", multi.to_json
+    step "it is #{assertion}", multi
   end
 end
 
