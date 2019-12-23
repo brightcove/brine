@@ -13,3 +13,6 @@ make check
 make docs
 	Generate the documentation (for local viewing only).
 
+make todo
+	Provide information about pending work for this project.
+
