@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency     'faraday',             '~> 0.12'
   s.add_runtime_dependency     'faraday_middleware',  '~> 0.12'
 
-  s.files        = `git ls-files`.split("\n")
-  s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.files        = ['lib/brine.rb'] + Dir['lib/brine/*.rb']
   s.require_paths = ['lib']
 end

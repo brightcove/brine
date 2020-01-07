@@ -7,11 +7,13 @@
 # execute the provided specs (docs to come).
 # This file does that work for the ruby runtime.
 #
+# This file is also used in the Docker image to enable Brine
+# for mounted features.
+#
 # It is left at the top level to keep it slightly more isolated
 # from the rest of the code and as a minor convenience for
 # referencing the file from the top-level build.
 ##
 
 require 'brine'
-require 'brine/test_steps'
 World(brine_mix)

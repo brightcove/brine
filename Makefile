@@ -34,6 +34,8 @@ PYTHON = $(call required-command,python)
 ##
 
 RUNTIMES         := ruby
+BUILD_DIR        := build/
+OUT_DIRS         += ${BUILD_DIR}
 RUNTIME_OUT_DIRS := $(call map,out-dir-for-runtime,${RUNTIMES})
 OUT_DIRS         += ${RUNTIME_OUT_DIRS}
 PROJECT_REPO     := https://github.com/brightcove/brine
@@ -83,6 +85,7 @@ release: ; ${BUILDSRC_DIR}/bc/release ${PROP_FILE}
 RUBY_OUT_DIR      := $(call out-dir-for-runtime,ruby)
 BUNDLER_INSTALLED := ${RUBY_OUT_DIR}bundler_installed
 GEMSPEC           := ${RUBY_OUT_DIR}brine-dsl.gem
+ruby_SOURCES       = $(shell git ls-files ruby)
 
 ${BUNDLER_INSTALLED}: | ${RUBY_OUT_DIR}
 	@echo "Running bundle install.."
@@ -91,7 +94,11 @@ ${BUNDLER_INSTALLED}: | ${RUBY_OUT_DIR}
 
 ruby-check: export BRINE_ROOT_URL=http://www.example.com
 ruby-check: ${BUNDLER_INSTALLED}
-	cd ruby && ${BUNDLE} exec cucumber --require $(abspath ruby/feature_setup.rb) $(abspath features) ${CUCUMBER_OPTS} --tags 'not @pending'
+	cd ruby && ${BUNDLE} exec cucumber \
+		--require $(abspath ruby/feature_setup.rb) \
+		--require $(abspath ruby/lib/brine/test_steps.rb) \
+		${CUCUMBER_OPTS} --tags 'not @pending' \
+		$(abspath features)
 
 ${GEMSPEC}: ${BUNDLER_INSTALLED}
 	cd ruby && ${GEM} build brine-dsl.gemspec -o $@
@@ -100,6 +107,15 @@ ruby-publish: ${GEMSPEC} ${BUNDLER_INSTALLED}
 	${GEM} push $<
 
 .PHONY: ruby-check ruby-publish
+
+##
+# Manage docker images.
+##
+# The docker targets should be able to be easily converted to pattern rules,
+# but currently only ruby exists and some simplifications could precede other runtimes.
+build/ruby.iid: ${ruby_SOURCES} ruby/Dockerfile | ${BUILD_DIR}
+	@echo 'Building ruby image'
+	@docker build ruby --iidfile $@ --build-arg brine_version=${VERSION} -t brine:${VERSION}-ruby
 
 ##
 # Verify that the tutorial passes.
@@ -121,7 +137,14 @@ check: ${ALL_CHECKS} tutorial
 # Pass the feature directory to each check target.
 %-check: export FEATURE=$(abspath features)
 
-.PHONY: check
+docker-ruby-check: build/ruby.iid
+	@docker run --rm \
+		--mount type=bind,src=$(abspath features),dst=/features \
+		-e FEATURE=/features \
+		-e CUCUMBER_OPTS="--require /app/brine/lib/brine/test_steps.rb --tags 'not @pending'" \
+		brine:${VERSION}-ruby
+
+.PHONY: check docker-ruby-check
 
 ##
 # Define some utility tasks.
