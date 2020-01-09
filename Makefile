@@ -113,9 +113,19 @@ ruby-publish: ${GEMSPEC} ${BUNDLER_INSTALLED}
 ##
 # The docker targets should be able to be easily converted to pattern rules,
 # but currently only ruby exists and some simplifications could precede other runtimes.
+
+DOCKER_REPO := mwhipple/brine
+
 build/ruby.iid: ${ruby_SOURCES} ruby/Dockerfile | ${BUILD_DIR}
 	@echo 'Building ruby image'
 	@docker build ruby --iidfile $@ --build-arg brine_version=${VERSION} -t brine:${VERSION}-ruby
+
+
+docker-push-ruby: build/ruby.iid
+	docker tag brine:${VERSION}-ruby ${DOCKER_REPO}:${VERSION}-ruby
+	docker push ${DOCKER_REPO}:${VERSION}-ruby
+
+.PHONY: docker-push-ruby
 
 ##
 # Verify that the tutorial passes.
